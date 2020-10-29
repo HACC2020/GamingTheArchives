@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArchiveSiteBackend.Web", "src\ArchiveSiteBackend\ArchiveSiteBackend.Web.csproj", "{869FF541-761A-44D5-B55F-50F11265CF9B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArchiveSiteBackend.Data", "src\ArchiveSiteBackend.Data\ArchiveSiteBackend.Data.csproj", "{6581176F-87AC-4507-B582-6AED05342D1C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{869FF541-761A-44D5-B55F-50F11265CF9B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{869FF541-761A-44D5-B55F-50F11265CF9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{869FF541-761A-44D5-B55F-50F11265CF9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{869FF541-761A-44D5-B55F-50F11265CF9B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6581176F-87AC-4507-B582-6AED05342D1C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6581176F-87AC-4507-B582-6AED05342D1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6581176F-87AC-4507-B582-6AED05342D1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6581176F-87AC-4507-B582-6AED05342D1C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

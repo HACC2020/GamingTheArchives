@@ -1,0 +1,10 @@
+version: '3.1'
+
+services:
+  archive-postgresql:
+    image: postgres:13
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: GamingTheArchives
+    ports:
+      - "5432:5432"

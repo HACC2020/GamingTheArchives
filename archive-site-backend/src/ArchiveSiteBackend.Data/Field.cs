@@ -25,5 +25,11 @@ namespace ArchiveSiteBackend.Data {
 
         [StringLength(100)]
         public String FalseValue { get; set; }
+
+        // The predicted coordinates of this field on each page in % terms
+        public Double? Top { get; set; }
+        public Double? Left { get; set; }
+        public Double? Width { get; set; }
+        public Double? Height { get; set; }
     }
 }

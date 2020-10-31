@@ -7,5 +7,8 @@ namespace ArchiveSiteBackend.Data {
         public String Name { get; set; }
 
         public String Description { get; set; }
+
+        [StringLength(1024)]
+        public String SampleDocumentUrl { get; set; }
     }
 }

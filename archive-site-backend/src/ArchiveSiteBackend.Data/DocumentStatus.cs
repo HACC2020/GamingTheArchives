@@ -1,7 +1,7 @@
 namespace ArchiveSiteBackend.Data {
     public enum DocumentStatus {
         PendingTranscription,
-        PendingQuery,
+        PendingProblem,
         PendingReview,
         Complete
     }

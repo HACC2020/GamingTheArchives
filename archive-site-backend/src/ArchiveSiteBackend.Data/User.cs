@@ -12,5 +12,11 @@ namespace ArchiveSiteBackend.Data {
 
         [Required]
         public UserType Type { get; set; }
+
+        [Required]
+        public DateTime LastLogin { get; set; }
+
+        [Required]
+        public DateTime SignupDate { get; set; }
     }
 }

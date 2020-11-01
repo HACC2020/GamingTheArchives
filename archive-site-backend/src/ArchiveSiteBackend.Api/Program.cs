@@ -1,9 +1,11 @@
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
 using ArchiveSiteBackend.Api.Commands;
+using ArchiveSiteBackend.Api.Configuration;
 using ArchiveSiteBackend.Api.Helpers;
 using ArchiveSiteBackend.Api.Options;
 using CommandLine;
@@ -36,7 +38,11 @@ namespace ArchiveSiteBackend.Api {
         }
 
         private static void InitializeDatabase(String[] args, InitializeOptions options) {
-            var configuration = BuildConfiguration(args, options);
+            if (options.Debug) {
+                WaitForDebugger();
+            }
+
+            var configuration = BuildConfiguration(args, options, out _);
 
             var serviceCollection = new ServiceCollection();
 
@@ -51,26 +57,35 @@ namespace ArchiveSiteBackend.Api {
         }
 
         private static void RunWebHost(String[] args, HostOptions options) {
+            if (options.Debug) {
+                WaitForDebugger();
+            }
+
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder => {
                     webBuilder
-                        .UseConfiguration(BuildConfiguration(args, options))
+                        .UseConfiguration(BuildConfiguration(args, options, out var environment))
+                        .UseEnvironment(environment)
                         .UseStartup<Startup>();
                 })
                 .Build()
                 .Run();
         }
 
-        private static IConfigurationRoot BuildConfiguration(String[] args, CommonOptions options) {
+        private static IConfigurationRoot BuildConfiguration(String[] args, CommonOptions options, out String environment) {
             // AppContext.BaseDirectory is within the ./bin/config/framework
             var configurationBasePath =
                 GetAbsolute(options.ConfigPath) ?? GetParent(AppContext.BaseDirectory, 3);
 
+            environment =
+                options.Environment ??
+                Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ??
+                Environments.Development;
             var configuration =
                 new ConfigurationBuilder()
                     .SetBasePath(configurationBasePath)
                     .AddJsonFile("appsettings.json", optional: false)
-                    .AddJsonFile($"appsettings.{options.Environment}.json", optional: false)
+                    .AddJsonFile($"appsettings.{environment}.json", optional: false)
                     .AddEnvironmentVariables()
                     .AddCommandLine(args)
                     .Build();
@@ -83,6 +98,12 @@ namespace ArchiveSiteBackend.Api {
 
         private static String GetParent(String path, Int32 ancestor) {
             return Enumerable.Range(0, ancestor).Aggregate(path.TrimEnd('/'), (p, _) => Directory.GetParent(p).FullName);
+        }
+
+        private static void WaitForDebugger() {
+            while (!Debugger.IsAttached) {
+                Thread.Sleep(100);
+            }
         }
 
         private static void DisplayHelp<T>(ParserResult<T> result) {

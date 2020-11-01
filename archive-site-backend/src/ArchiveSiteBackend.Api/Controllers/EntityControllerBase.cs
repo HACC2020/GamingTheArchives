@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ArchiveSiteBackend.Api.Controllers {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/odata/[controller]")]
     public abstract class EntityControllerBase<TContext, TEntity> : ODataController
         where TContext : DbContext
         where TEntity : EntityBase<TEntity> {

@@ -2,7 +2,7 @@ using System;
 using System.Text.Json;
 using System.Threading.Tasks;
 using ArchiveSite.Data;
-using ArchiveSiteBackend.Web.Commands;
+using ArchiveSiteBackend.Api.Commands;
 using Microsoft.AspNet.OData.Builder;
 using Microsoft.AspNet.OData.Extensions;
 using Microsoft.AspNetCore.Builder;
@@ -15,7 +15,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OData;
 using Microsoft.OData.Edm;
 
-namespace ArchiveSiteBackend.Web {
+namespace ArchiveSiteBackend.Api {
     public class Startup {
         public Startup(IConfiguration configuration) {
             Configuration = configuration;

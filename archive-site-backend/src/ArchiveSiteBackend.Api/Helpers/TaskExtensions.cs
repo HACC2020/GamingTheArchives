@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 
-namespace ArchiveSiteBackend.Web.Helpers {
+namespace ArchiveSiteBackend.Api.Helpers {
     public static class TaskExtensions {
         public static void AwaitSynchronously(this Task task) {
             task.ConfigureAwait(false).GetAwaiter().GetResult();

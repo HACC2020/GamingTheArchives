@@ -9,7 +9,7 @@ using Microsoft.AspNet.OData;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace ArchiveSiteBackend.Web.Controllers {
+namespace ArchiveSiteBackend.Api.Controllers {
     [ApiController]
     [Route("api/[controller]")]
     public abstract class EntityControllerBase<TContext, TEntity> : ODataController

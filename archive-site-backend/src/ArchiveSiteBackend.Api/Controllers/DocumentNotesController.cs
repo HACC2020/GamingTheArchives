@@ -1,7 +1,7 @@
 using System;
 using ArchiveSite.Data;
 
-namespace ArchiveSiteBackend.Web.Controllers {
+namespace ArchiveSiteBackend.Api.Controllers {
     public class DocumentNotesController : EntityControllerBase<ArchiveDbContext, DocumentNote> {
         public DocumentNotesController(ArchiveDbContext context) : base(context) {
         }

@@ -3,18 +3,18 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
-using ArchiveSiteBackend.Web.Commands;
-using ArchiveSiteBackend.Web.Helpers;
-using ArchiveSiteBackend.Web.Options;
+using ArchiveSiteBackend.Api.Commands;
+using ArchiveSiteBackend.Api.Helpers;
+using ArchiveSiteBackend.Api.Options;
 using CommandLine;
 using CommandLine.Text;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using HostOptions = ArchiveSiteBackend.Web.Options.HostOptions;
+using HostOptions = ArchiveSiteBackend.Api.Options.HostOptions;
 
-namespace ArchiveSiteBackend.Web {
+namespace ArchiveSiteBackend.Api {
     public static class Program {
         private static readonly Parser CommandLineParser = new Parser(settings => {
             settings.CaseSensitive = true;
@@ -89,8 +89,9 @@ namespace ArchiveSiteBackend.Web {
             var helpText = HelpText.AutoBuild(
                 result,
                 h => {
+                    var asm = typeof(Program).Assembly;
                     h.AdditionalNewLineAfterOption = false;
-                    h.Heading = $"archive-web {typeof(Program).Assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion}";
+                    h.Heading = $"{asm.GetName().Name} {asm.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion}";
 
                     return h;
                 });

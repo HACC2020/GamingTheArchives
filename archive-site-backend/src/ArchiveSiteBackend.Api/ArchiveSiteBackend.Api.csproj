@@ -2,8 +2,9 @@
 
     <PropertyGroup>
         <TargetFramework>netcoreapp3.1</TargetFramework>
-        <AssemblyName>archive-web</AssemblyName>
+        <AssemblyName>archive-api</AssemblyName>
         <Version>0.0.1-alpha</Version>
+        <RootNamespace>ArchiveSiteBackend.Api</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>

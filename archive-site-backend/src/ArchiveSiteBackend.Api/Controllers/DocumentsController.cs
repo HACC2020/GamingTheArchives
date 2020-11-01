@@ -1,6 +1,6 @@
 using ArchiveSite.Data;
 
-namespace ArchiveSiteBackend.Web.Controllers {
+namespace ArchiveSiteBackend.Api.Controllers {
     public class DocumentsController : EntityControllerBase<ArchiveDbContext, Document> {
         public DocumentsController(ArchiveDbContext context) : base(context) {
         }

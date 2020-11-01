@@ -2,7 +2,7 @@ using System;
 using CommandLine;
 using Microsoft.Extensions.Hosting;
 
-namespace ArchiveSiteBackend.Web.Options {
+namespace ArchiveSiteBackend.Api.Options {
     public class CommonOptions {
         [Option("environment")]
         public String Environment { get; set; } = Environments.Development;

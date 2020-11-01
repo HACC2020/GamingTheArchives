@@ -2,11 +2,11 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using ArchiveSite.Data;
-using ArchiveSiteBackend.Web.Options;
+using ArchiveSiteBackend.Api.Options;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace ArchiveSiteBackend.Web.Commands {
+namespace ArchiveSiteBackend.Api.Commands {
     public class InitializeCommand {
         private readonly ArchiveDbConfiguration dbConfiguration;
         private readonly ArchiveDbContext context;

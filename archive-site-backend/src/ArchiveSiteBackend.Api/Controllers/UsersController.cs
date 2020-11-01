@@ -1,7 +1,7 @@
 using System;
 using ArchiveSite.Data;
 
-namespace ArchiveSiteBackend.Web.Controllers {
+namespace ArchiveSiteBackend.Api.Controllers {
     public class UsersController : EntityControllerBase<ArchiveDbContext, User> {
         public UsersController(ArchiveDbContext context) : base(context) {
         }

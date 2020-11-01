@@ -1,6 +1,6 @@
 using ArchiveSite.Data;
 
-namespace ArchiveSiteBackend.Web.Controllers {
+namespace ArchiveSiteBackend.Api.Controllers {
     public class TranscriptionsController : EntityControllerBase<ArchiveDbContext, Transcription> {
         public TranscriptionsController(ArchiveDbContext context) : base(context) {
         }

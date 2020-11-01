@@ -97,10 +97,7 @@ namespace ArchiveSiteBackend.Api.Controllers {
             }
         }
 
-        public virtual async Task<IActionResult> Patch([FromODataUri] Int64 key, CancellationToken cancellationToken) {
-            await using var body = this.Request.BodyReader.AsStream();
-            var delta = await JsonSerializer.DeserializeAsync<Delta<TEntity>>(body, this.SerializerOptions, cancellationToken: cancellationToken);
-
+        public virtual async Task<IActionResult> Patch([FromODataUri] Int64 key, Delta<TEntity> delta, CancellationToken cancellationToken) {
             var dbSet = this.Context.Set<TEntity>();
             var existing = await dbSet.SingleOrDefaultAsync(e => e.Id == key, cancellationToken);
 

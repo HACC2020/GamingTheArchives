@@ -22,17 +22,20 @@ namespace ArchiveSiteBackend.Web {
         });
 
         public static void Main(String[] args) {
-            var commandLine = CommandLineParser.ParseArguments<InitializeOptions, HostOptions>(args);
+            var commandLine =
+                CommandLineParser.ParseArguments(
+                    args,
+                    typeof(InitializeOptions),
+                    typeof(HostOptions)
+                );
+
             commandLine
                 .WithParsed<InitializeOptions>(opts => InitializeDatabase(args, opts))
                 .WithParsed<HostOptions>(opts => RunWebHost(args, opts))
-                .WithNotParsed(errors => {
-                    DisplayHelp(commandLine);
-                });
+                .WithNotParsed(errors => { DisplayHelp(commandLine); });
         }
 
         private static void InitializeDatabase(String[] args, InitializeOptions options) {
-            Console.WriteLine("BaseDirectory: " + AppContext.BaseDirectory);
             var configuration = BuildConfiguration(args, options);
 
             var serviceCollection = new ServiceCollection();
@@ -89,12 +92,10 @@ namespace ArchiveSiteBackend.Web {
                     h.AdditionalNewLineAfterOption = false;
                     h.Heading = $"archive-web {typeof(Program).Assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion}";
 
-                    h.AddVerbs(typeof(InitializeOptions), typeof(HostOptions));
+                    return h;
+                });
 
-                    return HelpText.DefaultParsingErrorsHandler(result, h);
-                },
-                e => e);
-            Console.WriteLine(helpText);
+            Console.Error.WriteLine(helpText.ToString());
         }
     }
 }

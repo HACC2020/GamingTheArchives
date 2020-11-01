@@ -2,8 +2,8 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ArchiveSiteBackend.Data {
-    public class User : EntityBase {
+namespace ArchiveSite.Data {
+    public class User : EntityBase<User> {
         [Required, StringLength(1024), Index("ix_User_EmailAddress", IsUnique = true)]
         public String EmailAddress { get; set; }
 
@@ -13,10 +13,8 @@ namespace ArchiveSiteBackend.Data {
         [Required]
         public UserType Type { get; set; }
 
-        [Required]
-        public DateTime LastLogin { get; set; }
+        public DateTimeOffset LastLogin { get; set; }
 
-        [Required]
-        public DateTime SignupDate { get; set; }
+        public DateTimeOffset SignupDate { get; set; }
     }
 }

@@ -1,12 +1,15 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ArchiveSiteBackend.Data {
-    public class Transcription : EntityBase {
+namespace ArchiveSite.Data {
+    public class Transcription : EntityBase<Transcription> {
         [Required]
+        [ForeignKey(nameof(Document))]
         public Int64 DocumentId { get; set; }
 
         [Required]
+        [ForeignKey(nameof(User))]
         public Int64 UserId { get; set; }
 
         /// <summary>

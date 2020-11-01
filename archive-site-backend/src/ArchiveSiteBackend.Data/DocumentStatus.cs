@@ -1,4 +1,4 @@
-namespace ArchiveSiteBackend.Data {
+namespace ArchiveSite.Data {
     public enum DocumentStatus {
         PendingTranscription,
         PendingProblem,

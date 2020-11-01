@@ -1,8 +1,9 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ArchiveSiteBackend.Data {
-    public class Document : EntityBase {
+namespace ArchiveSite.Data {
+    public class Document : EntityBase<Document> {
         [Required, StringLength(1024)]
         public String FileName { get; set; }
 
@@ -10,11 +11,13 @@ namespace ArchiveSiteBackend.Data {
         public String DocumentImageUrl { get; set; }
 
         [Required]
+        [ForeignKey(nameof(Project))]
         public Int64 ProjectId { get; set; }
 
         [Required]
         public DocumentStatus Status { get; set; } = DocumentStatus.PendingTranscription;
 
-        public Int64 ApprovedTranscriptionId { get; set; }
+        [ForeignKey(nameof(Transcription))]
+        public Int64? ApprovedTranscriptionId { get; set; }
     }
 }

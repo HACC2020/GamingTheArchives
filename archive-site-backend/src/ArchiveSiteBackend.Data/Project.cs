@@ -1,8 +1,8 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace ArchiveSiteBackend.Data {
-    public class Project : EntityBase {
+namespace ArchiveSite.Data {
+    public class Project : EntityBase<Project> {
         [Required, StringLength(100)]
         public String Name { get; set; }
 

@@ -2,9 +2,11 @@
 
     <PropertyGroup>
         <TargetFramework>netstandard2.1</TargetFramework>
+        <RootNamespace>ArchiveSite.Data</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="EFCore.NamingConventions" Version="1.1.0" />
       <PackageReference Include="EntityFramework" Version="6.4.4" />
       <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="3.1.4" />
     </ItemGroup>

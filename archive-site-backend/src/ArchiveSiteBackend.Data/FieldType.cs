@@ -1,6 +1,6 @@
 using System;
 
-namespace ArchiveSiteBackend.Data {
+namespace ArchiveSite.Data {
     public readonly struct FieldType {
         public static FieldType Boolean { get; } = new FieldType("boolean");
         public static FieldType Integer { get; } = new FieldType("integer");

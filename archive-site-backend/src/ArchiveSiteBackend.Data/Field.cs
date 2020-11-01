@@ -1,8 +1,11 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ArchiveSiteBackend.Data {
-    public class Field : EntityBase {
+namespace ArchiveSite.Data {
+    public class Field : EntityBase<Field> {
+        [Required]
+        [ForeignKey(nameof(Project))]
         public Int64 ProjectId { get; set; }
 
         /// <summary>

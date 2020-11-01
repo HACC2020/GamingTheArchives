@@ -1,6 +1,6 @@
 using System;
 
-namespace ArchiveSiteBackend.Data {
+namespace ArchiveSite.Data {
     public class ArchiveDbConfiguration {
         public String Host { get; set; } = "localhost";
         public UInt16 Port { get; set; } = 5432;

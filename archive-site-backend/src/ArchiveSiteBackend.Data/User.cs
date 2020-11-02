@@ -15,6 +15,6 @@ namespace ArchiveSite.Data {
 
         public DateTimeOffset LastLogin { get; set; }
 
-        public DateTimeOffset SignupDate { get; set; }
+        public DateTimeOffset SignUpDate { get; set; }
     }
 }

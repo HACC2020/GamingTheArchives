@@ -10,7 +10,7 @@ namespace ArchiveSiteBackend.Api.Controllers {
             base.OnCreating(entity);
 
             if (this.ModelState.IsValid) {
-                entity.LastLogin = entity.SignupDate = DateTimeOffset.UtcNow;
+                entity.LastLogin = entity.SignUpDate = DateTimeOffset.UtcNow;
             }
         }
     }

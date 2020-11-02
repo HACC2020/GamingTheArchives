@@ -1,0 +1,17 @@
+<div class="card">
+  <div class="card-body">
+    <ng-container *ngIf="project$ | async as project; else indicator">
+      <h5 class="card-title"><a [routerLink]="['/projects']">Projects</a> > {{project.Name}}</h5>
+      <p>{{project.Description}}</p>
+      <em>
+        TODO: more content. Links to start transcribing, etc.
+      </em>
+    </ng-container>
+    <ng-template #indicator>
+      <div class="d-flex align-items-center">
+        <strong>Loading...</strong>
+        <div class="spinner-border ml-auto" role="status" aria-hidden="true"></div>
+      </div>
+    </ng-template>
+  </div>
+</div>

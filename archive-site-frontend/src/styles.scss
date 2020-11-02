@@ -1,0 +1,78 @@
+
+$primary: #23582b;
+
+/* Importing Bootstrap SCSS file. */
+@import '~bootstrap/scss/bootstrap';
+@import '~material-design-icons/iconfont/material-icons.css';
+
+html, body {
+  height: 100%;
+}
+body {
+  background-image: linear-gradient(white, $gray-200);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+#app-container {
+  > section,header,footer {
+    padding: 0.5rem 1rem;
+  }
+
+  min-height: 100%;
+}
+
+.navbar {
+  //background-color: rgba(147,184,196,0.3);
+  background-color: white;
+  border-bottom: 2px solid $primary;
+  position: sticky;
+  top: 0;
+  margin-bottom: 1rem;
+}
+
+.main-content {
+}
+
+div.banner {
+  width: 100%;
+  padding: 1em;
+  background-color: $gray-300;
+  margin-bottom: 1rem;
+
+  *:last-child {
+    margin-bottom: 0;
+  }
+}
+
+button.icon-button {
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 16px;
+
+  .material-icons {
+    display: block;
+  }
+
+  &.lg-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 24px;
+  }
+}
+
+button.fab {
+  position: fixed;
+  right: 2rem;
+  bottom: 2rem;
+}
+
+.fab-menu .popover-body {
+  padding: 2px;
+  border-radius: 4px;
+}
+
+.clickable {
+  cursor: pointer;
+}

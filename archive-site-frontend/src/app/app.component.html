@@ -1,0 +1,19 @@
+<div id="app-container" fxLayout="column">
+  <header class="navbar">
+    <a [routerLink]="['/projects']" class="navbar-brand">Gaming The Archives</a>
+    <div *ngIf="user">
+      <span>{{user.DisplayName}}</span>
+      <button class="btn btn-outline-primary">Logout</button>
+    </div>
+    <div *ngIf="!user">
+      <button class="btn btn-outline-secondary mr-2">Sign Up</button>
+      <button class="btn btn-primary">Login</button>
+    </div>
+  </header>
+  <section class="main-content" fxFlex="1 0 auto">
+    <router-outlet></router-outlet>
+  </section>
+  <footer>
+    &copy; 2020 Gaming the Archives Team. Release under the <a href="https://raw.githubusercontent.com/HACC2020/GamingTheArchives/master/LICENSE">MIT License</a>.
+  </footer>
+</div>

@@ -1,0 +1,61 @@
+<div class="banner" *ngIf="showIntro">
+  <button class="btn btn-secondary icon-button float-right" (click)="hideIntro()">
+    <span class="material-icons">close</span>
+  </button>
+  <p class="mr-5">
+    We need your help! The Public Archives of Hawai'i is the keeper of public memory. As such, we have millions of
+    records that protect your rights, identity, property and history. But given the volume and varying record keeping
+    practices of the past, these records are often difficult or time consuming to find. But with your help, we can make
+    finding records a much easier and straightforward process.. Volunteer today to help us index these records and join
+    us in connecting the People of Hawaiʻi with their past, their heritage and their culture!
+  </p>
+</div>
+<div fxLayout="row" fxLayoutGap="2rem">
+  <div id="project-list-container" class="card" fxFlex="4 0 auto">
+    <div class="card-body">
+      <h5 class="card-title">Active Projects</h5>
+      <div id="project-list" class="list-group" *ngIf="projects$ | async as projects; else indicator">
+        <a [routerLink]="['/project', project.Id]"
+           class="list-group-item list-groupitem-action flex-column align-items-start"
+           *ngFor="let project of projects">
+          {{project.Name}}
+        </a>
+      </div>
+      <ng-template #indicator>
+        <div class="d-flex align-items-center">
+          <strong>Loading...</strong>
+          <div class="spinner-border ml-auto" role="status" aria-hidden="true"></div>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+  <div id="project-list-sidebar" class="d-none d-md-block" fxFlex="1 0 200px">
+    <h3>Activity Feed</h3>
+    <ul>
+      <li>John Q. Completed 13 📜s in Project One.</li>
+      <li>Jane D. Earned the 🌪 Speed Demon Badge.</li>
+      <li>...</li>
+    </ul>
+    <h3>Leader Boards</h3>
+    <ul>
+      <li>Overall
+        <ul>
+          <li>Jane D. 2701</li>
+          <li>John Q. 1234</li>
+        </ul>
+      </li>
+      <li>Category One</li>
+      <li>Category Two</li>
+    </ul>
+  </div>
+</div>
+<ng-template #fabMenu>
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item list-group-item-action clickable" (click)="createProject()">
+      <span class="material-icons align-bottom mr-2">assignment</span> Add Project
+    </li>
+  </ul>
+</ng-template>
+<button type="button" class="btn btn-primary icon-button lg-icon fab" placement="left" popoverClass="fab-menu" [ngbPopover]="fabMenu">
+  <span class="material-icons">add</span>
+</button>

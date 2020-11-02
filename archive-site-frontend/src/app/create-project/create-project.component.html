@@ -1,0 +1,41 @@
+<div class="modal-header">
+  <h4 class="modal-title">Create Project</h4>
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cancel')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <form #projectForm="ngForm">
+    <fieldset [disabled]="isSaving" fxLayout="column">
+      <label>
+        Project Name
+        <input
+          name="name"
+          type="text"
+          required
+          minlength="2"
+          maxlength="100"
+          [(ngModel)]="name"
+          class="form-control"
+          ngbAutofocus/>
+      </label>
+      <label>
+        Description
+        <textarea
+          name="description"
+          [(ngModel)]="description"
+          class="form-control">
+      </textarea>
+      </label>
+    </fieldset>
+  </form>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-outline-secondary mr-2" (click)="activeModal.dismiss('Cancel')"
+          [disabled]="isSaving">
+    Cancel
+  </button>
+  <button type="button" class="btn btn-primary" (click)="saveProject()" [disabled]="isSaving || !projectForm.form.valid">
+    Save
+  </button>
+</div>

@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace ArchiveSite.Data {
@@ -10,5 +11,8 @@ namespace ArchiveSite.Data {
 
         [StringLength(1024)]
         public String SampleDocumentUrl { get; set; }
+
+        [DefaultValue(true)]
+        public Boolean Active { get; set; } = true;
     }
 }

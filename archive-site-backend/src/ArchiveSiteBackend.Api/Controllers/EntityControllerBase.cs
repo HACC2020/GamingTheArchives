@@ -39,9 +39,7 @@ namespace ArchiveSiteBackend.Api.Controllers {
             return entity != null ? (IActionResult)Ok(entity) : NotFound();
         }
 
-        public virtual async Task<IActionResult> Post(CancellationToken cancellationToken) {
-            var entity = await ReadEntity(cancellationToken);
-
+        public virtual async Task<IActionResult> Post([FromBody] TEntity entity, CancellationToken cancellationToken) {
             this.OnCreating(entity);
 
             if (!this.ModelState.IsValid) {
@@ -67,9 +65,7 @@ namespace ArchiveSiteBackend.Api.Controllers {
             }
         }
 
-        public virtual async Task<IActionResult> Put([FromODataUri] Int64 key, CancellationToken cancellationToken) {
-            var entity = await ReadEntity(cancellationToken);
-
+        public virtual async Task<IActionResult> Put([FromODataUri] Int64 key, [FromBody] TEntity entity, CancellationToken cancellationToken) {
             var dbSet = this.Context.Set<TEntity>();
             var existing = await dbSet.SingleOrDefaultAsync(e => e.Id == key, cancellationToken);
 
@@ -134,14 +130,6 @@ namespace ArchiveSiteBackend.Api.Controllers {
             await this.Context.SaveChangesAsync(cancellationToken);
 
             return NoContent();
-        }
-
-        protected async Task<TEntity> ReadEntity(CancellationToken cancellationToken) {
-            // This is crap, but AspNet.OData does something to completely hose normal [FromBody] model binding.
-            await using var body = this.Request.BodyReader.AsStream();
-            var entity = await JsonSerializer.DeserializeAsync<TEntity>(body, this.SerializerOptions, cancellationToken: cancellationToken);
-            this.TryValidateModel(entity);
-            return entity;
         }
 
         protected virtual void OnCreating(TEntity entity) {

@@ -30,12 +30,26 @@
     </div>
   </div>
   <div id="project-list-sidebar" class="d-none d-md-block" fxFlex="1 0 200px">
-    <h3>Activity Feed</h3>
+    
+<!--
+*************Enter test
+-->
+
+  <app-activity-feed [userList]="userList"></app-activity-feed>
+
+<!--
+  <app-activity-feed [individualUser]="selectedUser"></app-activity-feed>
+    
+*************End test
+-->
+<!--
+  <h3>Activity Feed</h3>
     <ul>
       <li>John Q. Completed 13 📜s in Project One.</li>
       <li>Jane D. Earned the 🌪 Speed Demon Badge.</li>
       <li>...</li>
     </ul>
+-->
     <h3>Leader Boards</h3>
     <ul>
       <li>Overall

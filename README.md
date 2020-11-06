@@ -7,6 +7,7 @@ This is a web application to host archive transcription projects and provide an 
 * [Dotnet Core SDK 3.1](https://dotnet.microsoft.com/download)
 * [Docker](https://www.docker.com/)
 * [Docker Compose](https://docs.docker.com/compose/install/)
+    * Windows systems do not need to install Docker Compose since it is already included in the Docker Desktop installation.
 
 ## Quick Start
 
@@ -22,6 +23,13 @@ Initialize your local database:
 ```bash
 # From the archive-site-backend/src/ArchiveSite.Api folder run:
 dotnet run -- init
+```
+
+Run backend unit tests:
+
+```bash
+# From the archive-site-backend/src/ArchiveSite.Api.Tests folder run:
+dotnet test
 ```
 
 Run the backend api host:
@@ -83,8 +91,11 @@ The backend API can be configured in several ways: appsettings json files, envir
     * Password 
 * OriginPolicy
     * Allow - A Glob syntax host name from which cross origin API requests should be allowed (i.e. `"*"` to allow all cross origin requests).
+* Azure
+    * ApiUrl - your Azure Cognitive Service URL
+    * ApiKey - your Azure Cognitive Service API key
 
-#### Appsettings Files
+### Appsettings Files
 
 Two appsettings files are loaded with the backend process starts: `appsettings.json` and `appsettings.{Environment}.json` where `{Environment}` is the string specified by the `--environment` command line argument or via the `ASPNETCORE_ENVIRONMENT` environment variable.
 

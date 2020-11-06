@@ -12,6 +12,7 @@ import { NotFoundPageComponent } from './not-found-page/not-found-page.component
 import { odataSettingsFactory } from './services/data-api.service';
 import { ProjectDetailComponent } from './project-detail/project-detail.component';
 import { CreateProjectModal } from './create-project/create-project.component';
+import { ActivityFeedComponent } from './activity-feed/activity-feed.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { CreateProjectModal } from './create-project/create-project.component';
     ProjectsComponent,
     NotFoundPageComponent,
     ProjectDetailComponent,
-    CreateProjectModal
+    CreateProjectModal,
+    ActivityFeedComponent
   ],
   imports: [
     BrowserModule,

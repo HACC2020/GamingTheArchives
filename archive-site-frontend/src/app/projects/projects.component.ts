@@ -11,7 +11,9 @@ import { DataApiService } from 'src/app/services/data-api.service';
 
 //import for user tests
 import User from '../models/user';
-import { UserService } from '../user.service';
+import { UserService } from '../services/user.service';
+import { MessageService } from '../services/message.service';
+
 //
 
 @Component({
@@ -31,12 +33,13 @@ export class ProjectsComponent implements OnInit {
     private _route: ActivatedRoute,
     private _modalService: NgbModal,
     private _dataApi: DataApiService,
-    private userService: UserService) { }
+    private userService: UserService,
+    private generateMessage: MessageService) { }
 
   ngOnInit(): void {
     this.showIntro = !!this._route.snapshot.queryParams['intro'];
     this.refreshProjects();
-    this.getUsers(); //to populate list of users
+    this.getUsers(); //to populate list of fake users
   }
 
   hideIntro(): void {
@@ -74,6 +77,7 @@ export class ProjectsComponent implements OnInit {
 
   getUsers(): void {
     this.userList = this.userService.getUsers();
+
   }
 
   //variable for holding a user object

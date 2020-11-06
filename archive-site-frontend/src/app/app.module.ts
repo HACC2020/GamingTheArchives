@@ -13,6 +13,7 @@ import { odataSettingsFactory } from './services/data-api.service';
 import { ProjectDetailComponent } from './project-detail/project-detail.component';
 import { CreateProjectModal } from './create-project/create-project.component';
 import { ActivityFeedComponent } from './activity-feed/activity-feed.component';
+import { MessagesComponent } from './messages/messages.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { ActivityFeedComponent } from './activity-feed/activity-feed.component';
     NotFoundPageComponent,
     ProjectDetailComponent,
     CreateProjectModal,
-    ActivityFeedComponent
+    ActivityFeedComponent,
+    MessagesComponent
   ],
   imports: [
     BrowserModule,

@@ -13,6 +13,7 @@ import { DataApiService } from 'src/app/services/data-api.service';
 import User from '../models/user';
 import { UserService } from '../services/user.service';
 import { MessageService } from '../services/message.service';
+import { DocumentService } from '../services/document.service';
 
 //
 
@@ -32,14 +33,11 @@ export class ProjectsComponent implements OnInit {
     private _router: Router,
     private _route: ActivatedRoute,
     private _modalService: NgbModal,
-    private _dataApi: DataApiService,
-    private userService: UserService,
-    private generateMessage: MessageService) { }
+    private _dataApi: DataApiService) { }
 
   ngOnInit(): void {
     this.showIntro = !!this._route.snapshot.queryParams['intro'];
     this.refreshProjects();
-    this.getUsers(); //to populate list of fake users
   }
 
   hideIntro(): void {
@@ -69,20 +67,5 @@ export class ProjectsComponent implements OnInit {
         .filter({ Active: true })
         .get()
         .pipe(map((oe: ODataEntities<Project>) => oe.entities));
-  }
-
-
-  /*test logic below*/
-  userList: User[];
-
-  getUsers(): void {
-    this.userList = this.userService.getUsers();
-
-  }
-
-  //variable for holding a user object
-  selectedUser: User;
-  onSelect(user: User): void{
-    this.selectedUser = user;
   }
 }

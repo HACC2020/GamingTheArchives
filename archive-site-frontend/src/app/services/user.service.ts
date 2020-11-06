@@ -13,13 +13,14 @@ import { MessageService } from '../services/message.service';
 export class UserService {
 
 
-  getUsers(): User[] {
+//this method builds an array of fake users and sends a message for each user to activity feed.
+  getUsers(): Observable<User[]> {
 
     for (let user of USERS) {
       this.messageService.add(user.DisplayName + " has joined.");
 
     }
-    return USERS;
+    return of(USERS);
   }
   constructor(private messageService: MessageService) { }
 }

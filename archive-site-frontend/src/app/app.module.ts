@@ -14,6 +14,8 @@ import { ProjectDetailComponent } from './project-detail/project-detail.componen
 import { CreateProjectModal } from './create-project/create-project.component';
 import { ActivityFeedComponent } from './activity-feed/activity-feed.component';
 import { MessagesComponent } from './messages/messages.component';
+import { DocumentComponent } from './document/document.component';
+import { UsersComponent } from './users/users.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +25,9 @@ import { MessagesComponent } from './messages/messages.component';
     ProjectDetailComponent,
     CreateProjectModal,
     ActivityFeedComponent,
-    MessagesComponent
+    MessagesComponent,
+    DocumentComponent,
+    UsersComponent
   ],
   imports: [
     BrowserModule,

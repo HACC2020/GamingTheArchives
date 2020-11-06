@@ -1,3 +1,5 @@
+//this component prints the newest messages on the activity feed.
+
 import { Component, OnInit } from '@angular/core';
 import { MessageService } from '../services/message.service';
 

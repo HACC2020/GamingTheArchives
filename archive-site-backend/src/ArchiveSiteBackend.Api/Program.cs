@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Threading;
 using ArchiveSiteBackend.Api.CommandLineOptions;
 using ArchiveSiteBackend.Api.Commands;
@@ -13,6 +14,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Hosting.Internal;
 using HostOptions = ArchiveSiteBackend.Api.CommandLineOptions.HostOptions;
 
 namespace ArchiveSiteBackend.Api {
@@ -41,7 +43,8 @@ namespace ArchiveSiteBackend.Api {
                 WaitForDebugger();
             }
 
-            var configuration = BuildConfiguration(args, options, out _);
+            var configuration = BuildConfiguration(args, options, out var environment);
+            options.Environment = environment;
 
             var serviceCollection = new ServiceCollection();
 
@@ -76,13 +79,13 @@ namespace ArchiveSiteBackend.Api {
                 .Run();
         }
 
-        private static IConfigurationRoot BuildConfiguration(String[] args, CommonOptions options, out String environment) {
+        public static IConfigurationRoot BuildConfiguration(String[] args, CommonOptions options, out String environment) {
             // AppContext.BaseDirectory is within the ./bin/config/framework
             var configurationBasePath =
-                GetAbsolute(options.ConfigPath) ?? GetParent(AppContext.BaseDirectory, 3);
+                GetAbsolute(options?.ConfigPath) ?? GetParent(AppContext.BaseDirectory, 3);
 
             environment =
-                options.Environment ??
+                options?.Environment ??
                 Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ??
                 Environments.Development;
             var configuration =
@@ -91,9 +94,18 @@ namespace ArchiveSiteBackend.Api {
                     .AddJsonFile("appsettings.json", optional: false)
                     .AddJsonFile($"appsettings.{environment}.json", optional: false)
                     .AddEnvironmentVariables()
-                    .AddCommandLine(args)
-                    .Build();
-            return configuration;
+                    .AddCommandLine(args);
+
+            /**
+             * if this is the development environment then manually include the user secrets for the 
+             * runtime and the unit tests
+             **/
+            if(environment == Environments.Development)
+            {
+                configuration.AddUserSecrets("d72db2b5-597e-4bc0-a92d-a033bdf5ac7e");
+            }
+
+            return configuration.Build();
         }
 
         private static String GetAbsolute(String path) {
@@ -101,7 +113,12 @@ namespace ArchiveSiteBackend.Api {
         }
 
         private static String GetParent(String path, Int32 ancestor) {
-            return Enumerable.Range(0, ancestor).Aggregate(path.TrimEnd('/'), (p, _) => Directory.GetParent(p).FullName);
+            /**
+             * fix for windows devs - if this environment is running windows then immediately return an 
+             * unmodified path otherwise return a trimmed path.
+             */
+            return RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? path : 
+                Enumerable.Range(0, ancestor).Aggregate(path.TrimEnd('/'), (p, _) => Directory.GetParent(p).FullName);
         }
 
         private static void WaitForDebugger() {

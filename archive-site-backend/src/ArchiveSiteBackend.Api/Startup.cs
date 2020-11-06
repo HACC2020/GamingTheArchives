@@ -118,6 +118,14 @@ namespace ArchiveSiteBackend.Api {
                 }
             }
 
+            // wire up azure cognitive config
+            var azureConfiguration = new AzureCognitiveConfiguration();
+            this.Configuration.GetSection("Azure").Bind(azureConfiguration);
+            services.AddSingleton(azureConfiguration);
+
+            // allow cognitive service to be injectable
+            services.AddScoped<CognitiveService>();
+
             // Register Commands
             services.AddScoped<InitializeCommand>();
         }

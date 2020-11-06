@@ -77,7 +77,6 @@ export class ProjectsComponent implements OnInit {
 
   getUsers(): void {
     this.userList = this.userService.getUsers();
-
   }
 
   //variable for holding a user object

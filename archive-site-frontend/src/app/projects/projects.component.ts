@@ -9,6 +9,11 @@ import { CreateProjectModal } from 'src/app/create-project/create-project.compon
 import Project from 'src/app/models/project';
 import { DataApiService } from 'src/app/services/data-api.service';
 
+//import for user tests
+import User from '../models/user';
+import { UserService } from '../user.service';
+//
+
 @Component({
   selector: 'app-projects',
   templateUrl: './projects.component.html',
@@ -18,15 +23,20 @@ export class ProjectsComponent implements OnInit {
   showIntro: boolean;
   projects$: Observable<Project[]>;
 
+
+
+
   constructor(
     private _router: Router,
     private _route: ActivatedRoute,
     private _modalService: NgbModal,
-    private _dataApi: DataApiService) { }
+    private _dataApi: DataApiService,
+    private userService: UserService) { }
 
   ngOnInit(): void {
     this.showIntro = !!this._route.snapshot.queryParams['intro'];
     this.refreshProjects();
+    this.getUsers(); //to populate list of users
   }
 
   hideIntro(): void {
@@ -56,5 +66,19 @@ export class ProjectsComponent implements OnInit {
         .filter({ Active: true })
         .get()
         .pipe(map((oe: ODataEntities<Project>) => oe.entities));
+  }
+
+
+  /*test logic below*/
+  userList: User[];
+
+  getUsers(): void {
+    this.userList = this.userService.getUsers();
+  }
+
+  //variable for holding a user object
+  selectedUser: User;
+  onSelect(user: User): void{
+    this.selectedUser = user;
   }
 }

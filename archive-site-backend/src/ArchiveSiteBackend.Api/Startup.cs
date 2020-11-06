@@ -4,6 +4,7 @@ using System.Text.RegularExpressions;
 using ArchiveSite.Data;
 using ArchiveSiteBackend.Api.Commands;
 using ArchiveSiteBackend.Api.Configuration;
+using ArchiveSiteBackend.Api.Services;
 using Microsoft.AspNet.OData.Builder;
 using Microsoft.AspNet.OData.Extensions;
 using Microsoft.AspNetCore.Builder;
@@ -40,6 +41,14 @@ namespace ArchiveSiteBackend.Api {
                 });
             services.AddMvc();
             services.AddOData();
+
+            // wire up azure cognitive config
+            var azureConfiguration = new AzureCognitiveConfiguration();
+            this.Configuration.GetSection("Azure").Bind(azureConfiguration);
+            services.AddSingleton(azureConfiguration);
+
+            // allow cognitive service to be injectable
+            services.AddScoped<CognitiveService>();
 
             var originConfiguration = new OriginPolicyConfiguration();
             this.Configuration.GetSection("OriginPolicy").Bind(originConfiguration);

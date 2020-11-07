@@ -20,6 +20,20 @@ import { Observable } from 'rxjs';
 export class DocumentComponent implements OnInit {
 
   document$: Observable<Document>;
+  fields =  [
+    "Title",
+    "Description",
+    "Photo Credit",
+    "From Collection",
+    "Gift of",
+    "Received Date",
+    "Negative Number",
+    "Negative Size",
+    "Display Date",
+    "Start Date",
+    "End Date",
+    "Indexer Notes"
+  ]
   constructor(
     private documentService: DocumentService,
     private route: ActivatedRoute,

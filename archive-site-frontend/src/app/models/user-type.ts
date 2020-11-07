@@ -1,17 +1,13 @@
 import { $enum } from 'ts-enum-util';
 
 export enum UserType {
-  Rookie,
-  Indexer,
-  Proofer,
-  Archivist,
-  Administrator
+  Rookie = 'Rookie',
+  Indexer = 'Indexer',
+  Proofer = 'Proofer',
+  Archivist = 'Archivist',
+  Administrator = 'Administrator'
 }
 
-export function toUserType(value: any): UserType {
-  if (typeof value === 'string') {
-    return UserType[$enum(UserType).asKeyOrDefault(value)];
-  } else if (typeof value === 'number') {
-    return value as UserType;
-  }
+export function toUserType(value: string): UserType {
+  return UserType[$enum(UserType).asKeyOrDefault(value)];
 }

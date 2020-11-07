@@ -1,7 +1,7 @@
 using System;
 using CommandLine;
 
-namespace ArchiveSiteBackend.Api.Options {
+namespace ArchiveSiteBackend.Api.CommandLineOptions {
     [Verb("host", isDefault: true, HelpText = "Host the application")]
     public class HostOptions : CommonOptions {
         /// <summary>

@@ -4,17 +4,16 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
+using ArchiveSiteBackend.Api.CommandLineOptions;
 using ArchiveSiteBackend.Api.Commands;
-using ArchiveSiteBackend.Api.Configuration;
 using ArchiveSiteBackend.Api.Helpers;
-using ArchiveSiteBackend.Api.Options;
 using CommandLine;
 using CommandLine.Text;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using HostOptions = ArchiveSiteBackend.Api.Options.HostOptions;
+using HostOptions = ArchiveSiteBackend.Api.CommandLineOptions.HostOptions;
 
 namespace ArchiveSiteBackend.Api {
     public static class Program {
@@ -47,7 +46,7 @@ namespace ArchiveSiteBackend.Api {
             var serviceCollection = new ServiceCollection();
 
             var startup = new Startup(configuration);
-            startup.ConfigureServices(serviceCollection);
+            startup.ConfigureServices(serviceCollection, skipHosting: true);
 
             using var provider = serviceCollection.BuildServiceProvider();
             var command = provider.GetRequiredService<InitializeCommand>();

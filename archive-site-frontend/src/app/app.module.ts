@@ -17,6 +17,10 @@ import { MessagesComponent } from './messages/messages.component';
 import { DocumentComponent } from './document/document.component';
 import { UsersComponent } from './users/users.component';
 import { DocListComponent } from './doc-list/doc-list.component';
+import { LoginComponent } from './login/login.component';
+import { SignUpComponent } from './sign-up/sign-up.component';
+import { ProfileComponent } from './profile/profile.component';
+import { NotificationsContainerComponent } from 'src/app/notifications-container.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +33,11 @@ import { DocListComponent } from './doc-list/doc-list.component';
     MessagesComponent,
     DocumentComponent,
     UsersComponent,
-    DocListComponent
+    DocListComponent,
+    LoginComponent,
+    SignUpComponent,
+    ProfileComponent,
+    NotificationsContainerComponent
   ],
   imports: [
     BrowserModule,

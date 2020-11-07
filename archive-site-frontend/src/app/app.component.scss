@@ -1,0 +1,26 @@
+@import 'src/styles.scss';
+
+#app-container {
+  > section,header,footer {
+    padding: 0.5rem 1rem;
+  }
+
+  min-height: 100%;
+}
+
+.navbar {
+  //background-color: rgba(147,184,196,0.3);
+  background-color: white;
+  border-bottom: 2px solid $primary;
+  position: sticky;
+  top: 0;
+  margin-bottom: 1rem;
+  z-index: 100;
+}
+
+.main-content {
+}
+
+app-notifications.ngb-toasts {
+  top: 60px;
+}

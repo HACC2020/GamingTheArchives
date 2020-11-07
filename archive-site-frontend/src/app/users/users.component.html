@@ -1,4 +1,5 @@
 <h4>
-    {{ userList[2].DisplayName }}
-
+  <span *ngIf="userList$ | async as userList">
+    {{ userList[0] && userList[0].DisplayName }}
+  </span>
 </h4>

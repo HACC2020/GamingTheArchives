@@ -1,8 +1,7 @@
 using System;
 using CommandLine;
-using Microsoft.Extensions.Hosting;
 
-namespace ArchiveSiteBackend.Api.Options {
+namespace ArchiveSiteBackend.Api.CommandLineOptions {
     public class CommonOptions {
         [Option("environment", HelpText = "The environment to use for configuration purposes.")]
         public String Environment { get; set; }

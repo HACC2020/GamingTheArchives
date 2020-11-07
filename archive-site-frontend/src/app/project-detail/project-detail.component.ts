@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import Project from 'src/app/models/project';
 import { ODataEntities } from 'angular-odata';
 import { map } from 'rxjs/operators';
+import {Document} from 'src/app/models/document'
 
 @Component({
   selector: 'app-project-detail',

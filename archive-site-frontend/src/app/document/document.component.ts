@@ -9,6 +9,8 @@ import { Document } from '../models/document';
 import { DocumentService } from '../services/document.service';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
+import { DataApiService } from '../services/data-api.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-document',
@@ -17,26 +19,21 @@ import { Location } from '@angular/common';
 })
 export class DocumentComponent implements OnInit {
 
+  document$: Observable<Document>;
   constructor(
     private documentService: DocumentService,
     private route: ActivatedRoute,
-    private location: Location) { }
-
- 
+    private location: Location,
+    private _dataApi: DataApiService
+    ) { }
 
   ngOnInit(): void {
-    
     this.getDocument();
   }
-
-  document: Document;
 
   //Find the document to serve according to the URL.
   getDocument(): void {
     const id = +this.route.snapshot.paramMap.get('id');
-    this.documentService.getDoc(id)
-      .subscribe(doc => this.document = doc);
+    this.document$ = this._dataApi.documentService.entity(id).fetch();
   }
-
-
 }

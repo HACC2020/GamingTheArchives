@@ -3,6 +3,7 @@ import { ODataEntityService, ODataServiceFactory, ODataSettings } from 'angular-
 import { environment } from 'src/environments/environment';
 import User from 'src/app/models/user';
 import Project from 'src/app/models/project';
+import {Document} from 'src/app/models/document';
 
 export function odataSettingsFactory() {
   return new ODataSettings({

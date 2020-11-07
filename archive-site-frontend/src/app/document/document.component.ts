@@ -7,9 +7,10 @@
 
 
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Document } from '../models/document';
 import { DocumentService } from '../services/document.service';
+
 
 @Component({
   selector: 'app-document',
@@ -24,8 +25,11 @@ export class DocumentComponent implements OnInit {
     this.getDocuments();
   }
 
-  documentList: Document[];
+  @Input() projectId: number; //to import project number from project-detail
 
+  documentList: Document[]; //array to hold mock file data.
+
+  // fill array with mock file data.
   getDocuments(): void {
     this.documentService.getDocuments()
       .subscribe(document => this.documentList = document);

@@ -16,9 +16,11 @@ export class ProjectDetailComponent implements OnInit {
     private _route: ActivatedRoute,
     private _dataApi: DataApiService) { }
 
+   projectId: number;
+
   ngOnInit(): void {
-    let projectId = Number(this._route.snapshot.params['id']);
-    this.project$ = this._dataApi.projectService.entity(projectId).fetch();
+    this.projectId = Number(this._route.snapshot.params['id']);
+    this.project$ = this._dataApi.projectService.entity(this.projectId).fetch()
   }
 
 }

@@ -9,13 +9,6 @@ import { CreateProjectModal } from 'src/app/create-project/create-project.compon
 import Project from 'src/app/models/project';
 import { DataApiService } from 'src/app/services/data-api.service';
 
-//import for user tests
-import User from '../models/user';
-import { UserService } from '../services/user.service';
-import { MessageService } from '../services/message.service';
-import { DocumentService } from '../services/document.service';
-
-//
 
 @Component({
   selector: 'app-projects',

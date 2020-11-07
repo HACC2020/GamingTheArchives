@@ -6,8 +6,7 @@
       <em>
         TODO: more content. Links to start transcribing, etc.
       </em>
-      <app-document></app-document>
-      <app-users></app-users>
+      <app-document [projectId]="projectId"></app-document> <!--The child containing the links.-->
     </ng-container>
     <ng-template #indicator>
       <div class="d-flex align-items-center">

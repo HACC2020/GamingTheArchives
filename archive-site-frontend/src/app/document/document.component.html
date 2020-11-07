@@ -1,5 +1,5 @@
-<h2>
-
-    {{documentList[1].Path}}
-
-</h2>
+<div *ngFor="let doc of documentList">
+    <div *ngIf="doc.Project === projectId">
+        <a href="">{{doc.Path}}</a>
+    </div>
+</div>

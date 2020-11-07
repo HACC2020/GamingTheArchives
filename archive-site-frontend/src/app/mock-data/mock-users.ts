@@ -1,4 +1,3 @@
-import { getMaxListeners } from 'process';
 import User from '../models/user';
 import { UserType } from '../models/user-type';
 

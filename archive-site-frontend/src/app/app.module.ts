@@ -16,6 +16,7 @@ import { ActivityFeedComponent } from './activity-feed/activity-feed.component';
 import { MessagesComponent } from './messages/messages.component';
 import { DocumentComponent } from './document/document.component';
 import { UsersComponent } from './users/users.component';
+import { DocTranscriberComponent } from './doc-transcriber/doc-transcriber.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { UsersComponent } from './users/users.component';
     ActivityFeedComponent,
     MessagesComponent,
     DocumentComponent,
-    UsersComponent
+    UsersComponent,
+    DocTranscriberComponent
   ],
   imports: [
     BrowserModule,

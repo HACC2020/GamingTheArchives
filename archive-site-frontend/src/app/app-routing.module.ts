@@ -8,6 +8,9 @@ const routes: Routes = [
   { path: '',   redirectTo: '/projects?intro=true', pathMatch: 'full' },
   { path: 'projects', component: ProjectsComponent, pathMatch: 'full' },
   { path: 'project/:id', component: ProjectDetailComponent },
+
+
+  //Add paths above this or they will not be visible.
   { path: '**', component: NotFoundPageComponent }
 ];
 

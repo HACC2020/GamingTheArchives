@@ -7,7 +7,7 @@ namespace ArchiveSite.Data {
         [Required, StringLength(1024), Index("ix_User_EmailAddress", IsUnique = true)]
         public String EmailAddress { get; set; }
 
-        [Required, StringLength(100), MinLength(3)]
+        [Required, StringLength(100), MinLength(2)]
         public String DisplayName { get; set; }
 
         [Required]

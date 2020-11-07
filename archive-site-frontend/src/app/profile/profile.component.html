@@ -1,0 +1,79 @@
+<div fxLayout="row" fxLayoutAlign="center">
+  <div id="login-options-container" class="card" fxFlex="0 0 300px">
+    <div class="card-body" fxLayout="column" fxLayoutAlign="space-around left">
+      <ng-template [ngIf]="!isLoading" [ngIfElse]="indicator">
+        <span class="card-title">{{isNewSignUp ? 'Create' : 'Edit'}} Your Profile</span>
+        <form #profileForm="ngForm">
+          <label>
+            Email Address:
+            <input
+              type="email"
+              name="email"
+              [disabled]="true"
+              [ngModel]="email"
+              class="form-control"
+              aria-describedby="emailHelp"/>
+            <small id="emailHelp" class="form-text text-muted">
+              Your email address is determined by your login provider and cannot be changed.
+            </small>
+          </label>
+          <label>
+            Display Name:
+            <input
+              name="displayName"
+              type="text"
+              required
+              minlength="2"
+              maxlength="100"
+              [(ngModel)]="displayName"
+              class="form-control"
+              aria-describedby="displayNameHelp"
+              ngbAutofocus />
+            <small id="displayNameHelp" class="form-text text-muted">
+              The name other users on the site will see when your activity appears on the site.
+            </small>
+            <div *ngIf="profileForm.invalid && profileForm.form.get('displayName').dirty && profileForm.form.get('displayName').touched"
+                 class="alert alert-danger">
+
+              <div *ngIf="profileForm.form.get('displayName').errors.required">
+                Display Name is required.
+              </div>
+              <div *ngIf="profileForm.form.get('displayName').errors.minlength">
+                Display Name must be at least 2 characters long.
+              </div>
+              <div *ngIf="profileForm.form.get('displayName').errors.maxlength">
+                Display Name must be no more than 100 characters long.
+              </div>
+            </div>
+          </label>
+          <label *ngIf="adminMode">
+            Type:
+            <select name="userType" class="form-control" [(ngModel)]="userType">
+              <option
+                *ngFor="let type of allUserTypes"
+                [ngValue]="type"
+                [selected]="type == userType">
+                {{getUserTypeString(type)}}
+              </option>
+            </select>
+          </label>
+        </form>
+        <div fxLayout="row" fxLayoutAlign="flex-end bottom">
+          <button class="btn btn-outline-secondary mr-2" [disabled]="isSaving"
+                  (click)="cancel()">{{isNewSignUp ? 'Cancel' : 'Undo'}}</button>
+          <button
+            class="btn btn-primary"
+            [disabled]="isSaving || !hasChanges || !profileForm.form.valid"
+            (click)="save()">Save
+          </button>
+        </div>
+      </ng-template>
+      <ng-template #indicator>
+        <div class="d-flex align-items-center">
+          <strong>Loading...</strong>
+          <div class="spinner-border ml-auto" role="status" aria-hidden="true"></div>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+</div>

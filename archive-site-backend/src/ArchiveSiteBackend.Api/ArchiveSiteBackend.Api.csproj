@@ -9,6 +9,8 @@
 
     <ItemGroup>
       <PackageReference Include="CommandLineParser" Version="2.8.0" />
+      <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.2.0" />
+      <PackageReference Include="Microsoft.AspNetCore.Authentication.Facebook" Version="3.1.9" />
       <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.9" />
       <PackageReference Include="Microsoft.AspNetCore.OData" Version="7.5.1" />
       <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="3.1.4" />
@@ -16,6 +18,13 @@
 
     <ItemGroup>
       <ProjectReference Include="../ArchiveSiteBackend.Data/ArchiveSiteBackend.Data.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Update="Views\Auth\Login.cshtml">
+        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      </Content>
     </ItemGroup>
 
 

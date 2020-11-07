@@ -2,7 +2,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using ArchiveSite.Data;
-using ArchiveSiteBackend.Api.Options;
+using ArchiveSiteBackend.Api.CommandLineOptions;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 

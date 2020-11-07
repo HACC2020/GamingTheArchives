@@ -7,7 +7,7 @@ export const USERS: User[] = [
         Type: UserType.Rookie,
         LastLogin: new Date(),
         SignUpDate: new Date(),
-        Id: 11    
+        Id: 11
     },
 
     {   EmailAddress: 'appy@gmail.com',
@@ -15,7 +15,7 @@ export const USERS: User[] = [
         Type: UserType.Rookie,
         LastLogin: new Date(),
         SignUpDate: new Date(),
-        Id: 12    
+        Id: 12
     },
 
     {   EmailAddress: 'unto@gmail.com',
@@ -23,7 +23,7 @@ export const USERS: User[] = [
         Type: UserType.Rookie,
         LastLogin: new Date(),
         SignUpDate: new Date(),
-        Id: 13    
+        Id: 13
     },
 
     {   EmailAddress: 'pizzapie@gmail.com',
@@ -31,8 +31,8 @@ export const USERS: User[] = [
         Type: UserType.Rookie,
         LastLogin: new Date(),
         SignUpDate: new Date(),
-        Id: 14    
+        Id: 14
     }
 
-    
+
 ];

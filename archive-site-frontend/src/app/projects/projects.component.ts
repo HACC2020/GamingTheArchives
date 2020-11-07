@@ -19,9 +19,6 @@ export class ProjectsComponent implements OnInit {
   showIntro: boolean;
   projects$: Observable<Project[]>;
 
-
-
-
   constructor(
     private _router: Router,
     private _route: ActivatedRoute,

@@ -18,7 +18,7 @@ export default class User extends Model {
     result.Id = payload.Id;
     result.EmailAddress = payload.EmailAddress;
     result.DisplayName = payload.DisplayName;
-    result.Type = toUserType[payload.Type];
+    result.Type = toUserType(payload.Type);
     result.LastLogin = payload.LastLogin;
     result.SignUpDate = payload.SignUpDate;
 

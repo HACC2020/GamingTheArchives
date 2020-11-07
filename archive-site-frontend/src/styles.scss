@@ -1,5 +1,6 @@
 
 $primary: #23582b;
+$success: lighten($primary, 45);
 
 /* Importing Bootstrap SCSS file. */
 @import '~bootstrap/scss/bootstrap';
@@ -14,25 +15,6 @@ body {
   background-attachment: fixed;
 }
 
-#app-container {
-  > section,header,footer {
-    padding: 0.5rem 1rem;
-  }
-
-  min-height: 100%;
-}
-
-.navbar {
-  //background-color: rgba(147,184,196,0.3);
-  background-color: white;
-  border-bottom: 2px solid $primary;
-  position: sticky;
-  top: 0;
-  margin-bottom: 1rem;
-}
-
-.main-content {
-}
 
 div.banner {
   width: 100%;
@@ -75,4 +57,40 @@ button.fab {
 
 .clickable {
   cursor: pointer;
+}
+
+$facebook-blue: rgb(24, 119, 242);
+
+.login-btn {
+  border: none;
+  border-radius: 4px;
+  padding: 0.5em;
+}
+
+.facebook-btn {
+  img {
+    display: inline-block;
+  }
+
+  background-color: $facebook-blue;
+  color: white;
+  font-family: Helvetica, Arial, sans-serif;
+  font-weight: bold;
+  font-size: 16px;
+  letter-spacing: 0.25px;
+}
+
+.notification-success {
+  background-color: $success;
+  color: white;
+}
+
+.notification-warning {
+  background-color: $warning;
+  color: white;
+}
+
+.notification-error {
+  background-color: $danger;
+  color: white;
 }

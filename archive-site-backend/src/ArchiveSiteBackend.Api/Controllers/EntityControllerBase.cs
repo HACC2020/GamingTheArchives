@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using ArchiveSite.Data;
 using Microsoft.AspNet.OData;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -27,11 +28,13 @@ namespace ArchiveSiteBackend.Api.Controllers {
         }
 
         [EnableQuery]
+        [AllowAnonymous]
         public virtual IQueryable<TEntity> Get() {
             return this.Context.Set<TEntity>();
         }
 
         [EnableQuery]
+        [AllowAnonymous]
         public virtual async Task<IActionResult> Get([FromODataUri] Int64 key, CancellationToken cancellationToken) {
             var dbSet = this.Context.Set<TEntity>();
             var entity = await dbSet.SingleOrDefaultAsync(e => e.Id == key, cancellationToken);
@@ -46,23 +49,10 @@ namespace ArchiveSiteBackend.Api.Controllers {
                 return BadRequest(ModelState);
             }
 
-            try {
-                var dbSet = this.Context.Set<TEntity>();
-                await dbSet.AddAsync(entity, cancellationToken);
-                await this.Context.SaveChangesAsync(cancellationToken);
+            var dbSet = this.Context.Set<TEntity>();
+            await dbSet.AddAsync(entity, cancellationToken);
 
-                return Created(entity);
-            } catch (DbUpdateException ex) {
-                if (ArchiveDbContext.IsUserError(ex, out var message)) {
-                    return BadRequest(new ProblemDetails {
-                        Type = "archive-site:database-error/invalid-create",
-                        Title = "The requested update was not valid.",
-                        Detail = message
-                    });
-                } else {
-                    throw;
-                }
-            }
+            return await this.TrySaveChanges(entity, this.Created, "create", cancellationToken);
         }
 
         public virtual async Task<IActionResult> Put([FromODataUri] Int64 key, [FromBody] TEntity entity, CancellationToken cancellationToken) {
@@ -76,21 +66,7 @@ namespace ArchiveSiteBackend.Api.Controllers {
             this.OnUpdating(key, entity);
 
             entity.CopyTo(existing);
-            try {
-                await this.Context.SaveChangesAsync(cancellationToken);
-
-                return Ok(existing);
-            } catch (DbUpdateException ex) {
-                if (ArchiveDbContext.IsUserError(ex, out var message)) {
-                    return BadRequest(new ProblemDetails {
-                        Type = "archive-site:database-error/invalid-update",
-                        Title = "The requested update was not valid.",
-                        Detail = message
-                    });
-                } else {
-                    throw;
-                }
-            }
+            return await TrySaveChanges(existing, "update", cancellationToken);
         }
 
         public virtual async Task<IActionResult> Patch([FromODataUri] Int64 key, Delta<TEntity> delta, CancellationToken cancellationToken) {
@@ -102,21 +78,7 @@ namespace ArchiveSiteBackend.Api.Controllers {
             }
 
             delta.Patch(existing);
-            try {
-                await this.Context.SaveChangesAsync(cancellationToken);
-
-                return Ok(existing);
-            } catch (DbUpdateException ex) {
-                if (ArchiveDbContext.IsUserError(ex, out var message)) {
-                    return BadRequest(new ProblemDetails {
-                        Type = "archive-site:database-error/invalid-update",
-                        Title = "The requested update was not valid.",
-                        Detail = message
-                    });
-                } else {
-                    throw;
-                }
-            }
+            return await TrySaveChanges(existing, "update", cancellationToken);
         }
 
         public virtual async Task<IActionResult> Delete([FromODataUri] Int64 key, CancellationToken cancellationToken) {
@@ -147,6 +109,37 @@ namespace ArchiveSiteBackend.Api.Controllers {
                     nameof(entity),
                     $"The specified entity Id ({entity.Id}) does not match the Id being updated ({key}). The Id of an entity is read only."
                 );
+            }
+        }
+
+        protected Task<IActionResult> TrySaveChanges(
+            TEntity entity,
+            String operation,
+            CancellationToken cancellationToken) {
+
+            return this.TrySaveChanges(entity, this.Ok, operation, cancellationToken);
+        }
+
+        protected async Task<IActionResult> TrySaveChanges(
+            TEntity entity,
+            Func<TEntity, IActionResult> successResult,
+            String operation,
+            CancellationToken cancellationToken) {
+
+            try {
+                await this.Context.SaveChangesAsync(cancellationToken);
+
+                return successResult(entity);
+            } catch (DbUpdateException ex) {
+                if (ArchiveDbContext.IsUserError(ex, out var message)) {
+                    return BadRequest(new ProblemDetails {
+                        Type = $"archive-site:database-error/invalid-{operation}",
+                        Title = $"The requested {operation} was not valid.",
+                        Detail = message
+                    });
+                } else {
+                    throw;
+                }
             }
         }
     }

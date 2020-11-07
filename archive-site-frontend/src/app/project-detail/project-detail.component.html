@@ -3,10 +3,96 @@
     <ng-container *ngIf="project$ | async as project; else indicator">
       <h5 class="card-title"><a [routerLink]="['/projects']">Projects</a> > {{project.Name}}</h5>
       <p>{{project.Description}}</p>
-      <em>
-        TODO: more content. Links to start transcribing, etc.
-      </em>
-      <app-doc-list [projectId]="projectId"></app-doc-list> <!--The child containing the links.-->
+      <div class="container-flex">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="card flex-md-row mb-4 box-shadow h-md-250">
+              <div class="card-body d-flex flex-column align-items-start">
+                <h3 class="mb-0">
+                  <a class="text-dark" href="#">Documents</a>
+                </h3>
+                <!--TODO: someone wire this up to actually take in a list of documents and generate the table from them-->
+                <table class="table table-sm">
+                  <thead>
+                    <tr>
+                      <th scope="col">Id</th>
+                      <th scope="col">Reviews</th>
+                      <th scope="col">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <th scope="row">1</th>
+                      <td>2</td>
+                      <td>Done</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">2</th>
+                      <td>2</td>
+                      <td>Done</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">3</th>
+                      <td>2</td>
+                      <td>Flagged</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">4</th>
+                      <td>1</td>
+                      <td>To Do</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card flex-md-row mb-4 box-shadow h-md-250">
+              <div class="card-body d-flex flex-column align-items-start">
+                <h3 class="mb-0">
+                  <a class="text-dark" href="#">Stats</a>
+                </h3>
+                <ul class="list-unstyled mt-3 mb-4">
+                  <li><strong>70%</strong> Complete</li>
+                  <li><strong>935</strong> Documents</li>
+                  <li><strong>3</strong> Contributors</li>
+                </ul>
+                <button type="button" class="btn btn-success ">Get Started</button>
+              </div>
+            </div>
+          </div>
+          <div class="offset-md-6 col-md-6">
+            <div class="card flex-md-row mb-4 box-shadow h-md-250">
+              <div class="card-body d-flex flex-column align-items-start">
+                <h3 class="mb-0">
+                  <a class="text-dark" href="#">Learn More</a>
+                </h3>
+                <div>
+                  <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis vitae pellentesque justo. Pellentesque
+                    eget porttitor augue.
+                  </p>
+                  <p>
+                    Nulla vitae lectus eu augue mollis vehicula. Lorem ipsum dolor sit amet, consectetur adipiscing
+                    elit.
+                  </p>
+                </div>
+                <h4>
+                  <a class="text-dark" href="#">Training documents</a>
+                </h4>
+                <ul>
+                  <li>
+                    <a href="#">General Guidelines</a>
+                  </li>
+                  <li>
+                    <a href="#">How to deal with marriage licenses</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </ng-container>
     <ng-template #indicator>
       <div class="d-flex align-items-center">

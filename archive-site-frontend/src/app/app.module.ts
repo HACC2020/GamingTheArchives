@@ -17,6 +17,7 @@ import { MessagesComponent } from './messages/messages.component';
 import { DocumentComponent } from './document/document.component';
 import { UsersComponent } from './users/users.component';
 import { DocTranscriberComponent } from './doc-transcriber/doc-transcriber.component';
+import { DocListComponent } from './doc-list/doc-list.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { DocTranscriberComponent } from './doc-transcriber/doc-transcriber.compo
     MessagesComponent,
     DocumentComponent,
     UsersComponent,
-    DocTranscriberComponent
+    DocTranscriberComponent,
+    DocListComponent
   ],
   imports: [
     BrowserModule,

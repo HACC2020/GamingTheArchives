@@ -1,5 +1,3 @@
-<div *ngFor="let doc of documentList">
-    <div *ngIf="doc.Project === projectId">
-        <a href="">{{doc.Path}}</a>
-    </div>
-</div>
+<h4 *ngIf="document">This page is for document with id: {{document.Id}}</h4>
+<p>The image of the document needs to be fixed: </p>
+<img src="/images/census_example.jpg"/>

@@ -11,5 +11,8 @@ export class DocumentService {
     return of(DOCUMENTS);
   }
 
+  getDoc(id: number): Observable<Document> {
+    return of(DOCUMENTS.find(doc => doc.Id === id));
+  }
   constructor() { }
 }

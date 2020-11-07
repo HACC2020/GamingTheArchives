@@ -1,16 +1,14 @@
-/* This component creates a list of documents.
-* the purpose of this component is to have a portable list of documents that can be
-*   dropped into different pageviews.
-* Eventually, this can be developed to add functionality, such as 
-*   a list of documents edited by a user, a list of documents for a project, etc.
+
+/* Changing the purpose of this component. It will 
+* be to show the document as a single image.
+*
 */
 
-
-
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Document } from '../models/document';
 import { DocumentService } from '../services/document.service';
-
+import { ActivatedRoute } from '@angular/router';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-document',
@@ -19,20 +17,26 @@ import { DocumentService } from '../services/document.service';
 })
 export class DocumentComponent implements OnInit {
 
-  constructor(private documentService: DocumentService) { }
+  constructor(
+    private documentService: DocumentService,
+    private route: ActivatedRoute,
+    private location: Location) { }
+
+ 
 
   ngOnInit(): void {
-    this.getDocuments();
+    
+    this.getDocument();
   }
 
-  @Input() projectId: number; //to import project number from project-detail
+  document: Document;
 
-  documentList: Document[]; //array to hold mock file data.
-
-  // fill array with mock file data.
-  getDocuments(): void {
-    this.documentService.getDocuments()
-      .subscribe(document => this.documentList = document);
+  //Find the document to serve according to the URL.
+  getDocument(): void {
+    const id = +this.route.snapshot.paramMap.get('id');
+    this.documentService.getDoc(id)
+      .subscribe(doc => this.document = doc);
   }
+
 
 }

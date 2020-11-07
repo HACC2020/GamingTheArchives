@@ -24,12 +24,12 @@
 
                         <div class="form-group">
                             <span *ngFor="let f of fields" class="form-inline">
-                                <label class="mr-1" for="exampleInputEmail1">{{f}}</label>
-                                <input type="text" class="form-control" id="{{f}}">
+                                <label class="mr-1" for="exampleInputEmail1">{{f.displayText}}</label>
+                                <input type="{{f.type}}" class="form-control" id="{{f.id}}">
                             </span>
                         </div>
                         <span class="form-inline">
-                            <button type="button" class="btn btn-success mr-1">Submit</button>
+                            <button type="button" class="btn btn-success mr-1" (click)="submit()">Submit</button>
                             <button type="button" class="btn btn-danger mr-1">Help</button>
                             <button type="button" class="btn btn-outline-primary mr-1">Previous</button>
                             <button type="button" class="btn btn-outline-primary mr-1">Next</button>

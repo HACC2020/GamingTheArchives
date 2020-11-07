@@ -20,29 +20,39 @@ import { Observable } from 'rxjs';
 export class DocumentComponent implements OnInit {
 
   document$: Observable<Document>;
-  fields =  [
-    "Title",
-    "Description",
-    "Photo Credit",
-    "From Collection",
-    "Gift of",
-    "Received Date",
-    "Negative Number",
-    "Negative Size",
-    "Display Date",
-    "Start Date",
-    "End Date",
-    "Indexer Notes"
+  fields = [
+    { displayText: "Title", id:"title", type: "text" },
+    { displayText: "Description", id:"description", type: "text" },
+    { displayText: "Photo Credit", id:"photo-credit", type: "text" },
+    { displayText: "From Collection", id:"from-collection", type: "text" },
+    { displayText: "Gift of", id:"gift-of", type: "text" },
+    { displayText: "Received Date", id:"recieved-negative", type: "date" },
+    { displayText: "Negative Number", id:"negative-number", type: "text" },
+    { displayText: "Negative Size", id:"negative-size", type: "text" },
+    { displayText: "Display Date", id:"display-date", type: "date" },
+    { displayText: "Start Date", id:"start-date", type: "date" },
+    { displayText: "End Date", id:"end-date", type: "date" },
+    { displayText: "Indexer Notes", id:"indexer-notes", type: "text" },
   ]
   constructor(
     private documentService: DocumentService,
     private route: ActivatedRoute,
     private location: Location,
     private _dataApi: DataApiService
-    ) { }
+  ) { }
 
   ngOnInit(): void {
     this.getDocument();
+  }
+
+  submit(): void {
+    // TODO: Connect to actually send data to server
+    console.log("submitted")
+    console.log(this.getUserInput())
+  }
+
+  getUserInput(): any[] {
+    return Array.from(document.querySelectorAll('input')).map(e =>{return{"id": e.id, "value": e.value}})
   }
 
   //Find the document to serve according to the URL.

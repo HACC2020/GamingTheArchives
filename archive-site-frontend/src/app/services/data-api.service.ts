@@ -23,4 +23,8 @@ export class DataApiService {
   get projectService(): ODataEntityService<Project> {
     return this._factory.entity<Project>('Projects', 'ArchiveSite.Data.Project');
   }
+
+  get documentService(): ODataEntityService<Document> {
+    return this._factory.entity<Document>('Documents', 'ArchiveSite.Data.Document');
+  }
 }

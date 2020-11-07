@@ -13,6 +13,11 @@ import { odataSettingsFactory } from './services/data-api.service';
 import { ProjectDetailComponent } from './project-detail/project-detail.component';
 import { CreateProjectModal } from './create-project/create-project.component';
 import { ActivityFeedComponent } from './activity-feed/activity-feed.component';
+import { MessagesComponent } from './messages/messages.component';
+import { DocumentComponent } from './document/document.component';
+import { UsersComponent } from './users/users.component';
+import { DocTranscriberComponent } from './doc-transcriber/doc-transcriber.component';
+import { DocListComponent } from './doc-list/doc-list.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +26,12 @@ import { ActivityFeedComponent } from './activity-feed/activity-feed.component';
     NotFoundPageComponent,
     ProjectDetailComponent,
     CreateProjectModal,
-    ActivityFeedComponent
+    ActivityFeedComponent,
+    MessagesComponent,
+    DocumentComponent,
+    UsersComponent,
+    DocTranscriberComponent,
+    DocListComponent
   ],
   imports: [
     BrowserModule,

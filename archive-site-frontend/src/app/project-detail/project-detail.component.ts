@@ -3,6 +3,8 @@ import { ActivatedRoute } from '@angular/router';
 import { DataApiService } from 'src/app/services/data-api.service';
 import { Observable } from 'rxjs';
 import Project from 'src/app/models/project';
+import { ODataEntities } from 'angular-odata';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-project-detail',
@@ -11,14 +13,21 @@ import Project from 'src/app/models/project';
 })
 export class ProjectDetailComponent implements OnInit {
   project$: Observable<Project>;
+  documents$: Observable<Document[]>;
 
   constructor(
     private _route: ActivatedRoute,
     private _dataApi: DataApiService) { }
 
+   projectId: number;
+
   ngOnInit(): void {
-    let projectId = Number(this._route.snapshot.params['id']);
-    this.project$ = this._dataApi.projectService.entity(projectId).fetch();
+    this.projectId = Number(this._route.snapshot.params['id']);
+    this.project$ = this._dataApi.projectService.entity(this.projectId).fetch()
+    this.documents$ = this._dataApi.documentService.entities()
+    .filter({ ProjectId: this.projectId })
+    .get()
+    .pipe(map((oe: ODataEntities<Document>) => oe.entities))
   }
 
 }

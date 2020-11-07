@@ -21,26 +21,15 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <th scope="row">1</th>
-                      <td>2</td>
-                      <td>Done</td>
-                    </tr>
-                    <tr>
-                      <th scope="row">2</th>
-                      <td>2</td>
-                      <td>Done</td>
-                    </tr>
-                    <tr>
-                      <th scope="row">3</th>
-                      <td>2</td>
-                      <td>Flagged</td>
-                    </tr>
-                    <tr>
-                      <th scope="row">4</th>
-                      <td>1</td>
-                      <td>To Do</td>
-                    </tr>
+                    <ng-container *ngIf="documents$ | async as documents">
+                      <tr *ngFor="let doc of documents">
+                        <th scope="row">
+                          <a [routerLink]="['/transcribe', doc.Id]">{{doc.Id}}</a>
+                        </th>
+                        <td>?</td>
+                        <td>{{doc.Status}}</td>
+                      </tr>
+                    </ng-container>
                   </tbody>
                 </table>
               </div>

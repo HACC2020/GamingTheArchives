@@ -55,7 +55,9 @@ export class DocumentComponent implements OnInit {
     console.log(dataSubmitted);
     // TODO: get actual userID from somewhere
     const userId = 999;
-    const transcription = new Transcription(0, this.id, userId, JSON.stringify(dataSubmitted));
+    // TODO: currently we only support single record transcription, so we're just wrapping the data
+    //  from the form in a one item array.
+    const transcription = new Transcription(0, this.id, userId, JSON.stringify([dataSubmitted]));
     this._dataApi.transcriptionService
       .create(transcription)
       .subscribe((result) => console.log(result));
@@ -63,8 +65,15 @@ export class DocumentComponent implements OnInit {
     this.messageService.add('A new transcription has been added.')
   }
 
-  getUserInput(): any[] {
-    return Array.from(document.querySelectorAll('input')).map(e => ({ id: e.id, value: e.value }));
+  getUserInput(): any {
+    return Array.from(document.querySelectorAll('input'))
+      .reduce(
+        (acc, field) => {
+          acc[field.id] = field.value;
+          return acc;
+        },
+        {}
+      );
   }
 
   // Find the document to serve according to the URL.

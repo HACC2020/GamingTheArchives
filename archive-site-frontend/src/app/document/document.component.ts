@@ -81,43 +81,32 @@ export class DocumentComponent implements OnInit {
   }
 
   goToNext(): void {
-    /*
-    TODO: This and the coresponding go to previous are the more horrific things I've ever written in my life.
-    Please someone fix them to be more angular like.
-    PS: The reason we don't just increment is because we have no guarantee that next id will be in same project
-    */
-    let found = false;
-
-    // TODO: we should figure out how to use .filter to just get ids > this.id
-    // Seems doable but idk how with our library. This explains how to do it with odata in general: https://www.odata.org/documentation/odata-version-3-0/url-conventions/
-    const observableDocs = this._dataApi.documentService.entities().filter({ projectId: this.projectId }).get();
+    // https://www.odata.org/documentation/odata-version-3-0/url-conventions/
+    const observableDocs = this._dataApi.documentService.entities()
+    .filter({ projectId: this.projectId,  Id: { gt: this.id } })
+    .orderBy('Id asc')
+    .get();
 
     observableDocs.pipe(map((oe: ODataEntities<Document>) => oe.entities))
-      .forEach(documentArray => {
-        documentArray.forEach(document => {
-          if (!found && document.Id > this.id) {
-            found = true;
-            this.goToDocument(document.Id);
-          }
-        });
-      });
+    .forEach(documentArray => {
+      if (documentArray.length > 0){
+        this.goToDocument(documentArray[0].Id);
+      }
+    });
   }
 
   goToPrevious(): void {
-    let found = false;
-    const observableDocs = this._dataApi.documentService.entities().filter({ projectId: this.projectId })
-      .orderBy('Id desc')
-      .get();
+    const observableDocs = this._dataApi.documentService.entities()
+    .filter({ projectId: this.projectId, Id: { lt: this.id } })
+    .orderBy('Id desc')
+    .get();
 
     observableDocs.pipe(map((oe: ODataEntities<Document>) => oe.entities))
-      .forEach(documentArray => {
-        documentArray.forEach(document => {
-          if (!found && document.Id < this.id) {
-            found = true;
-            this.goToDocument(document.Id);
-          }
-        });
-      });
+    .forEach(documentArray => {
+      if (documentArray.length > 0){
+        this.goToDocument(documentArray[0].Id);
+      }
+    });
   }
 
   goToDocument(id: number): void {

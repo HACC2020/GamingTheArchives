@@ -20,7 +20,7 @@ docker-compose up -d
 Initialize your local database:
 
 ```bash
-# From the archive-site-backend/src/ArchiveSite.Api folder run:
+cd src/ArchiveSiteBackend.Api/
 dotnet run -- init
 ```
 

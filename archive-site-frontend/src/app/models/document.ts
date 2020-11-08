@@ -1,6 +1,7 @@
 export interface Document {
     Id: number,
-    Project: number,
-    Path: string,
-    
+    ProjectId: number,
+    FileName: string,
+    DocumentImageUrl: string,
+    Status: string,
 }

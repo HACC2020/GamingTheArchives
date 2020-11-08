@@ -3,6 +3,8 @@ import { ODataEntityService, ODataServiceFactory, ODataSettings } from 'angular-
 import { environment } from 'src/environments/environment';
 import User from 'src/app/models/user';
 import Project from 'src/app/models/project';
+import { Document } from 'src/app/models/document';
+import Transcription from '../models/transcription';
 
 export function odataSettingsFactory() {
   return new ODataSettings({
@@ -26,5 +28,9 @@ export class DataApiService {
 
   get documentService(): ODataEntityService<Document> {
     return this._factory.entity<Document>('Documents', 'ArchiveSite.Data.Document');
+  }
+
+  get transcriptionService(): ODataEntityService<Transcription> {
+    return this._factory.entity<Transcription>('Transcriptions', 'ArchiveSite.Data.Transcription');
   }
 }

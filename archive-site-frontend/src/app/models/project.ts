@@ -9,16 +9,4 @@ export default class Project extends Model {
     public Active: boolean = false) {
     super(id);
   }
-
-  public static fromPayload(payload: any): Project {
-    let result = new Project();
-
-    result.Id = payload.Id;
-    result.Name = payload.Name;
-    result.Description = payload.Description;
-    result.SampleDocumentUrl = payload.SampleDocumentUrl;
-    result.Active = !!payload.Active;
-
-    return result;
-  }
 }

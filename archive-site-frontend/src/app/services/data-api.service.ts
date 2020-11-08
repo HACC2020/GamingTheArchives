@@ -8,7 +8,8 @@ import Transcription from '../models/transcription';
 
 export function odataSettingsFactory() {
   return new ODataSettings({
-    serviceRootUrl: `${environment.apiUrl}/odata`
+    serviceRootUrl: `${environment.apiUrl}/odata`,
+    withCredentials: true
   });
 }
 

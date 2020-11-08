@@ -8,6 +8,8 @@ import { map } from 'rxjs/operators';
 import { CreateProjectModal } from 'src/app/create-project/create-project.component';
 import Project from 'src/app/models/project';
 import { DataApiService } from 'src/app/services/data-api.service';
+import { UserContextService } from 'src/app/services/user-context-service';
+import User from 'src/app/models/user';
 
 
 @Component({
@@ -18,15 +20,18 @@ import { DataApiService } from 'src/app/services/data-api.service';
 export class ProjectsComponent implements OnInit {
   showIntro: boolean;
   projects$: Observable<Project[]>;
+  user$: Observable<User>;
 
   constructor(
     private _router: Router,
     private _route: ActivatedRoute,
     private _modalService: NgbModal,
+    private _userContext: UserContextService,
     private _dataApi: DataApiService) { }
 
   ngOnInit(): void {
     this.showIntro = !!this._route.snapshot.queryParams['intro'];
+    this.user$ = this._userContext.user$;
     this.refreshProjects();
   }
 

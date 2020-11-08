@@ -1,9 +1,11 @@
 using System;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using ArchiveSiteBackend.Api.Configuration;
 using ArchiveSiteBackend.Api.Models;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Facebook;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -27,13 +29,38 @@ namespace ArchiveSiteBackend.Api.Controllers {
             }
 
             return this.View(new LoginModel {
-                ReturnUrl = returnUrl ?? "/"
+                ReturnUrl = returnUrl ?? "/",
+                Insecure = Startup.Insecure
             });
         }
 
+        [HttpPost("insecure-login")]
+        public async Task<IActionResult> InsecureLogin(String email, String returnUrl) {
+            await HttpContext.SignInAsync(
+                CookieAuthenticationDefaults.AuthenticationScheme,
+                new ClaimsPrincipal(new[] {
+                    new ClaimsIdentity(
+                        new[] {
+                            new Claim(ClaimTypes.Email, email)
+                        },
+                        "Insecure"
+                    )
+                })
+            );
+
+            return String.IsNullOrWhiteSpace(returnUrl) ?
+                (IActionResult)RedirectToAction("Test") :
+                Redirect(returnUrl);
+        }
+
         [HttpGet("login-with-facebook")]
-        public Task LoginWithFacebook([FromQuery] String returnUrl) {
-            return HttpContext.ChallengeAsync(
+        public async Task LoginWithFacebook([FromQuery] String returnUrl) {
+            if (Startup.Insecure) {
+                HttpContext.Response.Redirect(Url.Action("Login", new { returnUrl }));
+                return;
+            }
+
+            await HttpContext.ChallengeAsync(
                 FacebookDefaults.AuthenticationScheme,
                 new AuthenticationProperties {
                     RedirectUri = returnUrl ?? "/",

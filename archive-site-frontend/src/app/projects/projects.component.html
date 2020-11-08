@@ -30,16 +30,16 @@
     </div>
   </div>
   <div id="project-list-sidebar" class="d-none d-md-block" fxFlex="1 0 200px">
-    
+
 <!--
 *************Enter test
 -->
 
   <app-messages></app-messages>
- 
+
 <!--
   <app-activity-feed [individualUser]="selectedUser"></app-activity-feed>
-    
+
 *************End test
 -->
 <!--
@@ -70,6 +70,6 @@
     </li>
   </ul>
 </ng-template>
-<button type="button" class="btn btn-primary icon-button lg-icon fab" placement="left" popoverClass="fab-menu" [ngbPopover]="fabMenu">
+<button type="button" class="btn btn-primary icon-button lg-icon fab" placement="left" popoverClass="fab-menu" [ngbPopover]="fabMenu" *ngIf="user$ | async">
   <span class="material-icons">add</span>
 </button>

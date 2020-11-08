@@ -25,7 +25,7 @@ namespace ArchiveSiteBackend.Api.Controllers {
             return Ok(
                 this.User?.Identity?.IsAuthenticated == true ?
                     new { Email = this.User.FindFirst(ClaimTypes.Email)?.Value } :
-                    null
+                    new Object()
             );
         }
 

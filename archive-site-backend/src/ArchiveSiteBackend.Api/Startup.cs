@@ -23,6 +23,8 @@ using Newtonsoft.Json.Serialization;
 
 namespace ArchiveSiteBackend.Api {
     public class Startup {
+        public static Boolean Insecure { get; set; }
+
         public Startup(IConfiguration configuration) {
             Configuration = configuration;
         }

@@ -6,6 +6,17 @@
   <title>Login</title>
 </head>
 <body>
-<a href="/api/auth/login-with-facebook?returnUrl=@Model.ReturnUrl">Login With Facebook</a>
+@if (Model.Insecure) {
+  <form method="post" enctype="multipart/form-data" action="@Url.Action("InsecureLogin")">
+    <label>
+      Email:
+      <input name="email" type="email"/>
+    </label>
+    <input name="returnUrl" type="hidden" value="@Model.ReturnUrl" />
+    <input type="submit" value="Submit"/>
+  </form>
+} else {
+  <a href="/api/auth/login-with-facebook?returnUrl=@Model.ReturnUrl">Login With Facebook</a>
+}
 </body>
 </html>

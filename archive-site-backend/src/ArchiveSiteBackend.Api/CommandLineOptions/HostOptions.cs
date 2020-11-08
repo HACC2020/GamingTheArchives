@@ -9,5 +9,8 @@ namespace ArchiveSiteBackend.Api.CommandLineOptions {
         /// </summary>
         [Option("OriginPolicy:Allow", HelpText = "Sets a hostname from which cross origin API requests should be allowed.")]
         public String OriginPolicyAllow { get; set; }
+
+        [Option("insecure", HelpText = "Run the server in an insecure mode where anybody just by typing in an email.")]
+        public Boolean Insecure { get; set; }
     }
 }

@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { from, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import User from './models/user';
-import { UserService } from './services/user.service';
 import { environment } from 'src/environments/environment';
+import { UserContextService } from 'src/app/services/user-context-service';
 
 @Component({
   selector: 'app-root',
@@ -14,18 +14,13 @@ export class AppComponent implements OnInit {
   public user$: Observable<User>;
 
   constructor(
-    private _userService: UserService,
+    private _userContext: UserContextService,
     public router: Router) {
+
   }
 
-  ngOnInit(): void {
-    this.user$ = from(this.getCurrentUser());
-  }
-
-  async getCurrentUser(): Promise<User> {
-    if (await this._userService.isAuthenticated()) {
-      return this._userService.me();
-    }
+  ngOnInit() {
+    this.user$ = this._userContext.user$;
   }
 
   async gotoSignup(): Promise<void> {

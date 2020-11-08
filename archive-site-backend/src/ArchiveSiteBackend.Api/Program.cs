@@ -60,6 +60,11 @@ namespace ArchiveSiteBackend.Api {
                 WaitForDebugger();
             }
 
+            if (options.Insecure) {
+                Console.Error.WriteLine("!!! Enabling Insecure Login !!!");
+                Startup.Insecure = true;
+            }
+
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder => {
                     webBuilder

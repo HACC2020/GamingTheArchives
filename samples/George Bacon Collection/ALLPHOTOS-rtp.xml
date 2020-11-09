@@ -1,0 +1,180 @@
+<indexFile>
+  <columns>
+    <!-- Title -->
+    <column>
+      <index>0</index>
+      <type>string</type>
+      <required>true</required>
+      <validations>
+        <validation>
+          <type>regex</type>
+          <configuration>
+            <pattern>[a-zA-Z1-9 ]+</pattern>
+          </configuration>
+        </validation>
+      </validations>
+    </column>
+    <!-- Description -->
+    <column>
+      <index>1</index>
+      <type>string</type>
+      <required>true</required>
+      <validations>
+        <validation>
+          <type>regex</type>
+          <configuration>
+            <pattern>[a-zA-Z1-9 ]+</pattern>
+          </configuration>
+        </validation>
+      </validations>
+    </column>
+    <!-- Photo Credit -->
+    <column>
+      <index>2</index>
+      <type>string</type>
+      <required>false</required>
+      <validations>
+        <validation>
+          <type>regex</type>
+          <configuration>
+            <pattern>[a-zA-Z1-9 ]+</pattern>
+          </configuration>
+        </validation>
+      </validations>
+    </column>
+    <!-- From Collection -->
+    <column>
+      <index>3</index>
+      <type>string</type>
+      <required>false</required>
+      <validations>
+        <validation>
+          <type>regex</type>
+          <configuration>
+            <pattern>[a-zA-Z1-9 ]+</pattern>
+          </configuration>
+        </validation>
+      </validations>
+    </column>
+    <!-- Gift of -->
+    <column>
+      <index>4</index>
+      <type>string</type>
+      <required>false</required>
+      <validations>
+        <validation>
+          <type>regex</type>
+          <configuration>
+            <pattern>[a-zA-Z1-9 ]+</pattern>
+          </configuration>
+        </validation>
+      </validations>
+    </column>
+    <!-- Received Date -->
+    <column>
+      <index>5</index>
+      <type>string</type>
+      <required>false</required>
+      <validations>
+        <validation>
+          <type>regex</type>
+          <configuration>
+            <pattern>[a-zA-Z1-9 ]+</pattern>
+          </configuration>
+        </validation>
+      </validations>
+    </column>
+	<!-- Negative Number -->
+    <column>
+      <index>6</index>
+      <type>string</type>
+      <required>false</required>
+      <validations>
+        <validation>
+          <type>regex</type>
+          <configuration>
+            <pattern>[1-9][0-9]{0,2}|([1-9]|1[0-9]|2[0-3]),[0-9]{3}(-[A-Z])? </pattern>
+          </configuration>
+        </validation>
+      </validations>
+    </column>
+	<!-- Negative Size -->
+    <column>
+      <index>7</index>
+      <type>string</type>
+      <required>false</required>
+      <validations>
+        <validation>
+          <type>regex</type>
+          <configuration>
+            <pattern>[0-9]{1,2}(\.[0-9]{1,2})? ?x ?[0-9]{1,2}(\.[0-9]{1,2})?</pattern>
+          </configuration>
+        </validation>
+      </validations>
+    </column>
+	<!-- Display Date -->
+    <column>
+      <index>8</index>
+      <type>string</type>
+      <required>false</required>
+      <validations>
+        <validation>
+          <type>regex</type>
+          <configuration>
+            <pattern>((Circa|January|February|March|April|May|June|July|August|September|October|November|December)?[0-9]{4}</pattern>
+          </configuration>
+        </validation>
+      </validations>
+    </column>
+    <!-- Start Date -->
+    <column>
+      <index>9</index>
+      <type>date</type>
+      <required>false</required>
+      <parsing>
+        <format>MM/dd/yyyy</format>
+      </parsing>
+      <validations>
+        <validation>
+          <type>date-range</type>
+          <configuration>
+            <min>1847-01-01</min>
+            <max>2020-12-31</max>
+          </configuration>
+        </validation>
+      </validations>
+    </column>
+    <!-- End Date -->
+    <column>
+      <index>10</index>
+      <type>date</type>
+      <required>false</required>
+      <parsing>
+        <format>MM/dd/yyyy</format>
+      </parsing>
+      <validations>
+        <validation>
+          <type>date-range</type>
+          <configuration>
+            <min>1847-01-01</min>
+            <max>2020-12-31</max>
+          </configuration>
+        </validation>
+      </validations>
+    </column>
+	<!-- Indexer Notes -->
+    <column>
+      <index>11</index>
+      <type>string</type>
+      <required>false</required>
+      <validations>
+        <validation>
+          <type>regex</type>
+          <configuration>
+            <pattern>[a-zA-Z1-9 ]+</pattern>
+          </configuration>
+        </validation>
+      </validations>
+    </column>
+  </columns>
+</indexFile>

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<indexFile>
+  <columns>
+    <column>
+      <!-- Integer which must be 0 or greater. -->
+      <index>0</index>
+      <type>integer</type>
+      <required>true</required>
+      <validations>
+        <validation>
+          <type>integer-range</type>
+          <configuration>
+            <min>0</min>
+          </configuration>
+        </validation>
+      </validations>
+    </column>
+    <!-- Optional string which can have any value. -->
+    <column>
+      <index>1</index>
+      <type>string</type>
+    </column>
+    <!-- Required string which must have the value "Foo", "Bar", or "Baz". -->
+    <column>
+      <index>2</index>
+      <type>string</type>
+      <required>true</required>
+      <validations>
+        <validation>
+          <type>restricted-value</type>
+          <configuration>
+            <allowedValues>
+              <value>Foo</value>
+              <value>Bar</value>
+              <value>Baz</value>
+            </allowedValues>
+          </configuration>
+        </validation>
+      </validations>
+    </column>
+    <!-- A required date which must be formatted like "January 01, 1970".         Must be between 2000-01-  01 and 2010-12-  31, if column 1 matches a         particular regex and column 2 is "Foo". -->
+    <column>
+      <index>3</index>
+      <type>date</type>
+      <parsing>
+        <format>MMMM dd, yyyy</format>
+      </parsing>
+      <required>true</required>
+      <validations>
+        <validation>
+          <type>date-range</type>
+          <configuration>
+            <min>2000-01-01</min>
+            <max>2010-12-31</max>
+          </configuration>
+          <condition>
+            <and>
+              <pattern>
+                <column>1</column>
+                <value>[Ff]oo+</value>
+              </pattern>
+              <equals>
+                <column>2</column>
+                <value>Foo</value>
+              </equals>
+            </and>
+          </condition>
+        </validation>
+      </validations>
+    </column>
+    <column>
+      <index>4</index>
+      <type>boolean</type>
+      <required>true</required>
+      <parsing>
+        <trueValue>Yes</trueValue>
+        <falseValue>No</falseValue>
+      </parsing>
+    </column>
+  </columns>
+</indexFile>

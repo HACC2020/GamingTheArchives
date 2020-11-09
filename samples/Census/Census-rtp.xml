@@ -1,0 +1,495 @@
+<indexFile>
+  <columns>
+    <!-- Column Number -->
+    <column>
+      <index>0</index>
+      <type>string</type>
+      <required>false</required>
+      <validations>
+        <validation>
+          <type>regex</type>
+          <configuration>
+            <pattern>[0-9 ]+</pattern>
+          </configuration>
+        </validation>
+      </validations>
+    </column>
+    <!-- Na Inoa | The Name -->
+    <column>
+      <index>1</index>
+      <type>string</type>
+      <required>false</required>
+      <validations>
+        <validation>
+          <type>regex</type>
+          <configuration>
+            <pattern>[a-zA-Z ]+</pattern>
+          </configuration>
+        </validation>
+      </validations>
+    </column>
+	<!-- KAHI A ME KE ANO O KA WAIWAI | The Space and the Type of Wealth -->
+    <column>
+      <index>2</index>
+      <type>string</type>
+      <required>false</required>
+      <validations>
+        <validation>
+          <type>regex</type>
+          <configuration>
+            <pattern>[a-zA-Z ]+</pattern>
+          </configuration>
+        </validation>
+      </validations>
+    </column>
+    <!-- Ka nui o ka Eka | Acreage -->
+    <column>
+      <index>3</index>
+      <type>string</type>
+      <required>false</required>
+      <validations>
+        <validation>
+          <type>regex</type>
+          <configuration>
+            <pattern>[0-9 ]+</pattern>
+          </configuration>
+        </validation>
+      </validations>
+    </column>
+    <!-- Uku kupono ola Apana | Proper Payment for the life of the land portion -->
+    <column>
+      <index>4</index>
+      <type>string</type>
+      <required>false</required>
+      <validations>
+        <validation>
+          <type>regex</type>
+          <configuration>
+            <pattern>[0-9]+</pattern>
+          </configuration>
+        </validation>
+      </validations>
+    </column>
+    <!-- Uku kupono ola Apana | Proper Payment for the life of the land portion -->
+    <column>
+      <index>5</index>
+      <type>string</type>
+      <required>false</required>
+      <validations>
+        <validation>
+          <type>regex</type>
+          <configuration>
+            <pattern>[0-9 ]+</pattern>
+          </configuration>
+        </validation>
+      </validations>
+    </column>
+    <!-- Ka huina nui o ka Waiwai Paa | Total Real Estate -->
+    <column>
+      <index>6</index>
+      <type>string</type>
+      <required>false</required>
+      <validations>
+        <validation>
+          <type>regex</type>
+          <configuration>
+            <pattern>[0-9 ]+</pattern>
+          </configuration>
+        </validation>
+      </validations>
+    </column>
+	<!-- Waiwai Lewa | Liquid Assets -->
+    <column>
+      <index>7</index>
+      <type>string</type>
+      <required>false</required>
+      <validations>
+        <validation>
+          <type>regex</type>
+          <configuration>
+            <pattern>[0-9] + </pattern>
+          </configuration>
+        </validation>
+      </validations>
+    </column>
+	<!-- Kaa Lealea | Leisure Tax -->
+    <column>
+      <index>8</index>
+      <type>string</type>
+      <required>false</required>
+      <validations>
+        <validation>
+          <type>regex</type>
+          <configuration>
+            <pattern>[0-9]+</pattern>
+          </configuration>
+        </validation>
+      </validations>
+    </column>
+	<!-- Kino | Bodies -->
+    <column>
+      <index>9</index>
+      <type>string</type>
+      <required>false</required>
+      <validations>
+        <validation>
+          <type>regex</type>
+          <configuration>
+            <pattern>[0-9]+</pattern>
+          </configuration>
+        </validation>
+      </validations>
+    </column>
+    <!-- Lio | Horses -->
+    <column>
+      <index>10</index>
+      <type>string</type>
+      <required>false</required>
+      <validations>
+        <validation>
+          <type>date-range</type>
+          <configuration>
+            <pattern>[0-9]+</pattern>
+          </configuration>
+        </validation>
+      </validations>
+    </column>
+    <!-- Miula a me Iakeke | Mules and Jackasses -->
+    <column>
+      <index>11</index>
+      <type>string</type>
+      <required>false</required>
+      <validations>
+        <validation>
+          <type>date-range</type>
+          <configuration>
+            <pattern>[0-9]+</pattern>
+          </configuration>
+        </validation>
+      </validations>
+    </column>
+	<!-- Ilio | Dogs -->
+    <column>
+      <index>12</index>
+      <type>string</type>
+      <required>false</required>
+      <validations>
+        <validation>
+          <type>regex</type>
+          <configuration>
+            <pattern>[0-9 ]+</pattern>
+          </configuration>
+        </validation>
+      </validations>
+    </column>
+	<!-- Houluulu o na Auhau mau | Total Collected Taxes -->
+    <column>
+      <index>13</index>
+      <type>string</type>
+      <required>false</required>
+      <validations>
+        <validation>
+          <type>regex</type>
+          <configuration>
+            <pattern>[0-9]{1,6}(\.[0-9]{1,2})?</pattern>
+          </configuration>
+        </validation>
+      </validations>
+    </column>
+	<!-- Auhau Kula | School Tax -->
+    <column>
+      <index>14</index>
+      <type>string</type>
+      <required>false</required>
+      <validations>
+        <validation>
+          <type>regex</type>
+          <configuration>
+            <pattern>[0-9 ]+</pattern>
+          </configuration>
+        </validation>
+      </validations>
+    </column>
+	<!-- Auhau Alanui | Street Tax -->
+    <column>
+      <index>15</index>
+      <type>string</type>
+      <required>true</required>
+      <validations>
+        <validation>
+          <type>regex</type>
+          <configuration>
+            <pattern>[0-9 ]+</pattern>
+          </configuration>
+        </validation>
+      </validations>
+    </column>
+	<!-- Kaa Kano | Paid Cubit (Measurement) -->
+    <column>
+      <index>16</index>
+      <type>string</type>
+      <required>false</required>
+      <validations>
+        <validation>
+          <type>regex</type>
+          <configuration>
+            <pattern>[0-9 ]+</pattern>
+          </configuration>
+        </validation>
+      </validations>
+    </column>
+	<!-- Waiwai paa e like me $150 ke kumu kuai | Real Estate Fixed Cost such as the price $150 -->
+    <column>
+      <index>17</index>
+      <type>string</type>
+      <required>false</required>
+      <validations>
+        <validation>
+          <type>regex</type>
+          <configuration>
+            <pattern>[ae ]+</pattern>
+          </configuration>
+        </validation>
+      </validations>
+    </column>
+	<!-- Loaa makahiki aole i emi malalo o $73 i kela me keia makahiki ma kekahi oihana ku i ke kanawai | Annual Yearly Tendered money under $73 under the lawful occupation -->
+    <column>
+      <index>18</index>
+      <type>string</type>
+      <required>false</required>
+      <validations>
+        <validation>
+          <type>regex</type>
+          <configuration>
+            <pattern>[0-9 ]+</pattern>
+          </configuration>
+        </validation>
+      </validations>
+    </column>
+	<!-- Kela me keia mea | All other things -->
+    <column>
+      <index>19</index>
+      <type>string</type>
+      <required>false</required>
+      <validations>
+        <validation>
+          <type>regex</type>
+          <configuration>
+            <pattern>[a-zA-Z0-9 ]+</pattern>
+          </configuration>
+        </validation>
+      </validations>
+    </column>
+
+    <!-- Na Inoa | The Name -->
+    <column>
+      <index>20</index>
+      <type>string</type>
+      <required>false</required>
+      <validations>
+        <validation>
+          <type>regex</type>
+          <configuration>
+            <pattern>[a-zA-Z ]+</pattern>
+          </configuration>
+        </validation>
+      </validations>
+    </column>
+	<!-- KAHI A ME KE ANO O KA WAIWAI | The Space and the Type of Wealth -->
+    <column>
+      <index>21</index>
+      <type>string</type>
+      <required>false</required>
+      <validations>
+        <validation>
+          <type>regex</type>
+          <configuration>
+            <pattern>[a-zA-Z ]+</pattern>
+          </configuration>
+        </validation>
+      </validations>
+    </column>
+    <!-- Ka huina nui o ka Waiwai Paa | Total Real Estate -->
+    <column>
+      <index>22</index>
+      <type>string</type>
+      <required>false</required>
+      <validations>
+        <validation>
+          <type>regex</type>
+          <configuration>
+            <pattern>[0-9 ]+</pattern>
+          </configuration>
+        </validation>
+      </validations>
+    </column>
+	<!-- Waiwai Lewa | Liquid Assets -->
+    <column>
+      <index>23</index>
+      <type>string</type>
+      <required>false</required>
+      <validations>
+        <validation>
+          <type>regex</type>
+          <configuration>
+            <pattern>[0-9] + </pattern>
+          </configuration>
+        </validation>
+      </validations>
+    </column>
+	<!-- Kaa Lealea | Leisure Tax -->
+    <column>
+      <index>24</index>
+      <type>string</type>
+      <required>false</required>
+      <validations>
+        <validation>
+          <type>regex</type>
+          <configuration>
+            <pattern>[0-9]+</pattern>
+          </configuration>
+        </validation>
+      </validations>
+    </column>
+	<!-- Kino | Bodies -->
+    <column>
+      <index>25</index>
+      <type>string</type>
+      <required>false</required>
+      <validations>
+        <validation>
+          <type>regex</type>
+          <configuration>
+            <pattern>[0-9]+</pattern>
+          </configuration>
+        </validation>
+      </validations>
+    </column>
+    <!-- Lio | Horses -->
+    <column>
+      <index>26</index>
+      <type>string</type>
+      <required>false</required>
+      <validations>
+        <validation>
+          <type>date-range</type>
+          <configuration>
+            <pattern>[0-9]+</pattern>
+          </configuration>
+        </validation>
+      </validations>
+    </column>
+    <!-- Miula a me Iakeke | Mules and Jackasses -->
+    <column>
+      <index>27</index>
+      <type>string</type>
+      <required>false</required>
+      <validations>
+        <validation>
+          <type>date-range</type>
+          <configuration>
+            <pattern>[0-9]+</pattern>
+          </configuration>
+        </validation>
+      </validations>
+    </column>
+	<!-- Ilio | Dogs -->
+    <column>
+      <index>28</index>
+      <type>string</type>
+      <required>false</required>
+      <validations>
+        <validation>
+          <type>regex</type>
+          <configuration>
+            <pattern>[0-9 ]+</pattern>
+          </configuration>
+        </validation>
+      </validations>
+    </column>
+	<!-- Houluulu o na Auhau mau | Total Collected Taxes -->
+    <column>
+      <index>29</index>
+      <type>string</type>
+      <required>false</required>
+      <validations>
+        <validation>
+          <type>regex</type>
+          <configuration>
+            <pattern>[0-9]{1,6}(\.[0-9]{1,2})?</pattern>
+          </configuration>
+        </validation>
+      </validations>
+    </column>
+	<!-- Auhau Kula | School Tax -->
+    <column>
+      <index>30</index>
+      <type>string</type>
+      <required>false</required>
+      <validations>
+        <validation>
+          <type>regex</type>
+          <configuration>
+            <pattern>[0-9 ]+</pattern>
+          </configuration>
+        </validation>
+      </validations>
+    </column>
+	<!-- Auhau Alanui | Street Tax -->
+    <column>
+      <index>31</index>
+      <type>string</type>
+      <required>true</required>
+      <validations>
+        <validation>
+          <type>regex</type>
+          <configuration>
+            <pattern>[0-9 ]+</pattern>
+          </configuration>
+        </validation>
+      </validations>
+    </column>
+	<!-- Kaa Kano | Paid Cubit (Measurement) -->
+    <column>
+      <index>32</index>
+      <type>string</type>
+      <required>false</required>
+      <validations>
+        <validation>
+          <type>regex</type>
+          <configuration>
+            <pattern>[0-9 ]+</pattern>
+          </configuration>
+        </validation>
+      </validations>
+    </column>
+	<!-- Waiwai paa e like me $150 ke kumu kuai | Real Estate Fixed Cost such as the price $150 -->
+    <column>
+      <index>33</index>
+      <type>string</type>
+      <required>false</required>
+      <validations>
+        <validation>
+          <type>regex</type>
+          <configuration>
+            <pattern>[ae ]+</pattern>
+          </configuration>
+        </validation>
+      </validations>
+    </column>
+	<!-- Na Mea Koho | All other things -->
+    <column>
+      <index>34</index>
+      <type>string</type>
+      <required>false</required>
+      <validations>
+        <validation>
+          <type>regex</type>
+          <configuration>
+            <pattern>[a-zA-Z0-9 ]+</pattern>
+          </configuration>
+        </validation>
+      </validations>
+    </column>
+  </columns>
+</indexFile>

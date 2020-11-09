@@ -169,7 +169,7 @@ namespace ArchiveSiteBackend.Api {
             odataBuilder.EntitySet<Document>("Documents");
             odataBuilder.EntitySet<DocumentAction>("DocumentActions");
             odataBuilder.EntitySet<DocumentNote>("DocumentNotes");
-            odataBuilder.EntitySet<Field>("Fields");
+            var fields = odataBuilder.EntitySet<Field>("Fields");
             odataBuilder.EntitySet<Transcription>("Transcriptions");
 
             var meFunction = users.EntityType.Collection.Function("me");

@@ -8,6 +8,15 @@ namespace ArchiveSite.Data {
         [ForeignKey(nameof(Project))]
         public Int64 ProjectId { get; set; }
 
+        [Required]
+        [StringLength(100)]
+        public String Name { get; set; }
+
+        /// <summary>
+        /// A JSON map of language codes to description text.
+        /// </summary>
+        public String HelpTextData { get; set; }
+
         /// <summary>
         /// The position of the field in the field list for this project.
         /// </summary>
@@ -28,6 +37,11 @@ namespace ArchiveSite.Data {
 
         [StringLength(100)]
         public String FalseValue { get; set; }
+
+        /// <summary>
+        /// A JSON serialized objects defining how this field is to be validated.
+        /// </summary>
+        public String ValidationData { get; set; }
 
         // The predicted coordinates of this field on each page in % terms
         public Double? Top { get; set; }

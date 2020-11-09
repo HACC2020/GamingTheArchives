@@ -2,7 +2,9 @@
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
+using ArchiveSiteBackend.Api.CommandLineOptions;
 
 namespace ArchiveSiteBackend.Api.Tests
 {
@@ -12,9 +14,13 @@ namespace ArchiveSiteBackend.Api.Tests
 
         public AzureCognitiveConfiguration AzureCognitiveConfiguration;
 
-        public UnitTestBase()
+        protected UnitTestBase()
         {
-            Configuration = Program.BuildConfiguration(new String[] { }, null, out _);
+            Configuration = Program.BuildConfiguration(
+                new String[] { },
+                new CommonOptions { ConfigPath = Path.Combine("..", "..", "..", "..", "ArchiveSiteBackend.Api")},
+                out _
+            );
 
             AzureCognitiveConfiguration = new AzureCognitiveConfiguration();
             Configuration.GetSection("Azure").Bind(AzureCognitiveConfiguration);

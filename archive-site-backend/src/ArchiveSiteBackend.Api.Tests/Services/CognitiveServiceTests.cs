@@ -15,7 +15,7 @@ namespace ArchiveSiteBackend.Api.Tests.Services
             // Arrange
             var mockLogger = new Mock<ILogger<CognitiveService>>();
             var cognitiveService = new CognitiveService(mockLogger.Object, AzureCognitiveConfiguration);
-            var fileStream = File.OpenRead("Samples\\GlassNegatives_00003.pdf");
+            var fileStream = File.OpenRead(Path.Combine("Samples", "GlassNegatives_00003.pdf"));
 
             // Act
             var documentTexts = await cognitiveService.ReadImage(fileStream);

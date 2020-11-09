@@ -7,12 +7,14 @@ import { DocumentComponent } from './document/document.component';
 import { LoginComponent } from 'src/app/login/login.component';
 import { SignUpComponent } from 'src/app/sign-up/sign-up.component';
 import { ProfileComponent } from 'src/app/profile/profile.component';
+import { ProjectSettingsComponent } from 'src/app/project-settings/project-settings.component';
 
 
 const routes: Routes = [
   { path: '',   redirectTo: '/projects?intro=true', pathMatch: 'full' },
   { path: 'projects', component: ProjectsComponent, pathMatch: 'full' },
   { path: 'project/:id', component: ProjectDetailComponent },
+  { path: 'project/:id/settings', component: ProjectSettingsComponent },
   { path: 'transcribe/:projectId/:documentId', component: DocumentComponent},
 
   { path: 'login', component: LoginComponent },

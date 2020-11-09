@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import User from '../models/user';
+import { User } from '../models/user';
 import { DataApiService } from 'src/app/services/data-api.service';
 import { DataEntityServiceWrapper } from 'src/app/services/data-entity-service-wrapper';
 import { environment } from 'src/environments/environment';

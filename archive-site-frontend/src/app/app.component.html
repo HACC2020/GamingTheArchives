@@ -10,15 +10,18 @@
       <button class="btn btn-outline-primary" (click)="logout()">Logout</button>
     </div>
     <ng-template #login>
-      <button (click)="gotoSignup()" class="btn btn-outline-secondary mr-2">Sign Up</button>
-      <button (click)="gotoLogin()" class="btn btn-primary">Log in</button>
+      <ng-container *ngIf="userFetched">
+        <button (click)="gotoSignup()" class="btn btn-outline-secondary mr-2">Sign Up</button>
+        <button (click)="gotoLogin()" class="btn btn-primary">Log in</button>
+      </ng-container>
     </ng-template>
   </header>
   <section class="main-content" fxFlex="1 0 auto">
     <router-outlet></router-outlet>
   </section>
   <footer>
-    &copy; 2020 Gaming the Archives Team. Released under the <a href="https://raw.githubusercontent.com/HACC2020/GamingTheArchives/master/LICENSE">MIT License</a>.
+    &copy; 2020 Gaming the Archives Team. Released under the
+    <a href="https://raw.githubusercontent.com/HACC2020/GamingTheArchives/master/LICENSE">MIT License</a>.
   </footer>
   <app-notifications></app-notifications>
 </div>

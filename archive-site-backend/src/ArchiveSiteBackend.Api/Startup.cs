@@ -19,6 +19,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.OData;
 using Microsoft.OData.Edm;
+using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 
 namespace ArchiveSiteBackend.Api {
@@ -68,6 +69,7 @@ namespace ArchiveSiteBackend.Api {
                             // Use TitleCase naming everywhere so that we're consistent with OData endpoints
                             NamingStrategy = new DefaultNamingStrategy()
                         };
+                        options.SerializerSettings.Converters.Add(new StringEnumConverter());
                     });
                 services.AddMvc();
                 services.AddOData();

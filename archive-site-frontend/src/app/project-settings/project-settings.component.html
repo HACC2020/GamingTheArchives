@@ -1,0 +1,56 @@
+<div class="card">
+  <div class="card-body">
+    <ng-container *ngIf="doneLoading; else indicator">
+      <h4 class="card-title">
+        <a [routerLink]="['/projects']">Projects</a> >
+        <a [routerLink]="['/project', project.Id]">{{project.Name}}</a> > Settings</h4>
+
+      <app-project-details-form
+        [(name)]="project.Name"
+        [(description)]="project.Description"
+        [disabled]="isSaving"
+        (change)="onProjectDetailsFormChange()"
+        #projectDetailsForm>
+      </app-project-details-form>
+
+      <h5 class="card-subtitle mt-4">Fields</h5>
+
+      <div class="field-list-section">
+        <app-field-list-editor
+          [fields]="fields"
+          [disabled]="isSaving">
+        </app-field-list-editor>
+      </div>
+
+      <div class="mt-4" fxLayout="row">
+        <label title="Make the project visible to volunteers">
+          <input
+            name="projectActive"
+            type="checkbox" [(ngModel)]="project.Active" />
+          Active
+        </label>
+        <div fxFlex="1 0 auto"></div>
+        <button
+          type="button"
+          class="btn btn-outline-secondary mr-2"
+          (click)="undo()"
+          [disabled]="isSaving">
+          Undo
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="save()"
+          [disabled]="isSaving">
+          Save
+        </button>
+      </div>
+    </ng-container>
+    <ng-template #indicator>
+      <div class="d-flex align-items-center">
+        <strong>Loading...</strong>
+        <div class="spinner-border ml-auto" role="status" aria-hidden="true"></div>
+      </div>
+    </ng-template>
+  </div>
+</div>

@@ -21,6 +21,9 @@ import { LoginComponent } from './login/login.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
 import { ProfileComponent } from './profile/profile.component';
 import { NotificationsContainerComponent } from 'src/app/notifications-container.component';
+import { FieldListEditorComponent } from './field-list-editor/field-list-editor.component';
+import { ProjectDetailsFormComponent } from './project-details-form/project-details-form.component';
+import { ProjectSettingsComponent } from './project-settings/project-settings.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +40,10 @@ import { NotificationsContainerComponent } from 'src/app/notifications-container
     LoginComponent,
     SignUpComponent,
     ProfileComponent,
-    NotificationsContainerComponent
+    NotificationsContainerComponent,
+    FieldListEditorComponent,
+    ProjectDetailsFormComponent,
+    ProjectSettingsComponent
   ],
   imports: [
     BrowserModule,
@@ -45,7 +51,8 @@ import { NotificationsContainerComponent } from 'src/app/notifications-container
     NgbModule,
     FlexLayoutModule,
     FormsModule,
-    ODataModule
+    ODataModule,
+
   ],
   providers: [
     { provide: ODataSettings, useFactory: odataSettingsFactory }

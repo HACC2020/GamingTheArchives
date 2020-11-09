@@ -1,5 +1,5 @@
 
-/* Changing the purpose of this component. It will 
+/* Changing the purpose of this component. It will
 * be to show the document as a single image.
 *
 */
@@ -11,7 +11,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { DataApiService } from '../services/data-api.service';
 import { Observable } from 'rxjs';
-import Transcription from '../models/transcription';
+import { Transcription } from '../models/transcription';
 import { MessageService } from '../services/message.service';
 import { ODataEntities } from 'angular-odata';
 import { map } from 'rxjs/operators';

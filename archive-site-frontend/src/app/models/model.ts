@@ -1,3 +1,3 @@
-export default class Model {
+export class Model {
   constructor(public Id: number) { }
 }

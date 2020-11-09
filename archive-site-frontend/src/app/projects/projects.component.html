@@ -1,6 +1,6 @@
 <div class="banner" *ngIf="showIntro">
   <button class="btn btn-secondary icon-button float-right" (click)="hideIntro()">
-    <span class="material-icons">close</span>
+    <i class="material-icons">close</i>
   </button>
   <p class="mr-5">
     We need your help! The Public Archives of Hawai'i is the keeper of public memory. As such, we have millions of
@@ -27,29 +27,46 @@
           <div class="spinner-border ml-auto" role="status" aria-hidden="true"></div>
         </div>
       </ng-template>
+      <ng-container *ngIf="user$ | async">
+        <h5 class="card-title mt-5">Inactive Projects</h5>
+        <div id="inactive-project-list" class="list-group"
+             *ngIf="inactiveProjects$ | async as projects; else inactiveIndicator">
+          <a [routerLink]="['/project', project.Id]"
+             class="list-group-item list-groupitem-action flex-column align-items-start"
+             *ngFor="let project of projects">
+            {{project.Name}}
+          </a>
+        </div>
+        <ng-template #inactiveIndicator>
+          <div class="d-flex align-items-center">
+            <strong>Loading...</strong>
+            <div class="spinner-border ml-auto" role="status" aria-hidden="true"></div>
+          </div>
+        </ng-template>
+      </ng-container>
     </div>
   </div>
   <div id="project-list-sidebar" class="d-none d-md-block" fxFlex="1 0 200px">
 
-<!--
-*************Enter test
--->
+    <!--
+    *************Enter test
+    -->
 
-  <app-messages></app-messages>
+    <app-messages></app-messages>
 
-<!--
-  <app-activity-feed [individualUser]="selectedUser"></app-activity-feed>
+    <!--
+      <app-activity-feed [individualUser]="selectedUser"></app-activity-feed>
 
-*************End test
--->
-<!--
-  <h3>Activity Feed</h3>
-    <ul>
-      <li>John Q. Completed 13 📜s in Project One.</li>
-      <li>Jane D. Earned the 🌪 Speed Demon Badge.</li>
-      <li>...</li>
-    </ul>
--->
+    *************End test
+    -->
+    <!--
+      <h3>Activity Feed</h3>
+        <ul>
+          <li>John Q. Completed 13 📜s in Project One.</li>
+          <li>Jane D. Earned the 🌪 Speed Demon Badge.</li>
+          <li>...</li>
+        </ul>
+    -->
     <h3>Leader Boards</h3>
     <ul>
       <li>Overall
@@ -70,6 +87,7 @@
     </li>
   </ul>
 </ng-template>
-<button type="button" class="btn btn-primary icon-button lg-icon fab" placement="left" popoverClass="fab-menu" [ngbPopover]="fabMenu" *ngIf="user$ | async">
-  <span class="material-icons">add</span>
+<button type="button" class="btn btn-primary icon-button lg-icon fab" placement="left" popoverClass="fab-menu"
+        [ngbPopover]="fabMenu" *ngIf="user$ | async">
+  <i class="material-icons">add</i>
 </button>

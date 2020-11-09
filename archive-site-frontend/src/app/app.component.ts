@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import User from './models/user';
+import { User } from './models/user';
 import { environment } from 'src/environments/environment';
 import { UserContextService } from 'src/app/services/user-context-service';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
@@ -12,15 +13,20 @@ import { UserContextService } from 'src/app/services/user-context-service';
 })
 export class AppComponent implements OnInit {
   public user$: Observable<User>;
+  public userFetched: boolean;
 
   constructor(
     private _userContext: UserContextService,
     public router: Router) {
-
   }
 
   ngOnInit() {
-    this.user$ = this._userContext.user$;
+    this.user$ =
+      this._userContext.user$
+        .pipe(map(u => {
+          this.userFetched = true;
+          return u;
+        }));
   }
 
   async gotoSignup(): Promise<void> {

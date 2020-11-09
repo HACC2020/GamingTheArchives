@@ -1,7 +1,12 @@
 <div class="card">
   <div class="card-body">
     <ng-container *ngIf="project$ | async as project; else indicator">
-      <h5 class="card-title"><a [routerLink]="['/projects']">Projects</a> > {{project.Name}}</h5>
+      <h5 class="card-title">
+        <a [routerLink]="['/projects']">Projects</a> > {{project.Name}}
+        <a [routerLink]="['/project', projectId, 'settings']" class="btn btn-secondary icon-button float-right">
+          <i class="material-icons">settings</i>
+        </a>
+      </h5>
       <p>{{project.Description}}</p>
       <div class="container-flex">
         <div class="row">

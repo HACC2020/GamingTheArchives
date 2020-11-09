@@ -34,7 +34,7 @@ namespace ArchiveSiteBackend.Api.Helpers {
                     }
 
                     helpTextData = JsonConvert.SerializeObject(new {
-                        hi = parts[0],
+                        haw = parts[0],
                         en = parts[1]
                     });
                 } else {
@@ -46,7 +46,7 @@ namespace ArchiveSiteBackend.Api.Helpers {
                 Index = column.Index,
                 Name = name,
                 HelpTextData = helpTextData,
-                Type = column.Type.ToString(),
+                Type = (FieldType)column.Type,
                 Required = column.Required
             };
 

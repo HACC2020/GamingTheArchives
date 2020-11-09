@@ -1,7 +1,7 @@
-import Model from './model';
+import { Model } from './model';
 import { toUserType, UserType } from './user-type';
 
-export default class User extends Model {
+export class User extends Model {
   constructor(
     id: number = 0,
     public EmailAddress: string = undefined,

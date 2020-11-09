@@ -23,8 +23,8 @@ namespace ArchiveSite.Data {
         [Required]
         public Int32 Index { get; set; }
 
-        [Required, StringLength(100)]
-        public String Type { get; set; }
+        [Required]
+        public FieldType Type { get; set; }
 
         [Required]
         public Boolean Required { get; set; }

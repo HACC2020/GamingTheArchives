@@ -14,7 +14,7 @@ namespace ArchiveSiteBackend.Api.Services
      * This class implements the Azure Cognitive Vision services that
      * we will use to read archive images.
      **/
-    public class CognitiveService
+    public class CognitiveService : ICloudOcrService
     {
         private ComputerVisionClient ComputerVisionClient;
         private ILogger<CognitiveService> Logger;
@@ -36,63 +36,55 @@ namespace ArchiveSiteBackend.Api.Services
         /// </summary>
         /// <param name="filename"></param>
         /// <returns></returns>
-        [Obsolete("It is highly likely that this API will change!")]
-        public async Task<List<DocumentText>> ReadImage(string filename)
+        public async Task<List<DocumentText>> ReadImage(FileStream fileStream)
         {
             try
             {
-                using (var fileStream = File.OpenRead(filename))
+                var streamHeaders = await ComputerVisionClient.ReadInStreamAsync(fileStream, "en");
+                var operationLocation = streamHeaders.OperationLocation;
+
+                const int numberOfCharsInOperationId = 36;
+                string operationId = operationLocation.Substring(operationLocation.Length - numberOfCharsInOperationId);
+
+                await Task.Delay(1500);
+
+                ReadOperationResult readOperationResult;
+                do
                 {
-                    var streamHeaders = await ComputerVisionClient.ReadInStreamAsync(fileStream, "en");
-                    var operationLocation = streamHeaders.OperationLocation;
+                    readOperationResult = await ComputerVisionClient.GetReadResultAsync(Guid.Parse(operationId));
+                } while (readOperationResult.Status == OperationStatusCodes.Running ||
+                    readOperationResult.Status == OperationStatusCodes.NotStarted);
 
-                    const int numberOfCharsInOperationId = 36;
-                    string operationId = operationLocation.Substring(operationLocation.Length - numberOfCharsInOperationId);
+                var listOfDocumentText = new List<DocumentText>();
 
-                    await Task.Delay(1500);
-
-                    ReadOperationResult readOperationResult;
-                    do
+                var arrayOfReadResults = readOperationResult.AnalyzeResult.ReadResults;
+                foreach (var page in arrayOfReadResults)
+                {
+                    foreach (var line in page.Lines)
                     {
-                        readOperationResult = await ComputerVisionClient.GetReadResultAsync(Guid.Parse(operationId));
-                    } while (readOperationResult.Status == OperationStatusCodes.Running ||
-                        readOperationResult.Status == OperationStatusCodes.NotStarted);
-
-                    var listOfDocumentText = new List<DocumentText>();
-
-                    var arrayOfReadResults = readOperationResult.AnalyzeResult.ReadResults;
-                    foreach(var page in arrayOfReadResults)
-                    {
-                        foreach(var line in page.Lines)
+                        var boundBox = new BoundingBox()
                         {
-                            var boundBox = new BoundingBox() {
-                                x1 = line.BoundingBox[0],
-                                y1 = line.BoundingBox[1],
-                                x2 = line.BoundingBox[2],
-                                y2 = line.BoundingBox[3]
-                            };
+                            x1 = line.BoundingBox[0],
+                            y1 = line.BoundingBox[1],
+                            x2 = line.BoundingBox[2],
+                            y2 = line.BoundingBox[3]
+                        };
 
-                            var documentText = new DocumentText()
-                            {
-                                BoundingBox = boundBox,
-                                Text = line.Text
-                            };
+                        var documentText = new DocumentText()
+                        {
+                            BoundingBox = boundBox,
+                            Text = line.Text
+                        };
 
-                            listOfDocumentText.Add(documentText);
-                        }
+                        listOfDocumentText.Add(documentText);
                     }
-
-                    return listOfDocumentText;
                 }
-            }
-            catch(FileNotFoundException e)
-            {
-                Logger.LogInformation($"file not found: {filename}");
-                throw e;
+
+                return listOfDocumentText;
             }
             catch (Exception e)
             {
-                Logger.LogError(e, $"failed to analyze file: {filename}");
+                Logger.LogError(e, $"failed to analyze file: {fileStream.Name}");
                 return null;
             }
         }

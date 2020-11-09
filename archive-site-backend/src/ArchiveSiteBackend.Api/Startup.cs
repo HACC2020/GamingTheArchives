@@ -44,8 +44,13 @@ namespace ArchiveSiteBackend.Api {
 
             // Add Application Dependencies Here
             services.AddScoped<ILoginLogger, DbLoginLogger>();
+            services.AddScoped<ICloudOcrService, CognitiveService>();
 
             if (!skipHosting) {
+                var facebookConfig = new FacebookConfiguration();
+                this.Configuration.GetSection("Facebook").Bind(facebookConfig);
+                services.AddSingleton(Options.Create(facebookConfig));
+                
                 // Asp.Net MVC Dependencies
 
                 services
@@ -54,7 +59,10 @@ namespace ArchiveSiteBackend.Api {
                             .RequireAuthenticatedUser()
                             .Build();
 
-                        options.Filters.Add(new AuthorizeFilter(policy));
+                        if(!String.IsNullOrEmpty(facebookConfig.ApplicationId))
+                        {
+                            options.Filters.Add(new AuthorizeFilter(policy));
+                        }
                     })
                     .AddNewtonsoftJson(options => {
                         options.SerializerSettings.ContractResolver = new DefaultContractResolver {
@@ -64,12 +72,9 @@ namespace ArchiveSiteBackend.Api {
                     });
                 services.AddMvc();
                 services.AddOData();
-
-                var facebookConfig = new FacebookConfiguration();
-                this.Configuration.GetSection("Facebook").Bind(facebookConfig);
-                services.AddSingleton(Options.Create(facebookConfig));
-
-                var authenticationBuilder =
+                
+                if (!String.IsNullOrEmpty(facebookConfig.ApplicationId)) {
+                    var authenticationBuilder =
                     services
                         .AddAuthentication(options => { options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme; })
                         .AddCookie(
@@ -81,7 +86,6 @@ namespace ArchiveSiteBackend.Api {
                                 };
                             });
 
-                if (!String.IsNullOrEmpty(facebookConfig.ApplicationId)) {
                     Console.Error.WriteLine($"Enabling Facebook Login with ApplicationId: {facebookConfig.ApplicationId}");
                     authenticationBuilder = authenticationBuilder.AddFacebook(facebookOptions => {
                         facebookOptions.AppId = facebookConfig.ApplicationId;
@@ -123,9 +127,6 @@ namespace ArchiveSiteBackend.Api {
             this.Configuration.GetSection("Azure").Bind(azureConfiguration);
             services.AddSingleton(azureConfiguration);
 
-            // allow cognitive service to be injectable
-            services.AddScoped<CognitiveService>();
-
             // Register Commands
             services.AddScoped<InitializeCommand>();
         }
@@ -142,7 +143,7 @@ namespace ArchiveSiteBackend.Api {
             }
 
             app.UseHttpsRedirection();
-
+            
             var originPolicy = app.ApplicationServices.GetRequiredService<IOptions<OriginPolicyConfiguration>>();
             if (originPolicy.Value.HasOrigin()) {
                 app.UseCors();

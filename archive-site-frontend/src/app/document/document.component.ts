@@ -42,8 +42,9 @@ export class DocumentComponent implements OnInit {
     { displayText: 'Display Date', id: 'display-date', type: 'date' },
     { displayText: 'Start Date', id: 'start-date', type: 'date' },
     { displayText: 'End Date', id: 'end-date', type: 'date' },
-    { displayText: 'Indexer Notes', id: 'indexer-notes', type: 'text' },
+    { displayText: 'Indexer Notes', id: 'indexer-notes', type: 'textarea' },
   ];
+
   constructor(
     private documentService: DocumentService,
     private messageService: MessageService,
@@ -64,14 +65,16 @@ export class DocumentComponent implements OnInit {
       this.document$ = this.documentService.getDocumentByDocumentId(this.documentId);
     });
 
-    // TODO: I assume projectId should/could be passed in from a higher level component?
     this.document$.subscribe(document => {
       this.documentImageUrl = `${environment.apiUrl}/DocumentImage/${document.Id}`;
     });
   }
 
-  onImageLoaded(event: Event): void {
+  @ViewChild('documentImage') documentImage: ElementRef;
 
+  onImageLoaded(event: Event): void {
+    console.log(`image width ${this.documentImage.nativeElement.width}`);
+    console.log(`image height ${this.documentImage.nativeElement.height}`);
     console.log(event);
   }
 

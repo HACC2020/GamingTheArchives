@@ -13,7 +13,7 @@ const routes: Routes = [
   { path: '',   redirectTo: '/projects?intro=true', pathMatch: 'full' },
   { path: 'projects', component: ProjectsComponent, pathMatch: 'full' },
   { path: 'project/:id', component: ProjectDetailComponent },
-  { path: 'transcribe/:id', component: DocumentComponent},
+  { path: 'transcribe/:projectId/:documentId', component: DocumentComponent},
 
   { path: 'login', component: LoginComponent },
   { path: 'signup', component: SignUpComponent },

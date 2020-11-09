@@ -26,8 +26,9 @@ export class DocumentComponent implements OnInit {
 
   document$: Observable<Document>;
   documentImageUrl: string;
-  documentId: number;
+
   projectId: number;
+  documentId: number;
 
   fields = [
     { displayText: 'Title', id: 'title', type: 'text' },
@@ -45,10 +46,8 @@ export class DocumentComponent implements OnInit {
   ];
   constructor(
     private documentService: DocumentService,
-    private route: ActivatedRoute,
-    private location: Location,
-    private _dataApi: DataApiService,
     private messageService: MessageService,
+    private route: ActivatedRoute,
     private router: Router
   ) { }
 
@@ -58,29 +57,37 @@ export class DocumentComponent implements OnInit {
 
   // Find the document to serve according to the URL.
   getDocument(): void {
-    this.documentId = +this.route.snapshot.paramMap.get('id');
-    this.document$ = this.documentService.getDocumentByDocumentId(this.documentId);
+    this.route.params.subscribe(params => {
+      this.projectId = +params.projectId;
+      this.documentId = +params.documentId;
+
+      this.document$ = this.documentService.getDocumentByDocumentId(this.documentId);
+    });
 
     // TODO: I assume projectId should/could be passed in from a higher level component?
     this.document$.subscribe(document => {
-      this.projectId = document.ProjectId;
-      this.documentImageUrl = `${environment.apiUrl}/DocumentImage/${this.documentId}`;
+      this.documentImageUrl = `${environment.apiUrl}/DocumentImage/${document.Id}`;
     });
+  }
+
+  onImageLoaded(event: Event): void {
+
+    console.log(event);
   }
 
   submit(): void {
     const dataSubmitted = this.getUserInput();
     console.log(dataSubmitted);
+    
     // TODO: get actual userID from somewhere
     const userId = 999;
+
     // TODO: currently we only support single record transcription, so we're just wrapping the data
     //  from the form in a one item array.
     const transcription = new Transcription(0, this.documentId, userId, JSON.stringify([dataSubmitted]));
-    this._dataApi.transcriptionService
-      .create(transcription)
-      .subscribe((result) => console.log(result));
+    this.documentService.setTranscriptionByDocumentId(transcription);
 
-    this.messageService.add('A new transcription has been added.')
+    this.messageService.add('A new transcription has been added.');
   }
 
   getUserInput(): any {
@@ -95,37 +102,17 @@ export class DocumentComponent implements OnInit {
   }
 
   goToNext(): void {
-    // https://www.odata.org/documentation/odata-version-3-0/url-conventions/
-    const observableDocs = this._dataApi.documentService.entities()
-    .filter({ projectId: this.projectId,  Id: { gt: this.documentId } })
-    .orderBy('Id asc')
-    .get();
-
-    observableDocs.pipe(map((oe: ODataEntities<Document>) => oe.entities))
-    .forEach(documentArray => {
-      if (documentArray.length > 0){
-        this.goToDocument(documentArray[0].Id);
-      }
-    });
+    const nextDocument$ = this.documentService.getNextDocument(this.projectId, this.documentId);
+    nextDocument$.subscribe(document => this.goToDocument(document));
   }
 
   goToPrevious(): void {
-    const observableDocs = this._dataApi.documentService.entities()
-    .filter({ projectId: this.projectId, Id: { lt: this.documentId } })
-    .orderBy('Id desc')
-    .get();
-
-    observableDocs.pipe(map((oe: ODataEntities<Document>) => oe.entities))
-    .forEach(documentArray => {
-      if (documentArray.length > 0){
-        this.goToDocument(documentArray[0].Id);
-      }
-    });
+    const previousDocument$ = this.documentService.getPreviousDocument(this.projectId, this.documentId);
+    previousDocument$.subscribe(document => this.goToDocument(document));
   }
 
-  goToDocument(id: number): void {
-    // TODO: Also someone please fix this. It cannot be the right way to do it.
-    this.router.navigate(['transcribe', id]).then(() => { this.ngOnInit(); });
+  goToDocument(document: Document): void {
+    this.router.navigate(['/transcribe', document.ProjectId, document.Id]);
   }
 
 }

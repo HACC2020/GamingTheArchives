@@ -4,7 +4,8 @@
             <div class="col-md-8">
                 <div class="card text-center">
                     <h4>Document id: {{doc.Id}}</h4>
-                    <img class="img-fluid" #documentImage *ngIf="this.documentImageUrl" [src]="this.documentImageUrl" />
+                    <img class="img-fluid" *ngIf="this.documentImageUrl" [src]="this.documentImageUrl" 
+                         #documentImage (load)="onImageLoaded($event)"/>
                 </div>
             </div>
             <div class="col-md-4">

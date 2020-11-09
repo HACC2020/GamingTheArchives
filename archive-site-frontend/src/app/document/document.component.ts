@@ -4,7 +4,7 @@
 *
 */
 
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Document } from '../models/document';
 import { DocumentService } from '../services/document.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -15,6 +15,7 @@ import Transcription from '../models/transcription';
 import { MessageService } from '../services/message.service';
 import { ODataEntities } from 'angular-odata';
 import { map } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-document',
@@ -24,7 +25,8 @@ import { map } from 'rxjs/operators';
 export class DocumentComponent implements OnInit {
 
   document$: Observable<Document>;
-  id: number;
+  documentImageUrl: string;
+  documentId: number;
   projectId: number;
 
   fields = [
@@ -54,6 +56,18 @@ export class DocumentComponent implements OnInit {
     this.getDocument();
   }
 
+  // Find the document to serve according to the URL.
+  getDocument(): void {
+    this.documentId = +this.route.snapshot.paramMap.get('id');
+    this.document$ = this.documentService.getDocumentByDocumentId(this.documentId);
+
+    // TODO: I assume projectId should/could be passed in from a higher level component?
+    this.document$.subscribe(document => {
+      this.projectId = document.ProjectId;
+      this.documentImageUrl = `${environment.apiUrl}/DocumentImage/${this.documentId}`;
+    });
+  }
+
   submit(): void {
     const dataSubmitted = this.getUserInput();
     console.log(dataSubmitted);
@@ -61,7 +75,7 @@ export class DocumentComponent implements OnInit {
     const userId = 999;
     // TODO: currently we only support single record transcription, so we're just wrapping the data
     //  from the form in a one item array.
-    const transcription = new Transcription(0, this.id, userId, JSON.stringify([dataSubmitted]));
+    const transcription = new Transcription(0, this.documentId, userId, JSON.stringify([dataSubmitted]));
     this._dataApi.transcriptionService
       .create(transcription)
       .subscribe((result) => console.log(result));
@@ -83,7 +97,7 @@ export class DocumentComponent implements OnInit {
   goToNext(): void {
     // https://www.odata.org/documentation/odata-version-3-0/url-conventions/
     const observableDocs = this._dataApi.documentService.entities()
-    .filter({ projectId: this.projectId,  Id: { gt: this.id } })
+    .filter({ projectId: this.projectId,  Id: { gt: this.documentId } })
     .orderBy('Id asc')
     .get();
 
@@ -97,7 +111,7 @@ export class DocumentComponent implements OnInit {
 
   goToPrevious(): void {
     const observableDocs = this._dataApi.documentService.entities()
-    .filter({ projectId: this.projectId, Id: { lt: this.id } })
+    .filter({ projectId: this.projectId, Id: { lt: this.documentId } })
     .orderBy('Id desc')
     .get();
 
@@ -114,11 +128,4 @@ export class DocumentComponent implements OnInit {
     this.router.navigate(['transcribe', id]).then(() => { this.ngOnInit(); });
   }
 
-  // Find the document to serve according to the URL.
-  getDocument(): void {
-    this.id = +this.route.snapshot.paramMap.get('id');
-    this.document$ = this._dataApi.documentService.entity(this.id).fetch();
-    // TODO: I assume projectId should/could be passed in from a higher level component?
-    this.document$.toPromise().then(doc => this.projectId = doc.ProjectId);
-  }
 }

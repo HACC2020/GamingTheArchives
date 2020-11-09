@@ -19,10 +19,8 @@ import { Location } from '@angular/common';
 })
 export class DocListComponent implements OnInit {
 
-
   //Need this @Input to call project number in project details.
   @Input () projectId: Number;
-
 
   constructor(
     private documentService: DocumentService,
@@ -33,13 +31,11 @@ export class DocListComponent implements OnInit {
     this.getDocuments();
   }
 
-
-
   documentList: Document[]; //array to hold mock file data.
 
   // fill array with mock file data.
   getDocuments(): void {
-    this.documentService.getDocuments()
+    this.documentService.getAllDocuments()
       .subscribe(document => this.documentList = document);
   }
 }

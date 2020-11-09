@@ -20,7 +20,7 @@ const routes: Routes = [
   { path: 'profile', component: ProfileComponent },
 
 
-//Add paths above this one. Any below this will not be found.
+  // Add paths above this one. Any below this will not be found.
   { path: '**', component: NotFoundPageComponent },
 ];
 

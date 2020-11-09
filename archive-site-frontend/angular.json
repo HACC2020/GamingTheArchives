@@ -128,5 +128,8 @@
       }
     }
   },
-  "defaultProject": "archive-site-frontend"
+  "defaultProject": "archive-site-frontend",
+  "cli": {
+    "analytics": false
+  }
 }

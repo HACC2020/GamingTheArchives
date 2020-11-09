@@ -155,7 +155,7 @@ namespace ArchiveSiteBackend.Api {
             app.UseEndpoints(endpoints => {
                 endpoints.MapControllers();
                 endpoints.EnableDependencyInjection();
-                endpoints.Select().Filter().OrderBy().Count();
+                endpoints.Select().Filter().OrderBy().Count().MaxTop(Int32.MaxValue);
                 endpoints.SetUrlKeyDelimiter(ODataUrlKeyDelimiter.Parentheses);
                 endpoints.MapODataRoute("odata", "api/odata", GetEdmModel());
             });

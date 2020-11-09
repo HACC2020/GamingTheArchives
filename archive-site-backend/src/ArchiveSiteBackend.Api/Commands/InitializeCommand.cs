@@ -71,16 +71,16 @@ namespace ArchiveSiteBackend.Api.Commands
                 context.Projects.Add(new Project() { Active = true, Description = "description 2", Name = "Sample Project 2"});
                 context.Projects.Add(new Project() { Active = false, Description = "description 3", Name = "Inactive Sample Project 3"});
 
-                context.Documents.Add(new Document() {ProjectId = 1, FileName = "Samples-DocumentImages\\ChineseArrivals_1847-1870_00001.jpg", Status = DocumentStatus.PendingTranscription, DocumentImageUrl = "imageUrl"});
-                context.Documents.Add(new Document() {ProjectId = 1, FileName = "Samples-DocumentImages\\ChineseArrivals_1847-1870_00002.jpg", Status = DocumentStatus.PendingTranscription, DocumentImageUrl = "imageUrl"});
-                context.Documents.Add(new Document() {ProjectId = 1, FileName = "Samples-DocumentImages\\ChineseArrivals_1847-1870_00003.jpg", Status = DocumentStatus.PendingTranscription, DocumentImageUrl = "imageUrl"});
+                context.Documents.Add(new Document() {ProjectId = 1, FileName = "Samples-DocumentImages/ChineseArrivals_1847-1870_00001.jpg", Status = DocumentStatus.PendingTranscription, DocumentImageUrl = "imageUrl"});
+                context.Documents.Add(new Document() {ProjectId = 1, FileName = "Samples-DocumentImages/ChineseArrivals_1847-1870_00002.jpg", Status = DocumentStatus.PendingTranscription, DocumentImageUrl = "imageUrl"});
+                context.Documents.Add(new Document() {ProjectId = 1, FileName = "Samples-DocumentImages/ChineseArrivals_1847-1870_00003.jpg", Status = DocumentStatus.PendingTranscription, DocumentImageUrl = "imageUrl"});
 
-                context.Documents.Add(new Document() {ProjectId = 2, FileName = "Samples-DocumentImages\\ChineseArrivals_1847-1870_00004.jpg", Status = DocumentStatus.PendingTranscription, DocumentImageUrl = "imageUrl"});
-                context.Documents.Add(new Document() {ProjectId = 2, FileName = "Samples-DocumentImages\\ChineseArrivals_1847-1870_00005.jpg", Status = DocumentStatus.PendingTranscription, DocumentImageUrl = "imageUrl"});
-                context.Documents.Add(new Document() {ProjectId = 2, FileName = "Samples-DocumentImages\\ChineseArrivals_1847-1870_00006.jpg", Status = DocumentStatus.PendingTranscription, DocumentImageUrl = "imageUrl"});
+                context.Documents.Add(new Document() {ProjectId = 2, FileName = "Samples-DocumentImages/ChineseArrivals_1847-1870_00004.jpg", Status = DocumentStatus.PendingTranscription, DocumentImageUrl = "imageUrl"});
+                context.Documents.Add(new Document() {ProjectId = 2, FileName = "Samples-DocumentImages/ChineseArrivals_1847-1870_00005.jpg", Status = DocumentStatus.PendingTranscription, DocumentImageUrl = "imageUrl"});
+                context.Documents.Add(new Document() {ProjectId = 2, FileName = "Samples-DocumentImages/ChineseArrivals_1847-1870_00006.jpg", Status = DocumentStatus.PendingTranscription, DocumentImageUrl = "imageUrl"});
 
-                context.Documents.Add(new Document() {ProjectId = 3, FileName = "Samples-DocumentImages\\ChineseArrivals_1847-1870_00007.jpg", Status = DocumentStatus.PendingTranscription, DocumentImageUrl = "imageUrl"});
-                context.Documents.Add(new Document() {ProjectId = 3, FileName = "Samples-DocumentImages\\ChineseArrivals_1847-1870_00008.jpg", Status = DocumentStatus.PendingTranscription, DocumentImageUrl = "imageUrl"});
+                context.Documents.Add(new Document() {ProjectId = 3, FileName = "Samples-DocumentImages/ChineseArrivals_1847-1870_00007.jpg", Status = DocumentStatus.PendingTranscription, DocumentImageUrl = "imageUrl"});
+                context.Documents.Add(new Document() {ProjectId = 3, FileName = "Samples-DocumentImages/ChineseArrivals_1847-1870_00008.jpg", Status = DocumentStatus.PendingTranscription, DocumentImageUrl = "imageUrl"});
 
                 var saveChanges = await context.SaveChangesAsync();
 

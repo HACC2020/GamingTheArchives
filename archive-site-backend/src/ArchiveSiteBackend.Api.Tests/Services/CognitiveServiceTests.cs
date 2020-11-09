@@ -1,14 +1,11 @@
 ﻿using ArchiveSiteBackend.Api.Services;
 using Microsoft.Extensions.Logging;
 using Moq;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace ArchiveSiteBackend.Api.Tests.Controllers
+namespace ArchiveSiteBackend.Api.Tests.Services
 {
     public class CognitiveServiceTests : UnitTestBase
     {
@@ -18,9 +15,10 @@ namespace ArchiveSiteBackend.Api.Tests.Controllers
             // Arrange
             var mockLogger = new Mock<ILogger<CognitiveService>>();
             var cognitiveService = new CognitiveService(mockLogger.Object, AzureCognitiveConfiguration);
+            var fileStream = File.OpenRead(Path.Combine("Samples", "GlassNegatives_00003.pdf"));
 
             // Act
-            var documentTexts = await cognitiveService.ReadImage(Path.Combine("Samples", "GlassNegatives_00003.pdf"));
+            var documentTexts = await cognitiveService.ReadImage(fileStream);
 
             // Assert
             Assert.NotNull(documentTexts);

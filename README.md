@@ -28,11 +28,17 @@ cd src/ArchiveSiteBackend.Api/
 dotnet run -- init
 ```
 
-Run backend unit tests:
+(Optional) Run backend unit tests:
 
 ```bash
 # From the archive-site-backend/src/ArchiveSite.Api.Tests folder run:
 dotnet test
+```
+
+(First Time Only) You may need to trust the developer certificates used for https connections to the backend api. To do this follow the instructions [here](https://docs.microsoft.com/en-us/aspnet/core/security/enforcing-ssl?view=aspnetcore-3.1&tabs=visual-studio#trust-the-aspnet-core-https-development-certificate-on-windows-and-macos). Or you can try the TLDR; version:
+
+```bash
+dotnet dev-certs https --trust
 ```
 
 Run the backend api host:
@@ -42,7 +48,7 @@ Run the backend api host:
 dotnet run # Alternately you can use "dotnet watch run" to automatically rebuild
 ```
 
-Build the front end (you should only need to do this once):
+(First Time Only) Install dependencies for the front end:
 
 ```bash
 # From the archive-site-frontend folder run:

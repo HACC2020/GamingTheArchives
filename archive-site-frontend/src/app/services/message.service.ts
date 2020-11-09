@@ -5,9 +5,6 @@
 *     to the "Activity Feed".
 */
 
-
-
-
 import { Injectable } from '@angular/core';
 
 @Injectable({

@@ -3,17 +3,18 @@
         <div class="row">
             <div class="col-md-8">
                 <div class="card text-center">
-                    <h4>Document id: {{doc.Id}}</h4>
-                    <img class="img-fluid" src="{{doc.DocumentImageUrl}}" />
+                    <h4>Document ID: {{doc.Id}}</h4>
+                    <img class="img-fluid" *ngIf="this.documentImageUrl" [src]="this.documentImageUrl" 
+                         #documentImage (load)="onImageLoaded($event)"/>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="card flex-md-row mb-4 box-shadow h-md-250">
-                    <div class="card-body d-flex flex-column align-items-start">
-                        <h3 class="mb-0">
-                            <a class="text-dark" href="#">Fields</a>
+                    <div class="card-body d-flex flex-column align-items-start" style="padding-top: 0;">
+                        <h3>
+                            <a class="text-dark" href="#">Transcription Fields</a>
                         </h3>
-
+<!-- unsure whats suppsoed to go here // commenting out temporarily 
                         <tr *ngFor="let doc of documents">
                             <th scope="row">
                                 <a [routerLink]="['/transcribe', doc.Id]">{{doc.Id}}</a>
@@ -21,19 +22,22 @@
                             <td>?</td>
                             <td>{{doc.Status}}</td>
                         </tr>
-
-                        <div class="form-group">
-                            <span *ngFor="let f of fields" class="form-inline">
-                                <label class="mr-1" for="exampleInputEmail1">{{f.displayText}}</label>
-                                <input type="{{f.type}}" class="form-control" id="{{f.id}}">
+-->
+                        <form style="padding-left: 1em;">
+                            <div class="form-group row" *ngFor="let f of fields">
+                                <label class="col-form-label" for="{{f.id}}">{{f.displayText}}</label>
+                                <div class="col-sm">
+                                    <input type="{{f.type}}" class="form-control" name="{{f.id}}" id="{{f.id}}">
+                                </div>
+                            </div>
+                            <span class="form-inline">
+                                <!-- will fix at a later time -->
+                                <button type="button" class="btn btn-success mr-1" (click)="submit()">Submit</button>
+                                <button type="button" class="btn btn-danger mr-1">Help</button>
+                                <button type="button" class="btn btn-outline-primary mr-1" (click)="goToPrevious()">Previous</button>
+                                <button type="button" class="btn btn-outline-primary mr-1" (click)="goToNext()">Next</button>
                             </span>
-                        </div>
-                        <span class="form-inline">
-                            <button type="button" class="btn btn-success mr-1" (click)="submit()">Submit</button>
-                            <button type="button" class="btn btn-danger mr-1">Help</button>
-                            <button type="button" class="btn btn-outline-primary mr-1" (click)="goToPrevious()">Previous</button>
-                            <button type="button" class="btn btn-outline-primary mr-1" (click)="goToNext()">Next</button>
-                        </span>
+                        </form>
                     </div>
                 </div>
             </div>

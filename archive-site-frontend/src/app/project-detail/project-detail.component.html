@@ -24,7 +24,7 @@
                     <ng-container *ngIf="documents$ | async as documents">
                       <tr *ngFor="let doc of documents">
                         <th scope="row">
-                          <a [routerLink]="['/transcribe', doc.Id]">{{doc.Id}}</a>
+                          <a [routerLink]="['/transcribe', doc.ProjectId, doc.Id]">{{doc.Id}}</a>
                         </th>
                         <td>?</td>
                         <td>{{doc.Status}}</td>

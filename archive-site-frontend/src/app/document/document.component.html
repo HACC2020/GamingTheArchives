@@ -8,7 +8,7 @@
                         <img class="img-fluid" *ngIf="this.documentImageUrl" [src]="this.documentImageUrl" 
                         #documentImage id="document-image" (load)="onImageLoaded($event)"
                         (mousedown)="onImageMouseDown($event)" (mousemove)="onImageMouseMove($event)"
-                        (mouseup)="onImageMouseUp()" />
+                        (mouseup)="onImageMouseUp()" (mousewheel)="onImageMouseWheel($event)"/>
                     </div>
                 </div>
             </div>

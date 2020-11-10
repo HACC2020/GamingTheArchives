@@ -93,16 +93,12 @@ export class DocumentComponent implements OnInit {
     this.mouseDown.x = event.clientX;
     this.mouseDown.y = event.clientY;
 
-    console.log("onImageMouseDown");
-    console.log(`isImageMoving: ${this.isImageMoving}`);
-
     if (this.isImageMoving) {
       this.isImageMoving = !this.isImageMoving;
       return;
     }
 
     this.isImageMoving = !this.isImageMoving;
-
   }
 
   onImageMouseMove(mouseEvent: MouseEvent): void {
@@ -110,21 +106,44 @@ export class DocumentComponent implements OnInit {
       return;
     }
 
-    console.log("onImageMouseMove");
-
     var left = mouseEvent.clientX - this.mouseDown.x;
     var top = mouseEvent.clientY - this.mouseDown.y;
 
-    console.log(`event x: ${mouseEvent.clientX} - event y: ${mouseEvent.clientY}`);
-    console.log(`down x: ${this.mouseDown.x}, down y: ${this.mouseDown.y}`);
+    //console.log(`event x: ${mouseEvent.clientX} - event y: ${mouseEvent.clientY}`);
+    //console.log(`down x: ${this.mouseDown.x}, down y: ${this.mouseDown.y}`);
 
     this.documentImage.nativeElement.style.left = (this.mouseDown.left + left) + "px";
     this.documentImage.nativeElement.style.top = (this.mouseDown.top + top) + "px";
   }
 
   onImageMouseUp(): void {
-    console.log("onImageMouseUp");
     this.isImageMoving = false;
+  }
+
+  onImageMouseWheel(event: WheelEvent): void {
+    event.preventDefault();
+    event.stopPropagation();
+
+    let scale = this.getImageTransformScale();
+
+    if (event.deltaY > 0) { // then zoom out
+      scale = scale - 0.25;
+    } else if (event.deltaY < 0) { // then zoom in
+      scale = scale + 0.25;
+    }
+
+    this.documentImage.nativeElement.style.transform = `scale(${scale})`;
+  }
+
+  private getImageTransformScale(): number {
+    const transform = this.documentImage.nativeElement.style.transform;
+    if (transform === '') {
+      return 1;
+    }
+
+    const regExp = /[-+]?[0-9]*\.?[0-9]+/;
+
+    return parseFloat(regExp.exec(transform)[0]);
   }
 
   submit(): void {

@@ -63,11 +63,11 @@ export class DocumentComponent implements OnInit {
       this.documentId = +params.documentId;
 
       this.document$ = this.documentService.getDocumentByDocumentId(this.documentId);
+      this.document$.subscribe(document => {
+        this.documentImageUrl = `${environment.apiUrl}/DocumentImage/${document.Id}`;
+      });
     });
 
-    this.document$.subscribe(document => {
-      this.documentImageUrl = `${environment.apiUrl}/DocumentImage/${document.Id}`;
-    });
   }
 
   @ViewChild('documentImage') documentImage: ElementRef;
@@ -76,6 +76,74 @@ export class DocumentComponent implements OnInit {
     console.log(`image width ${this.documentImage.nativeElement.width}`);
     console.log(`image height ${this.documentImage.nativeElement.height}`);
     console.log(event);
+  }
+
+  private isImageMoving = false;
+  private mouseDown = { x: 0, y: 0, left: 0, top: 0};
+
+  onImageMouseDown(event: MouseEvent): void {
+    event.preventDefault();
+
+    const left = parseInt(this.documentImage.nativeElement.style.left);
+    this.mouseDown.left = isNaN(left) ? 0 : left;
+
+    const top = parseInt(this.documentImage.nativeElement.style.top);
+    this.mouseDown.top = isNaN(top) ? 0 : top;
+
+    this.mouseDown.x = event.clientX;
+    this.mouseDown.y = event.clientY;
+
+    if (this.isImageMoving) {
+      this.isImageMoving = !this.isImageMoving;
+      return;
+    }
+
+    this.isImageMoving = !this.isImageMoving;
+  }
+
+  onImageMouseMove(mouseEvent: MouseEvent): void {
+    if (!this.isImageMoving) {
+      return;
+    }
+
+    var left = mouseEvent.clientX - this.mouseDown.x;
+    var top = mouseEvent.clientY - this.mouseDown.y;
+
+    //console.log(`event x: ${mouseEvent.clientX} - event y: ${mouseEvent.clientY}`);
+    //console.log(`down x: ${this.mouseDown.x}, down y: ${this.mouseDown.y}`);
+
+    this.documentImage.nativeElement.style.left = (this.mouseDown.left + left) + "px";
+    this.documentImage.nativeElement.style.top = (this.mouseDown.top + top) + "px";
+  }
+
+  onImageMouseUp(): void {
+    this.isImageMoving = false;
+  }
+
+  onImageMouseWheel(event: WheelEvent): void {
+    event.preventDefault();
+    event.stopPropagation();
+
+    let scale = this.getImageTransformScale();
+
+    if (event.deltaY > 0) { // then zoom out
+      scale = scale - 0.25;
+    } else if (event.deltaY < 0) { // then zoom in
+      scale = scale + 0.25;
+    }
+
+    this.documentImage.nativeElement.style.transform = `scale(${scale})`;
+  }
+
+  private getImageTransformScale(): number {
+    const transform = this.documentImage.nativeElement.style.transform;
+    if (transform === '') {
+      return 1;
+    }
+
+    const regExp = /[-+]?[0-9]*\.?[0-9]+/;
+
+    return parseFloat(regExp.exec(transform)[0]);
   }
 
   submit(): void {

@@ -67,20 +67,20 @@ namespace ArchiveSiteBackend.Api.Commands
                     return;
                 }
 
-                context.Projects.Add(new Project() { Active = true, Description = "description 1", Name = "Sample Project 1"});
-                context.Projects.Add(new Project() { Active = true, Description = "description 2", Name = "Sample Project 2"});
+                context.Projects.Add(new Project() { Active = true, Description = "This demo project uses the sample images uploaded by Paul and hosted by Google", Name = "Demo Project 1"});
+                context.Projects.Add(new Project() { Active = true, Description = "This demo project uses the sample images uploaded by Paul and hosted by Google", Name = "Demo Project 2"});
                 context.Projects.Add(new Project() { Active = false, Description = "description 3", Name = "Inactive Sample Project 3"});
 
-                context.Documents.Add(new Document() {ProjectId = 1, FileName = "Samples-DocumentImages/ChineseArrivals_1847-1870_00001.jpg", Status = DocumentStatus.PendingTranscription, DocumentImageUrl = "imageUrl"});
-                context.Documents.Add(new Document() {ProjectId = 1, FileName = "Samples-DocumentImages/ChineseArrivals_1847-1870_00002.jpg", Status = DocumentStatus.PendingTranscription, DocumentImageUrl = "imageUrl"});
-                context.Documents.Add(new Document() {ProjectId = 1, FileName = "Samples-DocumentImages/ChineseArrivals_1847-1870_00003.jpg", Status = DocumentStatus.PendingTranscription, DocumentImageUrl = "imageUrl"});
+                context.Documents.Add(new Document() {ProjectId = 1, FileName = "ChineseArrivals_1878_01218.png", Status = DocumentStatus.PendingTranscription, DocumentImageUrl = "https://storage.googleapis.com/app-hiscribe-images/projects/1/ChineseArrivals_1878_01218.png"});
+                context.Documents.Add(new Document() {ProjectId = 1, FileName = "ChineseArrivals_1878_01289.png", Status = DocumentStatus.PendingTranscription, DocumentImageUrl = "https://storage.googleapis.com/app-hiscribe-images/projects/1/ChineseArrivals_1878_01289.png"});
+                context.Documents.Add(new Document() {ProjectId = 1, FileName = "ChineseArrivals_1878_01271.png", Status = DocumentStatus.PendingTranscription, DocumentImageUrl = "https://storage.googleapis.com/app-hiscribe-images/projects/1/ChineseArrivals_1878_01271.png"});
 
-                context.Documents.Add(new Document() {ProjectId = 2, FileName = "Samples-DocumentImages/ChineseArrivals_1847-1870_00004.jpg", Status = DocumentStatus.PendingTranscription, DocumentImageUrl = "imageUrl"});
-                context.Documents.Add(new Document() {ProjectId = 2, FileName = "Samples-DocumentImages/ChineseArrivals_1847-1870_00005.jpg", Status = DocumentStatus.PendingTranscription, DocumentImageUrl = "imageUrl"});
-                context.Documents.Add(new Document() {ProjectId = 2, FileName = "Samples-DocumentImages/ChineseArrivals_1847-1870_00006.jpg", Status = DocumentStatus.PendingTranscription, DocumentImageUrl = "imageUrl"});
+                context.Documents.Add(new Document() {ProjectId = 2, FileName = "ChineseArrivals_1878_01238.png", Status = DocumentStatus.PendingTranscription, DocumentImageUrl = "https://storage.googleapis.com/app-hiscribe-images/projects/1/ChineseArrivals_1878_01238.png"});
+                context.Documents.Add(new Document() {ProjectId = 2, FileName = "ChineseArrivals_1878_01218.png", Status = DocumentStatus.PendingTranscription, DocumentImageUrl = "https://storage.googleapis.com/app-hiscribe-images/projects/1/ChineseArrivals_1878_01218.png"});
+                context.Documents.Add(new Document() {ProjectId = 2, FileName = "ChineseArrivals_1878_01289.png", Status = DocumentStatus.PendingTranscription, DocumentImageUrl = "https://storage.googleapis.com/app-hiscribe-images/projects/1/ChineseArrivals_1878_01289.png"});
 
-                context.Documents.Add(new Document() {ProjectId = 3, FileName = "Samples-DocumentImages/ChineseArrivals_1847-1870_00007.jpg", Status = DocumentStatus.PendingTranscription, DocumentImageUrl = "imageUrl"});
-                context.Documents.Add(new Document() {ProjectId = 3, FileName = "Samples-DocumentImages/ChineseArrivals_1847-1870_00008.jpg", Status = DocumentStatus.PendingTranscription, DocumentImageUrl = "imageUrl"});
+                context.Documents.Add(new Document() {ProjectId = 3, FileName = "ChineseArrivals_1878_01218.png", Status = DocumentStatus.PendingTranscription, DocumentImageUrl = "https://storage.googleapis.com/app-hiscribe-images/projects/1/ChineseArrivals_1878_01218.png"});
+                context.Documents.Add(new Document() {ProjectId = 3, FileName = "ChineseArrivals_1878_01289.png", Status = DocumentStatus.PendingTranscription, DocumentImageUrl = "https://storage.googleapis.com/app-hiscribe-images/projects/1/ChineseArrivals_1878_01289.png"});
 
                 var saveChanges = await context.SaveChangesAsync();
 

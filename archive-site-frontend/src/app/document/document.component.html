@@ -4,8 +4,12 @@
             <div class="col-md-8">
                 <div class="card text-center">
                     <h4>Document ID: {{doc.Id}}</h4>
-                    <img class="img-fluid" *ngIf="this.documentImageUrl" [src]="this.documentImageUrl" 
-                         #documentImage (load)="onImageLoaded($event)"/>
+                    <div id="image-container">
+                        <img class="img-fluid" *ngIf="this.documentImageUrl" [src]="this.documentImageUrl" 
+                        #documentImage id="document-image" (load)="onImageLoaded($event)"
+                        (mousedown)="onImageMouseDown($event)" (mousemove)="onImageMouseMove($event)"
+                        (mouseup)="onImageMouseUp()" (mousewheel)="onImageMouseWheel($event)"/>
+                    </div>
                 </div>
             </div>
             <div class="col-md-4">

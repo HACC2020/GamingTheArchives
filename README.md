@@ -28,6 +28,13 @@ cd src/ArchiveSiteBackend.Api/
 dotnet run -- init
 ```
 
+Seed your local database (please note it WILL drop your existing database):
+
+```bash
+cd src/ArchiveSiteBackend.Api/
+dotnet run -- init --drop --seed
+```
+
 (Optional) Run backend unit tests:
 
 ```bash

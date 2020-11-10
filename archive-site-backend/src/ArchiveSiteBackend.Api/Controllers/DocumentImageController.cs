@@ -27,19 +27,18 @@ namespace ArchiveSiteBackend.Api.Controllers
         {
             var document = await ArchiveDbContext.Documents.FindAsync(documentId);
 
-            if (null == document)
+            if (null == document || string.IsNullOrEmpty(document.DocumentImageUrl))
             {
                 return NotFound();
             }
 
             try
             {
-                var imageFile = System.IO.File.OpenRead(document.FileName);
-                return File(imageFile, MediaTypeNames.Image.Jpeg);
-            }
-            catch (Exception e)
+                var url = new Uri(document.DocumentImageUrl);
+                return Redirect(document.DocumentImageUrl);
+            } catch(Exception)
             {
-                Logger.LogError(e, $"failed to open filename '{document.FileName}' from documentId '{document.Id}");
+                Logger.LogError($"failed to parse the documentId {documentId} url of {document.DocumentImageUrl}");
                 return NotFound();
             }
         }

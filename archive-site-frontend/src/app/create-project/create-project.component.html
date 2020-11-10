@@ -5,48 +5,56 @@
   </button>
 </div>
 <div class="modal-body">
-  <form #projectForm="ngForm">
-    <fieldset [disabled]="isSaving" fxLayout="column">
+  <ng-container *ngIf="step === CreateProjectModalStep.ProjectDetails">
+    <app-project-details-form
+      [(name)]="name"
+      [(description)]="description"
+      [disabled]="isSaving"
+      (change)="onProjectDetailsFormChange()"
+      #projectDetailsForm>
+    </app-project-details-form>
+  </ng-container>
+  <ng-container *ngIf="step === CreateProjectModalStep.UploadRtpXml">
+    <form>
+      <h5>Import a Field List?</h5>
       <label>
-        Project Name
-        <input
-          name="name"
-          type="text"
-          required
-          minlength="2"
-          maxlength="100"
-          [(ngModel)]="name"
-          class="form-control"
-          ngbAutofocus />
+        Select an RTP Xml File:
+        <input type="file" accept="text/xml,.xml" (change)="onFileChange($event)" />
       </label>
-      <label>
-        Description
-        <textarea
-          name="description"
-          [(ngModel)]="description"
-          class="form-control">
+      <small id="displayNameHelp" class="form-text text-muted">
+        For more information about the RTP Xml file format see <a href="/assets/rtp-description.pdf" target="_blank">this guide.</a>
+      </small>
+    </form>
+  </ng-container>
+  <ng-container *ngIf="step === CreateProjectModalStep.EditFieldList">
+    <app-field-list-editor
+      [fields]="fields"
+      [disabled]="isSaving">
+    </app-field-list-editor>
+  </ng-container>
+  <ng-container *ngIf="step === CreateProjectModalStep.UploadProjectDocuments">
+    <label>
+      Document Image URLs <small>
+      <a href="https://github.com/RayBB/GamingTheArchivesSampleData" target="_blank">example</a>
+    </small>
+      <textarea
+        name="urls"
+        [(ngModel)]="urls"
+        class="form-control"
+        placeholder="https://www.example.com/1.jpg&#10;https://www.example.com/2.jpg">
       </textarea>
-      </label>
-      <label>
-        Document Image URLs <small>
-          <a href="https://github.com/RayBB/GamingTheArchivesSampleData" target="_blank">example</a>
-        </small>
-        <textarea
-          name="urls"
-          [(ngModel)]="urls"
-          class="form-control"
-          placeholder="https://www.example.com/1.jpg&#10;https://www.example.com/2.jpg">
-      </textarea>
-      </label>
-    </fieldset>
-  </form>
+    </label>
+  </ng-container>
 </div>
 <div class="modal-footer">
-  <button type="button" class="btn btn-outline-secondary mr-2" (click)="activeModal.dismiss('Cancel')"
-          [disabled]="isSaving">
-    Cancel
+  <button
+    type="button"
+    class="btn btn-outline-secondary mr-2"
+    (click)="back()"
+    [disabled]="isSaving">
+    {{backButtonText}}
   </button>
-  <button type="button" class="btn btn-primary" (click)="saveProject()" [disabled]="isSaving || !projectForm.form.valid">
-    Save
+  <button type="button" class="btn btn-primary" (click)="next()" [disabled]="isSaving || !isReady">
+    {{nextButtonText}}
   </button>
 </div>

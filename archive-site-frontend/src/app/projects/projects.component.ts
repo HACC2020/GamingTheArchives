@@ -6,10 +6,10 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { CreateProjectModal } from 'src/app/create-project/create-project.component';
-import Project from 'src/app/models/project';
+import { Project } from 'src/app/models/project';
 import { DataApiService } from 'src/app/services/data-api.service';
 import { UserContextService } from 'src/app/services/user-context-service';
-import User from 'src/app/models/user';
+import { User } from 'src/app/models/user';
 
 
 @Component({
@@ -20,6 +20,7 @@ import User from 'src/app/models/user';
 export class ProjectsComponent implements OnInit {
   showIntro: boolean;
   projects$: Observable<Project[]>;
+  inactiveProjects$: Observable<Project[]>;
   user$: Observable<User>;
 
   constructor(
@@ -27,7 +28,8 @@ export class ProjectsComponent implements OnInit {
     private _route: ActivatedRoute,
     private _modalService: NgbModal,
     private _userContext: UserContextService,
-    private _dataApi: DataApiService) { }
+    private _dataApi: DataApiService) {
+  }
 
   ngOnInit(): void {
     this.showIntro = !!this._route.snapshot.queryParams['intro'];
@@ -62,5 +64,16 @@ export class ProjectsComponent implements OnInit {
         .filter({ Active: true })
         .get()
         .pipe(map((oe: ODataEntities<Project>) => oe.entities));
+
+    this._userContext.user$
+      .subscribe(result => {
+        if (result) {
+          this.inactiveProjects$ =
+            this._dataApi.projectService.entities()
+              .filter({ Active: false })
+              .get()
+              .pipe(map((oe: ODataEntities<Project>) => oe.entities));
+        }
+      })
   }
 }

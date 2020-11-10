@@ -1,0 +1,40 @@
+<form #projectForm="ngForm">
+  <fieldset [disabled]="disabled" (input)="onFormChange($event)" fxLayout="column">
+    <label>
+      Project Name
+      <input
+        name="name"
+        type="text"
+        required
+        minlength="2"
+        maxlength="100"
+        [(ngModel)]="name"
+        (ngModelChange)="nameChange.emit($event)"
+        class="form-control"
+        ngbAutofocus/>
+    </label>
+    <div
+      *ngIf="projectForm.invalid && projectForm.form.get('name').dirty && projectForm.form.get('name').touched"
+      class="alert alert-danger">
+
+      <div *ngIf="projectForm.form.get('name').errors.required">
+        Project Name is required.
+      </div>
+      <div *ngIf="projectForm.form.get('name').errors.minlength">
+        Project Name must be at least 2 characters long.
+      </div>
+      <div *ngIf="projectForm.form.get('name').errors.maxlength">
+        Project Name must be no more than 100 characters long.
+      </div>
+    </div>
+    <label>
+      Description
+      <textarea
+        name="description"
+        [(ngModel)]="description"
+        (ngModelChange)="descriptionChange.emit($event)"
+        class="form-control">
+      </textarea>
+    </label>
+  </fieldset>
+</form>

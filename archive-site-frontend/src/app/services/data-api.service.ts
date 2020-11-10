@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { ODataEntityService, ODataServiceFactory, ODataSettings } from 'angular-odata';
 import { environment } from 'src/environments/environment';
-import User from 'src/app/models/user';
-import Project from 'src/app/models/project';
+import { User } from 'src/app/models/user';
+import { Project } from 'src/app/models/project';
 import { Document } from 'src/app/models/document';
-import Transcription from '../models/transcription';
+import { Transcription } from '../models/transcription';
+import { Field } from 'src/app/models/field';
 
 export function odataSettingsFactory() {
   return new ODataSettings({
@@ -25,6 +26,10 @@ export class DataApiService {
 
   get projectService(): ODataEntityService<Project> {
     return this._factory.entity<Project>('Projects', 'ArchiveSite.Data.Project');
+  }
+
+  get fieldService(): ODataEntityService<Field> {
+    return this._factory.entity<Field>('Fields', 'ArchiveSite.Data.Field');
   }
 
   get documentService(): ODataEntityService<Document> {

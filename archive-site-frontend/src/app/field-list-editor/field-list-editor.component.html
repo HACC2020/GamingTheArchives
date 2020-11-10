@@ -1,0 +1,110 @@
+<form>
+  <div class="field-list-container" *ngIf="fields && fields.length">
+    <ngb-accordion>
+      <ngb-panel
+        id="field-{{field.Index}}"
+        *ngFor="let field of fields">
+
+        <ng-template ngbPanelHeader let-opened="opened">
+          <div fxLayout="row" fxLayoutAlign="space-between">
+            <button class="btn btn-transparent icon-button mr-2" ngbPanelToggle>
+              <i class="material-icons">{{opened ? 'keyboard_arrow_down' : 'keyboard_arrow_right' }}</i>
+            </button>
+            <span class="field-heading">Field {{field.Index}}:
+              <ng-container *ngIf="field.Name; else noName">{{field.Name}}</ng-container>
+              <ng-template #noName><em>??</em></ng-template>
+              <span class="field-type"> : {{field.Type}}</span>
+              <span class="field-required" *ngIf="field.Required"> (Required)</span>
+            </span>
+            <div fxFlex="1 0 auto"></div>
+            <button (click)="moveUp(field)" class="btn btn-secondary icon-button mr-2">
+              <i class="material-icons">keyboard_arrow_up</i>
+            </button>
+            <button (click)="moveDown(field)" class="btn btn-secondary icon-button">
+              <i class="material-icons">keyboard_arrow_down</i>
+            </button>
+          </div>
+        </ng-template>
+
+        <ng-template ngbPanelContent>
+          <div fxLayout="column">
+            <div fxLayout="row" fxLayoutGap="2em">
+              <label>Name
+                <input
+                  name="fieldName-{{field.Index}}"
+                  type="text"
+                  required
+                  maxlength="100"
+                  [(ngModel)]="field.Name"
+                  class="form-control"/>
+              </label>
+              <label>
+                Field Type
+                <select name="fieldType-{{field.Index}}" [(ngModel)]="field.Type" class="form-control">
+                  <option
+                    *ngFor="let type of allFieldTypes"
+                    [ngValue]="type"
+                    [selected]="type == field.Type">
+                    {{getFieldTypeString(type)}}
+                  </option>
+                </select>
+              </label>
+              <label class="form-check-inline">
+                <input
+                  name="fieldRequired-{{field.Index}}"
+                  type="checkbox"
+                  [(ngModel)]="field.Required"
+                  class="form-check-input"/>
+                Required
+              </label>
+            </div>
+            <label *ngIf="field.Type === FieldType.Date">
+              Date/Time Format
+              <input
+                name="fieldFormat-{{field.Index}}"
+                type="text"
+                [(ngModel)]="field.ParsingFormat"
+                class="form-control"/>
+            </label>
+            <label>
+              Help Text
+              <div class="input-group">
+                <div class="input-group-prepend"
+                     title="(english language)"
+                     style="background-image: url('/assets/images/usa-flag-icon.png'); background-repeat: no-repeat; background-size: cover; width: 48px">
+                </div>
+                <input
+                  name="fieldENHelp-{{field.Index}}"
+                  type="text"
+                  [(ngModel)]="field.englishHelp"
+                  class="form-control"/>
+              </div>
+
+              <div class="input-group mt-2">
+                <div class="input-group-prepend"
+                     title="(hawai'ian language)"
+                     style="background-image: url('/assets/images/hawaii-flag-icon.png'); background-repeat: no-repeat; background-size: cover; width: 48px">
+                </div>
+                <input
+                  name="fieldHAWHelp-{{field.Index}}"
+                  type="text"
+                  [(ngModel)]="field.hawaiianHelp"
+                  class="form-control"/>
+              </div>
+            </label>
+            <div fxLayout="row" fxLayoutAlign="end">
+              <button type="button" (click)="removeField(field)" class="btn btn-danger icon-button">
+                <i class="material-icons">delete_forever</i>
+              </button>
+            </div>
+          </div>
+        </ng-template>
+      </ngb-panel>
+    </ngb-accordion>
+  </div>
+  <div fxLayout="row" fxLayoutAlign="end">
+    <button type="button" (click)="addField()" class="btn btn-success icon-button">
+      <i class="material-icons">add</i>
+    </button>
+  </div>
+</form>

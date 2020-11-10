@@ -1,5 +1,5 @@
 
-/* Changing the purpose of this component. It will 
+/* Changing the purpose of this component. It will
 * be to show the document as a single image.
 *
 */
@@ -11,11 +11,12 @@ import { Observable, ReplaySubject } from 'rxjs';
 import { HighlightMarker, MarkerArea } from 'markerjs';
 
 import { environment } from 'src/environments/environment';
-import { Document } from '../models/document';
-import Transcription from '../models/transcription';
+
 import { DocumentService } from '../services/document.service';
 import { MessageService } from '../services/message.service';
 import { MarkerAreaState } from 'markerjs/typings/MarkerAreaState';
+import { Document } from '../models/document';
+import { Transcription } from '../models/transcription';
 import AzureTranscription from '../models/azure-transcription';
 
 @Component({

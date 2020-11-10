@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
-import User from 'src/app/models/user';
+import { User } from 'src/app/models/user';
 import { UserType } from 'src/app/models/user-type';
 import { $enum } from 'ts-enum-util';
 import { NotificationService } from 'src/app/services/notification-service';

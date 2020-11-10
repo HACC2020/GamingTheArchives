@@ -8,8 +8,9 @@ import { DOCUMENTS } from '../mock-data/mock-documents';
 import AzureTranscription from '../models/azure-transcription';
 import BoundingBox from '../models/bounding-box';
 import { Document } from '../models/document';
-import Transcription from '../models/transcription';
+import { Transcription } from '../models/transcription';
 import { DataApiService } from './data-api.service';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -27,7 +28,7 @@ export class DocumentService {
 
   /**
    * @deprecated stub method to make ui work; drop and seed database to populate data
-   * @param id 
+   * @param id
    */
   getDocument(id: number): Observable<Document> {
     return of(DOCUMENTS.find(doc => doc.Id === id));

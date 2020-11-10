@@ -1,6 +1,6 @@
-import Model from './model';
+import { Model } from './model';
 
-export default class Project extends Model {
+export class Project extends Model {
   constructor(
     id: number = 0,
     public Name: string = undefined,
@@ -8,5 +8,15 @@ export default class Project extends Model {
     public SampleDocumentUrl: string = undefined,
     public Active: boolean = false) {
     super(id);
+  }
+
+  static fromPayload(payload: any): Project {
+    return new Project(
+      payload.Id,
+      payload.Name,
+      payload.Description,
+      payload.SampleDocumentUrl,
+      payload.Active
+    );
   }
 }

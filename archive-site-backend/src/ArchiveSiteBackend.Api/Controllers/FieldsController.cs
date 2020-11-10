@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace ArchiveSiteBackend.Api.Controllers {
     [ApiController]
     [Route("api/odata/[controller]")]
-    public class FieldsController  : EntityControllerBase<ArchiveDbContext, Field> {
+    public class FieldsController : EntityControllerBase<ArchiveDbContext, Field> {
         public FieldsController(ArchiveDbContext context) : base(context) {
         }
 
@@ -38,37 +38,45 @@ namespace ArchiveSiteBackend.Api.Controllers {
                 });
             }
 
-            var fieldList = new List<Field>();
-            var warnings = new List<String>();
-            String commentText = null;
-            foreach (var child in columns.Nodes()) {
-                if (child is XComment comment) {
-                    commentText = comment.Value;
-                } else if (child is XElement element && element.Name.LocalName == "column") {
-                    fieldList.Add(RtpHelper.ParseField(commentText, element));
-                } else if (child is XElement unknownElement) {
-                    var message =
-                        $"Skipped unexpected element: {unknownElement.Name.LocalName}";
-                    if (unknownElement is IXmlLineInfo lineInfo) {
-                        message += $" ({lineInfo.LineNumber}:{lineInfo.LinePosition})";
-                    }
+            try {
+                var fieldList = new List<Field>();
+                var warnings = new List<String>();
+                String commentText = null;
+                foreach (var child in columns.Nodes()) {
+                    if (child is XComment comment) {
+                        commentText = comment.Value;
+                    } else if (child is XElement element && element.Name.LocalName == "column") {
+                        fieldList.Add(RtpHelper.ParseField(commentText, element));
+                    } else if (child is XElement unknownElement) {
+                        var message =
+                            $"Skipped unexpected element: {unknownElement.Name.LocalName}";
+                        if (unknownElement is IXmlLineInfo lineInfo) {
+                            message += $" ({lineInfo.LineNumber}:{lineInfo.LinePosition})";
+                        }
 
-                    warnings.Add(message);
-                } else {
-                    var message =
-                        $"Skipped unexpected node: {child.NodeType}";
-                    if (child is IXmlLineInfo lineInfo) {
-                        message += $" ({lineInfo.LineNumber}:{lineInfo.LinePosition})";
-                    }
+                        warnings.Add(message);
+                    } else {
+                        var message =
+                            $"Skipped unexpected node: {child.NodeType}";
+                        if (child is IXmlLineInfo lineInfo) {
+                            message += $" ({lineInfo.LineNumber}:{lineInfo.LinePosition})";
+                        }
 
-                    warnings.Add(message);
+                        warnings.Add(message);
+                    }
                 }
-            }
 
-            return Ok(new {
-                Fields = fieldList,
-                Warnings = warnings
-            });
+                return Ok(new {
+                    Fields = fieldList,
+                    Warnings = warnings
+                });
+            } catch (XmlException ex) {
+                return BadRequest(new ProblemDetails {
+                    Type = "archive-site:validation-error/invalid-rtp-xml",
+                    Title = "The specified file does not contain valid RTP XML.",
+                    Detail = ex.Message
+                });
+            }
         }
     }
 }

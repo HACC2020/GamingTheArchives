@@ -1,5 +1,5 @@
 
-//import User from '../models/user';
+//import { User } from '../models/user';
 import { Document } from '../models/document';
 
 export const DOCUMENTS: Document[] = [

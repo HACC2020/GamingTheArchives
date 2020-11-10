@@ -8,3 +8,7 @@ https://storage.googleapis.com/app-hiscribe-images/projects/1/ChineseArrivals_18
 https://storage.googleapis.com/app-hiscribe-images/projects/1/ChineseArrivals_1878_01372.png
 https://storage.googleapis.com/app-hiscribe-images/projects/1/ChineseArrivals_1878_01382.png
 https://storage.googleapis.com/app-hiscribe-images/projects/1/ChineseArrivals_1878_01572.png
+
+https://storage.googleapis.com/app-hiscribe-images/projects/2/224-23-1871-00007.png
+https://storage.googleapis.com/app-hiscribe-images/projects/2/224-23-1871-00005.png
+https://storage.googleapis.com/app-hiscribe-images/projects/2/224-23-1871-00006.png

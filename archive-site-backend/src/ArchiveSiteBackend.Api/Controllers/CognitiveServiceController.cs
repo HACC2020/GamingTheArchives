@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using ArchiveSite.Data;
 using ArchiveSiteBackend.Api.Services;
 using Microsoft.Extensions.Logging;
+using System.Net.Http;
 
 namespace ArchiveSiteBackend.Api.Controllers
 {
@@ -13,10 +14,10 @@ namespace ArchiveSiteBackend.Api.Controllers
     {
         private ILogger<CognitiveServiceController> Logger;
         private ArchiveDbContext ArchiveDbContext;
-        private CognitiveService CognitiveService;
+        private ICloudOcrService CognitiveService;
 
         public CognitiveServiceController(ILogger<CognitiveServiceController> logger, ArchiveDbContext archiveDbContext,
-            CognitiveService cognitiveService)
+            ICloudOcrService cognitiveService)
         {
             Logger = logger;
             ArchiveDbContext = archiveDbContext;
@@ -30,7 +31,7 @@ namespace ArchiveSiteBackend.Api.Controllers
         /// <param name="documentId">refers to the document id in the table documents column id</param>
         /// <returns></returns>
         [Obsolete("This method will change...")]
-        public async Task<IActionResult> Post(Int64 documentId)
+        public async Task<IActionResult> Post([FromBody] Int64 documentId)
         {
             var document = ArchiveDbContext.Documents.Find(documentId);
             if (document == null)
@@ -38,12 +39,22 @@ namespace ArchiveSiteBackend.Api.Controllers
                 return NotFound();
             }
 
-            // TODO complete the implementation
+            var httpClient = new HttpClient();
 
-            var documentTexts = await CognitiveService.ReadImage(System.IO.File.OpenRead(document.FileName));
+            try
+            {
+                var url = new Uri(document.DocumentImageUrl);
+                var httpStream = await httpClient.GetStreamAsync(url);
 
+                var documentTexts = await CognitiveService.ReadImage(httpStream);
 
-            return Ok(documentTexts);
+                return Ok(documentTexts);
+            }
+            catch (Exception e)
+            {
+                Logger.LogError(e, $"failed to read image for documentId: {documentId}");
+                return NotFound();
+            }
         }
     }
 }

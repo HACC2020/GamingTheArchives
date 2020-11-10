@@ -36,17 +36,17 @@ namespace ArchiveSiteBackend.Api.Services
         /// </summary>
         /// <param name="filename"></param>
         /// <returns></returns>
-        public async Task<List<DocumentText>> ReadImage(FileStream fileStream)
+        public async Task<List<DocumentText>> ReadImage(Stream stream)
         {
             try
             {
-                var streamHeaders = await ComputerVisionClient.ReadInStreamAsync(fileStream, "en");
+                var streamHeaders = await ComputerVisionClient.ReadInStreamAsync(stream, "en");
                 var operationLocation = streamHeaders.OperationLocation;
 
                 const int numberOfCharsInOperationId = 36;
                 string operationId = operationLocation.Substring(operationLocation.Length - numberOfCharsInOperationId);
 
-                await Task.Delay(1500);
+                await Task.Delay(1000);
 
                 ReadOperationResult readOperationResult;
                 do
@@ -64,10 +64,10 @@ namespace ArchiveSiteBackend.Api.Services
                     {
                         var boundBox = new BoundingBox()
                         {
-                            x1 = line.BoundingBox[0],
-                            y1 = line.BoundingBox[1],
-                            x2 = line.BoundingBox[2],
-                            y2 = line.BoundingBox[3]
+                            Left = line.BoundingBox[0],
+                            Top = line.BoundingBox[1],
+                            Right = line.BoundingBox[4],
+                            Bottom = line.BoundingBox[5]
                         };
 
                         var documentText = new DocumentText()
@@ -84,7 +84,7 @@ namespace ArchiveSiteBackend.Api.Services
             }
             catch (Exception e)
             {
-                Logger.LogError(e, $"failed to analyze file: {fileStream.Name}");
+                Logger.LogError(e, $"failed to analyze file");
                 return null;
             }
         }

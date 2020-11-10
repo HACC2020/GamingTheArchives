@@ -3,5 +3,7 @@
 # inherit from root
 root = false
 
-[*.ts]
-quote_type = single
+# 4 space indentation for c-sharp files
+[*.cs]
+indent_style = space
+indent_size = 4

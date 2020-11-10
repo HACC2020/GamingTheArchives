@@ -50,7 +50,7 @@ namespace ArchiveSiteBackend.Api {
                 var facebookConfig = new FacebookConfiguration();
                 this.Configuration.GetSection("Facebook").Bind(facebookConfig);
                 services.AddSingleton(Options.Create(facebookConfig));
-                
+
                 // Asp.Net MVC Dependencies
 
                 services
@@ -59,8 +59,7 @@ namespace ArchiveSiteBackend.Api {
                             .RequireAuthenticatedUser()
                             .Build();
 
-                        if(!String.IsNullOrEmpty(facebookConfig.ApplicationId))
-                        {
+                        if (!String.IsNullOrEmpty(facebookConfig.ApplicationId)) {
                             options.Filters.Add(new AuthorizeFilter(policy));
                         }
                     })
@@ -72,9 +71,8 @@ namespace ArchiveSiteBackend.Api {
                     });
                 services.AddMvc();
                 services.AddOData();
-                
-                if (!String.IsNullOrEmpty(facebookConfig.ApplicationId)) {
-                    var authenticationBuilder =
+
+                var authenticationBuilder =
                     services
                         .AddAuthentication(options => { options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme; })
                         .AddCookie(
@@ -86,6 +84,7 @@ namespace ArchiveSiteBackend.Api {
                                 };
                             });
 
+                if (!String.IsNullOrEmpty(facebookConfig.ApplicationId)) {
                     Console.Error.WriteLine($"Enabling Facebook Login with ApplicationId: {facebookConfig.ApplicationId}");
                     authenticationBuilder = authenticationBuilder.AddFacebook(facebookOptions => {
                         facebookOptions.AppId = facebookConfig.ApplicationId;
@@ -143,7 +142,7 @@ namespace ArchiveSiteBackend.Api {
             }
 
             app.UseHttpsRedirection();
-            
+
             var originPolicy = app.ApplicationServices.GetRequiredService<IOptions<OriginPolicyConfiguration>>();
             if (originPolicy.Value.HasOrigin()) {
                 app.UseCors();

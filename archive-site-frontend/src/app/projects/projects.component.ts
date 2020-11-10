@@ -65,7 +65,7 @@ export class ProjectsComponent implements OnInit {
         .get()
         .pipe(map((oe: ODataEntities<Project>) => oe.entities));
 
-    this._userContext.user$
+    this.user$
       .subscribe(result => {
         if (result) {
           this.inactiveProjects$ =

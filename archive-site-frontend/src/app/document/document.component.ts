@@ -78,6 +78,55 @@ export class DocumentComponent implements OnInit {
     console.log(event);
   }
 
+  private isImageMoving = false;
+  private mouseDown = { x: 0, y: 0, left: 0, top: 0};
+
+  onImageMouseDown(event: MouseEvent): void {
+    event.preventDefault();
+
+    const left = parseInt(this.documentImage.nativeElement.style.left);
+    this.mouseDown.left = isNaN(left) ? 0 : left;
+
+    const top = parseInt(this.documentImage.nativeElement.style.top);
+    this.mouseDown.top = isNaN(top) ? 0 : top;
+
+    this.mouseDown.x = event.clientX;
+    this.mouseDown.y = event.clientY;
+
+    console.log("onImageMouseDown");
+    console.log(`isImageMoving: ${this.isImageMoving}`);
+
+    if (this.isImageMoving) {
+      this.isImageMoving = !this.isImageMoving;
+      return;
+    }
+
+    this.isImageMoving = !this.isImageMoving;
+
+  }
+
+  onImageMouseMove(mouseEvent: MouseEvent): void {
+    if (!this.isImageMoving) {
+      return;
+    }
+
+    console.log("onImageMouseMove");
+
+    var left = mouseEvent.clientX - this.mouseDown.x;
+    var top = mouseEvent.clientY - this.mouseDown.y;
+
+    console.log(`event x: ${mouseEvent.clientX} - event y: ${mouseEvent.clientY}`);
+    console.log(`down x: ${this.mouseDown.x}, down y: ${this.mouseDown.y}`);
+
+    this.documentImage.nativeElement.style.left = (this.mouseDown.left + left) + "px";
+    this.documentImage.nativeElement.style.top = (this.mouseDown.top + top) + "px";
+  }
+
+  onImageMouseUp(): void {
+    console.log("onImageMouseUp");
+    this.isImageMoving = false;
+  }
+
   submit(): void {
     const dataSubmitted = this.getUserInput();
     console.log(dataSubmitted);

@@ -1,15 +1,14 @@
-/* Changing the purpose of this component. It will
-* be to show the document as a single image.
-*
-*/
-
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, ReplaySubject } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { HighlightMarker, MarkerArea } from 'markerjs';
 
 import { environment } from 'src/environments/environment';
+import { Field, FieldType } from 'src/app/models/field';
+import { UserContextService } from 'src/app/services/user-context-service';
+import { NgForm } from '@angular/forms';
 
 import { DocumentService } from '../services/document.service';
 import { MessageService } from '../services/message.service';
@@ -17,7 +16,7 @@ import { MarkerAreaState } from 'markerjs/typings/MarkerAreaState';
 import { Document } from '../models/document';
 import { Transcription } from '../models/transcription';
 import AzureTranscription from '../models/azure-transcription';
-import { Field } from 'src/app/models/field';
+import { DataApiService } from 'src/app/services/data-api.service';
 
 @Component({
   selector: 'app-document',
@@ -27,49 +26,69 @@ import { Field } from 'src/app/models/field';
 export class DocumentComponent implements OnInit {
 
   document$: Observable<Document>;
+  fields$: Observable<Field[]>;
+  data: { [key: string]: string } = {};
   documentImageUrl: string;
 
   projectId: number;
   documentId: number;
 
-  fields = [
-    { displayText: 'Title', id: 'title', type: 'text' },
-    { displayText: 'Description', id: 'description', type: 'text' },
-    { displayText: 'Photo Credit', id: 'photo-credit', type: 'text' },
-    { displayText: 'From Collection', id: 'from-collection', type: 'text' },
-    { displayText: 'Gift of', id: 'gift-of', type: 'text' },
-    { displayText: 'Received Date', id: 'received-negative', type: 'date' },
-    { displayText: 'Negative Number', id: 'negative-number', type: 'text' },
-    { displayText: 'Negative Size', id: 'negative-size', type: 'text' },
-    { displayText: 'Display Date', id: 'display-date', type: 'date' },
-    { displayText: 'Start Date', id: 'start-date', type: 'date' },
-    { displayText: 'End Date', id: 'end-date', type: 'date' },
-    { displayText: 'Indexer Notes', id: 'indexer-notes', type: 'textarea' },
-  ];
+  isLoading: boolean = true;
+
+  @ViewChild('transcribeForm') protected transcribeForm: NgForm;
+
+  transcription: Transcription;
+  private _saving: Promise<void>;
 
   constructor(
+    private dataApi: DataApiService,
     private documentService: DocumentService,
     private messageService: MessageService,
+    private userContext: UserContextService,
     private route: ActivatedRoute,
     private router: Router
   ) {
   }
 
   ngOnInit(): void {
-    this.getDocument();
-  }
+    console.log('DocumentComponent.ngOnInit');
 
-  // Find the document to serve according to the URL.
-  getDocument(): void {
     this.route.params.subscribe(params => {
-      this.projectId = +params.projectId;
-      this.documentId = +params.documentId;
+      console.log('DocumentComponent route params changed');
+      this.isLoading = true;
+      this.projectId = Number(params.projectId);
+      this.documentId = Number(params.documentId);
+
+      this.transcription = undefined;
+      this.data = {};
 
       this.azureTranscriptions$ = this.documentService.getAzureTranscription(this.documentId);
+
       this.document$ = this.documentService.getDocumentByDocumentId(this.documentId);
       this.document$.subscribe(document => {
         this.documentImageUrl = `${environment.apiUrl}/DocumentImage/${document.Id}`;
       });
+
+      this.fields$ =
+        this.dataApi.fieldService.entities()
+          .filter({ ProjectId: this.projectId })
+          .get()
+          .pipe(map(f => f.entities));
+
+      this.documentService.getCurrentUserTranscription(this.documentId)
+        .subscribe(transcription => {
+          if (transcription) {
+            this.transcription = transcription;
+            let allTranscriptions: any[] = JSON.parse(transcription.Data);
+            console.log('Existing transcription data loaded');
+            console.log(allTranscriptions);
+            if (allTranscriptions && allTranscriptions.length > 0) {
+              this.data = allTranscriptions[0];
+            }
+          }
+
+          this.isLoading = false;
+        });
     });
   }
 
@@ -234,26 +253,23 @@ export class DocumentComponent implements OnInit {
   }
 
   onImageDragOver(event: DragEvent): void {
-    console.log('onImageDragOver');
     event.preventDefault();
     event.stopPropagation();
 
     this.showRendered = true;
   }
 
-  startAutoTranscribe(event: DragEvent, field: { id: string }): void {
-    event.dataTransfer.setData('application/json', JSON.stringify({ id: field.id }))
+  startAutoTranscribe(event: DragEvent, field: Field): void {
+    event.dataTransfer.setData('application/json', JSON.stringify(field))
   }
 
-  onImageDrop(event: DragEvent): void {
+  async onImageDrop(event: DragEvent): Promise<void> {
     console.log(event);
     let x = event.offsetX;
     let y = event.offsetY;
 
     let trueX = x / this.widthRatio;
     let trueY = y / this.heightRatio;
-
-    console.log({ x, y, trueX, trueY });
 
     if (this.azureTranscriptions) {
       let match: string;
@@ -268,16 +284,12 @@ export class DocumentComponent implements OnInit {
       if (match) {
         console.log(`Boom! ${match}`);
 
-        let fieldInfo = JSON.parse(event.dataTransfer.getData('application/json'))
+        let fieldInfo =
+          Field.fromPayload(JSON.parse(event.dataTransfer.getData('application/json')));
 
-        if (fieldInfo.id) {
-          let transcribeTo =
-            Array.from(document.querySelectorAll('input'))
-              .filter(input => input.id === fieldInfo.id)[0];
-
-          if (transcribeTo) {
-            transcribeTo.value = match;
-          }
+        if (fieldInfo.Name) {
+          this.data[fieldInfo.Name] = match;
+          await this.saveTranscription();
         }
       }
     }
@@ -296,43 +308,83 @@ export class DocumentComponent implements OnInit {
     return parseFloat(regExp.exec(transform)[0]);
   }
 
-  submit(): void {
-    const dataSubmitted = this.getUserInput();
-    console.log(dataSubmitted);
-
-    // TODO: get actual userID from somewhere
-    const userId = 999;
-
-    // TODO: currently we only support single record transcription, so we're just wrapping the data
-    //  from the form in a one item array.
-    const transcription = new Transcription(0, this.documentId, userId, JSON.stringify([dataSubmitted]));
-    this.documentService.setTranscriptionByDocumentId(transcription);
-
+  async submit(): Promise<void> {
+    await this.saveTranscription(true);
     this.messageService.add('A new transcription has been added.');
   }
 
-  getUserInput(): any {
-    return Array.from(document.querySelectorAll('input'))
-      .reduce(
-        (acc, field) => {
-          acc[field.id] = field.value;
-          return acc;
-        },
-        {}
-      );
+  formChanged(): Promise<void> {
+    console.log('formChanged');
+    return this.saveTranscription();
   }
 
-  goToNext(): void {
-    const nextDocument$ = this.documentService.getNextDocument(this.projectId, this.documentId);
-    nextDocument$.subscribe(document => this.goToDocument(document));
+  async saveTranscription(submit: boolean = false): Promise<void> {
+    if (this._saving) {
+      // Make sure any previous saving is done.
+      await this._saving;
+    }
+    this._saving = this.saveTranscriptionHelper(submit);
+    return this._saving;
   }
 
-  goToPrevious(): void {
-    const previousDocument$ = this.documentService.getPreviousDocument(this.projectId, this.documentId);
-    previousDocument$.subscribe(document => this.goToDocument(document));
+  async saveTranscriptionHelper(submit: boolean): Promise<void> {
+    console.log('Saving transcription data: ' + JSON.stringify(this.data));
+    if (this.transcription) {
+      // Update
+      this.transcription.Data = JSON.stringify([this.data]);
+      if (submit) {
+        this.transcription.IsSubmitted = true;
+      }
+      this.transcription =
+        await this.documentService.saveTranscription(this.transcription);
+    } else {
+      // Save New
+      console.log('fetch user');
+      let user = await this.userContext.userPromise;
+      console.log('got user');
+
+      // TODO: currently we only support single record transcription, so we're just wrapping the
+      //  data from the form in a one item array.
+      this.transcription =
+        await this.documentService.saveTranscription(
+          new Transcription(
+            0,
+            this.documentId,
+            user.Id,
+            JSON.stringify([this.data]),
+            undefined,
+            submit
+          )
+        );
+    }
   }
 
-  goToDocument(document: Document): void {
-    this.router.navigate(['/transcribe', document.ProjectId, document.Id]);
+  async goToNext(): Promise<void> {
+    const next =
+      await this.documentService.getNextDocument(this.projectId, this.documentId).toPromise();
+    await this.goToDocument(next);
+  }
+
+  async goToPrevious(): Promise<void> {
+    const previous =
+      await this.documentService.getPreviousDocument(this.projectId, this.documentId).toPromise();
+    await this.goToDocument(previous);
+  }
+
+  async goToDocument(document: Document): Promise<void> {
+    await this.router.navigate(['/transcribe', document.ProjectId, document.Id]);
+  }
+
+  getHtmlInputType(type: FieldType) {
+    switch (type) {
+      case FieldType.Boolean:
+        return 'checkbox';
+      case FieldType.Integer:
+        return 'number';
+      case FieldType.String:
+        return 'text';
+      case FieldType.Date:
+        return 'date';
+    }
   }
 }

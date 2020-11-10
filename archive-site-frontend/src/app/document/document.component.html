@@ -15,19 +15,24 @@
             </li>
           </ul>
           <div id="image-container"
-               (mousedown)="onImageMouseDown($event)" (mousemove)="onImageMouseMove($event)"
-               (mouseup)="onImageMouseUp()" (mousewheel)="onImageMouseWheel($event)"
+               (mousedown)="onImageMouseDown($event)"
+               (mousemove)="onImageMouseMove($event)"
+               (mouseup)="onImageMouseUp()"
+               (mousewheel)="onImageMouseWheel($event)"
                (dragover)="onImageDragOver($event)">
 
-            <img class="img-fluid"
+            <img id="document-image"
+                 class="img-fluid"
                  crossorigin="anonymous"
-                 [src]="documentImageUrl" [hidden]="showRendered"
-                 #documentImage id="document-image" (load)="onImageLoaded($event)"
-                 (drop)="onImageDrop($event)"/>
-            <ng-container *ngIf="image$ | async as img">
-              <img #documentRender [src]="img" [hidden]="!showRendered"
-                   (drop)="onImageDrop($event)"/>
-            </ng-container>
+                 [src]="documentImageUrl"
+                 [hidden]="showRendered"
+                 (load)="onImageLoaded($event)"
+                 (drop)="onImageDrop($event)"
+                 #documentImage/>
+            <img [src]="image$ | async"
+                 [hidden]="!showRendered"
+                 (drop)="onImageDrop($event)"
+                 #documentRender/>
           </div>
           <div id="document-marker" #documentMarker></div>
         </div>
@@ -36,32 +41,42 @@
         <div class="card flex-md-row mb-4 box-shadow h-md-250">
           <div class="card-body d-flex flex-column align-items-start" style="padding-top: 0;">
             <h3>
-              <a class="text-dark" href="#">Transcription Fields</a>
+              <span class="text-dark">Transcription Fields</span>
             </h3>
-            <form style="padding-left: 1em;">
-              <div class="form-group row" *ngFor="let f of fields">
-                <label class="col-form-label" for="{{f.id}}">{{f.displayText}}</label>
-                <div class="col-sm">
-                  <div class="input-group">
-                    <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                <img src="/assets/images/icon-target.svg" class="icon-target"
-                                                     draggable="true" (dragstart)="startAutoTranscribe($event, f)" />
-                                            </span>
+            <ng-container *ngIf="!isLoading">
+              <form *ngIf="fields$ | async as fields" style="padding-left: 1em;" (change)="formChanged()"
+                    #transcribeForm="ngForm">
+                <fieldset [disabled]="transcription && transcription.IsSubmitted">
+                <div class="form-group row" *ngFor="let f of fields">
+                  <label class="col-form-label" for="project-{{projectId}}-field-{{f.Index}}">
+                    {{f.Name || ('Field ' + f.Id)}}
+                  </label>
+                  <div class="col-sm">
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text">
+                            <img src="/assets/images/icon-target.svg" class="icon-target"
+                                 draggable="true" (dragstart)="startAutoTranscribe($event, f)"/>
+                        </span>
+                      </div>
+                      <input name="project-{{projectId}}-field-{{f.Index}}"
+                             id="project-{{projectId}}-field-{{f.Index}}"
+                             type="{{getHtmlInputType(f.Type)}}"
+                             [(ngModel)]="data[f.Name]"
+                             class="form-control"/>
                     </div>
-                    <input type="{{f.type}}" class="form-control" name="{{f.id}}" id="{{f.id}}" autocomplete="off"/>
                   </div>
                 </div>
-              </div>
-              <span class="form-inline">
-                                <!-- will fix at a later time -->
-                                <button type="button" class="btn btn-success mr-1" (click)="submit()">Submit</button>
-                                <button type="button" class="btn btn-danger mr-1">Help</button>
-                                <button type="button" class="btn btn-outline-primary mr-1" (click)="goToPrevious()">Previous</button>
-                                <button type="button" class="btn btn-outline-primary mr-1"
-                                        (click)="goToNext()">Next</button>
-                            </span>
-            </form>
+                </fieldset>
+                <span class="form-inline">
+                  <!-- will fix at a later time -->
+                  <button type="button" class="btn btn-success mr-1" (click)="submit()"  [disabled]="transcription && transcription.IsSubmitted">Submit</button>
+                  <button type="button" class="btn btn-danger mr-1">Help</button>
+                  <button type="button" class="btn btn-outline-primary mr-1" (click)="goToPrevious()">Previous</button>
+                  <button type="button" class="btn btn-outline-primary mr-1" (click)="goToNext()">Next</button>
+                </span>
+              </form>
+            </ng-container>
           </div>
         </div>
       </div>

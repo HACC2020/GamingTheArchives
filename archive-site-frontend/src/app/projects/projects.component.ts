@@ -74,6 +74,6 @@ export class ProjectsComponent implements OnInit {
               .get()
               .pipe(map((oe: ODataEntities<Project>) => oe.entities));
         }
-      })
+      });
   }
 }

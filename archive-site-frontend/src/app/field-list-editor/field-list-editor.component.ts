@@ -1,6 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Field, FieldType } from 'src/app/models/field';
-import { $enum } from 'ts-enum-util';
 
 @Component({
   selector: 'app-field-list-editor',
@@ -9,7 +8,12 @@ import { $enum } from 'ts-enum-util';
 })
 export class FieldListEditorComponent implements OnInit {
   FieldType = FieldType;
-  allFieldTypes: FieldType[] = Array.from($enum(FieldType).values());
+  allFieldTypes: FieldType[] = [
+    FieldType.String,
+    FieldType.Integer,
+    FieldType.Date,
+    FieldType.Boolean
+  ];
 
   @Input() fields: Field[];
   @Input() disabled: boolean;

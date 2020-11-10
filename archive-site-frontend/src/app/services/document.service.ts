@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ODataEntities } from 'angular-odata';
 import { from, Observable, of } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { map, mergeMap, tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { DOCUMENTS } from '../mock-data/mock-documents';
 import AzureTranscription from '../models/azure-transcription';
@@ -10,33 +10,21 @@ import BoundingBox from '../models/bounding-box';
 import { Document } from '../models/document';
 import { Transcription } from '../models/transcription';
 import { DataApiService } from './data-api.service';
+import { UserContextService } from 'src/app/services/user-context-service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DocumentService {
-
-  constructor(private dataApiService: DataApiService,
-              private httpClient: HttpClient) { }
-
-  /**
-   * @deprecated stub method to make ui work; drop and seed database to populate data
-   */
-  getAllDocuments(): Observable<Document[]> {
-    return of(DOCUMENTS);
-  }
-
-  /**
-   * @deprecated stub method to make ui work; drop and seed database to populate data
-   * @param id
-   */
-  getDocument(id: number): Observable<Document> {
-    return of(DOCUMENTS.find(doc => doc.Id === id));
+  constructor(
+    private _dataApiService: DataApiService,
+    private _userContext: UserContextService,
+    private _httpClient: HttpClient) {
   }
 
   getDocumentsByProjectId(projectId: number): Observable<Document[]> {
-    const documents$ = this.dataApiService.documentService.entities()
-      .filter({ProjectId: projectId})
+    const documents$ = this._dataApiService.documentService.entities()
+      .filter({ ProjectId: projectId })
       .orderBy("id asc")
       .get();
 
@@ -46,26 +34,65 @@ export class DocumentService {
   }
 
   getDocumentByDocumentId(documentId: number): Observable<Document> {
-    return this.dataApiService.documentService.entity(documentId).fetch();
+    return this._dataApiService.documentService.entity(documentId).fetch();
   }
 
   getNextDocument(projectId: number, documentId: number): Observable<Document> {
-    const nextDocument$ = this.dataApiService.documentService.entities()
-      .filter({ ProjectId: projectId,  Id: { gt: documentId } })
+    const nextDocument$ = this._dataApiService.documentService.entities()
+      .filter({ ProjectId: projectId, Id: { gt: documentId } })
       .top(1).get();
 
-    return this.mapSingleDocument(nextDocument$);
+    return DocumentService.mapSingleDocument(nextDocument$);
   }
 
   getPreviousDocument(projectId: number, documentId: number): Observable<Document> {
-    const previousDocument$ = this.dataApiService.documentService.entities()
-      .filter({ ProjectId: projectId,  Id: { lt: documentId } })
+    const previousDocument$ = this._dataApiService.documentService.entities()
+      .filter({ ProjectId: projectId, Id: { lt: documentId } })
       .orderBy("id desc").top(1).get();
 
-    return this.mapSingleDocument(previousDocument$);
+    return DocumentService.mapSingleDocument(previousDocument$);
   }
 
-  private mapSingleDocument(document$: Observable<ODataEntities<Document>>): Observable<Document> {
+  getCurrentUserTranscription(documentId: number): Observable<Transcription> {
+    return this._userContext.user$
+      .pipe(
+        mergeMap(user => {
+          if (!user) {
+            console.warn('not logged in');
+            return;
+            // throw new Error('User not logged in.');
+          }
+
+          console.log('Checking for existing transcriptions.');
+
+          return this._dataApiService.transcriptionService.entities()
+            .filter({ DocumentId: documentId, UserId: user.Id })
+            .get()
+        }),
+        map(t => t.entities && t.entities[0]));
+  }
+
+  async saveTranscription(transcription: Transcription): Promise<Transcription> {
+    let saved: Transcription;
+    if (transcription.Id) {
+      saved =
+        await this._dataApiService.transcriptionService
+          .entity(transcription.Id)
+          .put(transcription)
+          .pipe(map(t => t.entity))
+          .toPromise();
+    } else {
+      saved =
+        await this._dataApiService.transcriptionService
+          .create(transcription)
+          .toPromise();
+    }
+
+    console.log('Saved transcriptions: ' + JSON.stringify(saved));
+    return saved;
+  }
+
+  private static mapSingleDocument(document$: Observable<ODataEntities<Document>>): Observable<Document> {
     return document$.pipe(
       map((odata: ODataEntities<Document>) => {
         if (odata.entities.length > 0) {
@@ -74,13 +101,6 @@ export class DocumentService {
         return null;
       })
     );
-  }
-
-  setTranscriptionByDocumentId(transcription: Transcription): void {
-    // TODO complete implementation
-    this.dataApiService.transcriptionService
-      .create(transcription)
-      .subscribe((result) => console.log(result));
   }
 
   getAzureTranscription(documentId: number): Observable<Array<AzureTranscription>> {
@@ -104,10 +124,9 @@ export class DocumentService {
       return of<Array<AzureTranscription>>(azureTranscriptions);
     }
 
-    return this.httpClient.post<Array<AzureTranscription>>(apiUrl, documentId)
+    return this._httpClient.post<Array<AzureTranscription>>(apiUrl, documentId)
       .pipe(tap(transcription => {
         localStorage.setItem(cacheKey, JSON.stringify(transcription));
       }));
   }
-
 }

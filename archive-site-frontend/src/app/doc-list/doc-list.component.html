@@ -1,7 +1,7 @@
 <div *ngFor="let doc of documentList">
-    <div *ngIf="doc.Project === projectId">
+    <div *ngIf="doc.ProjectId === projectId">
         
-        <a routerLink="/transcribe/{{ doc.Id }}">{{doc.Path}}</a>
+        <a routerLink="['/transcribe', doc.ProjectId, doc.Id]">{{doc.Id}} (was doc.Path - unknown as to why?) </a>
         
     </div>
 </div>

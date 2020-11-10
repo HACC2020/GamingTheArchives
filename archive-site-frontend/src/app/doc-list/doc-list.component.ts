@@ -20,7 +20,7 @@ import { Location } from '@angular/common';
 export class DocListComponent implements OnInit {
 
   //Need this @Input to call project number in project details.
-  @Input () projectId: Number;
+  @Input () projectId: number;
 
   constructor(
     private documentService: DocumentService,

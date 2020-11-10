@@ -63,11 +63,11 @@ export class DocumentComponent implements OnInit {
       this.documentId = +params.documentId;
 
       this.document$ = this.documentService.getDocumentByDocumentId(this.documentId);
+      this.document$.subscribe(document => {
+        this.documentImageUrl = `${environment.apiUrl}/DocumentImage/${document.Id}`;
+      });
     });
 
-    this.document$.subscribe(document => {
-      this.documentImageUrl = `${environment.apiUrl}/DocumentImage/${document.Id}`;
-    });
   }
 
   @ViewChild('documentImage') documentImage: ElementRef;

@@ -9,6 +9,6 @@ namespace ArchiveSiteBackend.Api.Services
 {
     public interface ICloudOcrService
     {
-        public Task<List<DocumentText>> ReadImage(FileStream fileStream);
+        public Task<List<DocumentText>> ReadImage(Stream stream);
     }
 }

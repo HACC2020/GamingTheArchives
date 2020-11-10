@@ -4,12 +4,29 @@
             <div class="col-md-8">
                 <div class="card text-center">
                     <h4>Document ID: {{doc.Id}}</h4>
-                    <div id="image-container">
-                        <img class="img-fluid" *ngIf="this.documentImageUrl" [src]="this.documentImageUrl" 
-                        #documentImage id="document-image" (load)="onImageLoaded($event)"
+                    <ul class="nav justify-content-center mb-2">
+                        <li class="nav-item">
+                            <button class="btn btn-outline-primary mr-4" (click)="showHideHighlights()">Show/Hide Highlights</button>
+                        </li>
+                        <li class="nav-item">
+                            <button class="btn btn-outline-primary" (click)="resetImagePosition()">
+                                Reset Image Position
+                            </button>
+                        </li>
+                      </ul>
+                    <div id="image-container"
                         (mousedown)="onImageMouseDown($event)" (mousemove)="onImageMouseMove($event)"
-                        (mouseup)="onImageMouseUp()" (mousewheel)="onImageMouseWheel($event)"/>
+                        (mouseup)="onImageMouseUp()" (mousewheel)="onImageMouseWheel($event)"
+                        (dragover)="onImageDragOver($event)" >
+
+                        <img crossorigin="anonymous" class="img-fluid" *ngIf="this.documentImageUrl" 
+                            [src]="this.documentImageUrl" [hidden]="showRendered"
+                            #documentImage id="document-image" (load)="onImageLoaded($event)"
+                            (drop)="onImageDrop($event)" />
+                        <img #documentRender [src]="image$ | async" [hidden]="!showRendered"
+                            (drop)="onImageDrop($event)" />
                     </div>
+                    <div id="document-marker" #documentMarker></div>
                 </div>
             </div>
             <div class="col-md-4">
@@ -31,7 +48,14 @@
                             <div class="form-group row" *ngFor="let f of fields">
                                 <label class="col-form-label" for="{{f.id}}">{{f.displayText}}</label>
                                 <div class="col-sm">
-                                    <input type="{{f.type}}" class="form-control" name="{{f.id}}" id="{{f.id}}">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <img src="/assets/images/icon-target.svg" class="icon-target" draggable="true"/>
+                                            </span>
+                                        </div>
+                                        <input type="{{f.type}}" class="form-control" name="{{f.id}}" id="{{f.id}}" autocomplete="off"/>
+                                    </div>
                                 </div>
                             </div>
                             <span class="form-inline">

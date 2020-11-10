@@ -21,10 +21,10 @@ namespace ArchiveSiteBackend.Api.Models
 
     public class BoundingBox
     {
-        public double? x1 { get; set; }
-        public double? y1 { get; set; }
+        public double? Left { get; set; }
+        public double? Top { get; set; }
 
-        public double? x2 { get; set; }
-        public double? y2 { get; set; }
+        public double? Right { get; set; }
+        public double? Bottom { get; set; }
     }
 }

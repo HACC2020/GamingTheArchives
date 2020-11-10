@@ -1,8 +1,12 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ODataEntities } from 'angular-odata';
-import { Observable, of } from 'rxjs';
+import { from, Observable, of } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 import { DOCUMENTS } from '../mock-data/mock-documents';
+import AzureTranscription from '../models/azure-transcription';
+import BoundingBox from '../models/bounding-box';
 import { Document } from '../models/document';
 import { Transcription } from '../models/transcription';
 import { DataApiService } from './data-api.service';
@@ -12,7 +16,8 @@ import { DataApiService } from './data-api.service';
 })
 export class DocumentService {
 
-  constructor(private dataApiService: DataApiService) { }
+  constructor(private dataApiService: DataApiService,
+              private httpClient: HttpClient) { }
 
   /**
    * @deprecated stub method to make ui work; drop and seed database to populate data
@@ -76,6 +81,34 @@ export class DocumentService {
     this.dataApiService.transcriptionService
       .create(transcription)
       .subscribe((result) => console.log(result));
+  }
+
+  getAzureTranscription(documentId: number): Observable<Array<AzureTranscription>> {
+    const apiUrl = `${environment.apiUrl}/CognitiveService`;
+    const cacheKey = `azureTranscription:${documentId}`;
+
+    const cache = localStorage.getItem(cacheKey);
+    if (cache !== null) {
+      const cacheObject = JSON.parse(cache);
+      const azureTranscriptions = new Array<AzureTranscription>();
+
+      cacheObject.forEach(element => {
+        const boundingBox = element.BoundingBox;
+        const azureTranscription = new AzureTranscription(
+          new BoundingBox(boundingBox.Top, boundingBox.Left, boundingBox.Bottom, boundingBox.Right),
+          element.Text
+        );
+
+        azureTranscriptions.push(azureTranscription);
+      });
+
+      return of<Array<AzureTranscription>>(azureTranscriptions);
+    }
+
+    return this.httpClient.post<Array<AzureTranscription>>(apiUrl, documentId)
+      .pipe(tap(transcription => {
+        localStorage.setItem(cacheKey, JSON.stringify(transcription));
+      }));
   }
 
 }

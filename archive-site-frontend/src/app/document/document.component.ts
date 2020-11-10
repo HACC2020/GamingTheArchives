@@ -5,17 +5,19 @@
 */
 
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { Document } from '../models/document';
-import { DocumentService } from '../services/document.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Location } from '@angular/common';
-import { DataApiService } from '../services/data-api.service';
-import { Observable } from 'rxjs';
-import { Transcription } from '../models/transcription';
-import { MessageService } from '../services/message.service';
-import { ODataEntities } from 'angular-odata';
-import { map } from 'rxjs/operators';
+import { Observable, ReplaySubject } from 'rxjs';
+
+import { HighlightMarker, MarkerArea } from 'markerjs';
+
 import { environment } from 'src/environments/environment';
+
+import { DocumentService } from '../services/document.service';
+import { MessageService } from '../services/message.service';
+import { MarkerAreaState } from 'markerjs/typings/MarkerAreaState';
+import { Document } from '../models/document';
+import { Transcription } from '../models/transcription';
+import AzureTranscription from '../models/azure-transcription';
 
 @Component({
   selector: 'app-document',
@@ -62,20 +64,115 @@ export class DocumentComponent implements OnInit {
       this.projectId = +params.projectId;
       this.documentId = +params.documentId;
 
+      this.azureTranscriptions$ = this.documentService.getAzureTranscription(this.documentId);
       this.document$ = this.documentService.getDocumentByDocumentId(this.documentId);
       this.document$.subscribe(document => {
         this.documentImageUrl = `${environment.apiUrl}/DocumentImage/${document.Id}`;
       });
     });
-
   }
 
   @ViewChild('documentImage') documentImage: ElementRef;
 
+  @ViewChild('documentMarker') documentMarker: ElementRef;
+
+  private markerArea: MarkerArea;
+  private renderedImage: string;
+  private markerAreaState: MarkerAreaState;
+
+  private azureTranscriptions$: Observable<Array<AzureTranscription>>;
+  private azureTranscriptions: Array<AzureTranscription>;
+  private widthRatio: number;
+  private heightRatio: number;
+
   onImageLoaded(event: Event): void {
+    /*
     console.log(`image width ${this.documentImage.nativeElement.width}`);
     console.log(`image height ${this.documentImage.nativeElement.height}`);
     console.log(event);
+    */
+    console.log('onImageLoaded');
+
+    let naturalWidth = this.documentImage.nativeElement.naturalWidth;
+    let naturalHeight = this.documentImage.nativeElement.naturalHeight;
+    let imageWidth = this.documentImage.nativeElement.width;
+    let imageHeight = this.documentImage.nativeElement.height;
+
+    this.widthRatio = (naturalWidth - imageWidth) / naturalWidth;
+    this.heightRatio = (naturalHeight - imageHeight) / naturalHeight;
+
+    ///*
+    if (this.markerArea != null) {
+      this.markerArea.resetState();
+    }
+
+    // must be re-instantiated because the image size MIGHT change
+    this.markerArea = new MarkerArea(this.documentImage.nativeElement,
+      {targetRoot: this.documentMarker.nativeElement, showUi: false});
+    this.markerArea.show((dataUrl, state) => {
+      this.renderedImage = dataUrl;
+      this.markerAreaState = state;
+    });
+
+    //this.markerArea.close();
+    //*/
+
+    this.resetImagePosition();
+
+    this.azureTranscriptions$.subscribe((azureTranscripts) => {
+      console.log(azureTranscripts);
+      this.azureTranscriptions = azureTranscripts;
+
+      azureTranscripts.forEach(transcript => {
+        const boundingBox = transcript.BoundingBox;
+        this.markerArea.addMarker(HighlightMarker,
+          {
+            translateX: boundingBox.Left * this.widthRatio,
+            translateY: boundingBox.Top * this.heightRatio,
+            width: (boundingBox.Right - boundingBox.Left) * this.widthRatio,
+            height: (boundingBox.Bottom - boundingBox.Top) * this.heightRatio,
+            markerId: '',
+            markerType: 'HighlightMarker'
+          });
+      });
+
+      this.renderImage();
+    });
+  }
+
+  showRendered: boolean = false;
+
+  showHideHighlights(): void {
+    this.showRendered = !this.showRendered;
+  }
+
+  resetImagePosition(): void {
+    // reset mouse related coordinates
+    this.isImageMoving = false;
+    this.mouseDown = { x: 0, y: 0, left: 0, top: 0};
+
+    // reset documentImage position
+    this.documentImage.nativeElement.style.left = 0;
+    this.documentImage.nativeElement.style.top = 0;
+    this.documentImage.nativeElement.style.transform = 'scale(1)';
+  }
+
+  addMarker(): void {
+    console.log("addM");
+    this.markerArea.open();
+    this.markerArea.addMarker(HighlightMarker);
+  }
+
+  @ViewChild('documentRender') documentRender: HTMLImageElement;
+
+  public image$: ReplaySubject<string>  = new ReplaySubject(1);
+
+  renderImage(): void {
+    this.markerArea.render((dataUrl) => {
+      this.image$.next(dataUrl);
+      this.markerArea.resetState();
+      this.documentMarker.nativeElement.style.display = 'none';
+    });
   }
 
   private isImageMoving = false;
@@ -135,6 +232,22 @@ export class DocumentComponent implements OnInit {
     this.documentImage.nativeElement.style.transform = `scale(${scale})`;
   }
 
+  onImageDragOver(event: DragEvent): void {
+    console.log('onImageDragOver');
+    event.preventDefault();
+    event.stopPropagation();
+
+    this.showRendered = true;
+  }
+
+  onImageDrop(event: DragEvent): void {
+    console.log(event);
+    let x = event.x;
+    let y = event.y;
+
+    this.showRendered = false;
+  }
+
   private getImageTransformScale(): number {
     const transform = this.documentImage.nativeElement.style.transform;
     if (transform === '') {
@@ -149,7 +262,7 @@ export class DocumentComponent implements OnInit {
   submit(): void {
     const dataSubmitted = this.getUserInput();
     console.log(dataSubmitted);
-    
+
     // TODO: get actual userID from somewhere
     const userId = 999;
 

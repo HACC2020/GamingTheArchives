@@ -1,0 +1,35 @@
+import { LineMarkerBaseState } from "./LineMarkerBaseState";
+import { MarkerBase } from "./MarkerBase";
+export declare class LineMarkerBase extends MarkerBase {
+    static createMarker: () => LineMarkerBase;
+    protected markerLine: SVGLineElement;
+    protected previousState: LineMarkerBaseState;
+    private readonly MIN_LENGTH;
+    private markerBgLine;
+    private controlBox;
+    private controlGrip1;
+    private controlGrip2;
+    private activeGrip;
+    private x1;
+    private y1;
+    private x2;
+    private y2;
+    endManipulation(): void;
+    select(): void;
+    deselect(): void;
+    getState(): LineMarkerBaseState;
+    restoreState(state: LineMarkerBaseState): void;
+    protected setup(): void;
+    protected resize(dx: number, dy: number): void;
+    protected adjustLine(): void;
+    private getLineLength;
+    private addControlBox;
+    private adjustControlBox;
+    private addControlGrips;
+    private createGrip;
+    private positionGrips;
+    private positionGrip;
+    private gripMouseDown;
+    private gripMouseUp;
+    private gripMouseMove;
+}

@@ -28,6 +28,7 @@
     "bootstrap": "^4.5.0",
     "lodash": "^4.17.20",
     "material-design-icons": "^3.0.1",
+    "markerjs": "file:local_modules/markerjs",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.2"

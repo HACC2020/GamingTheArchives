@@ -90,6 +90,13 @@ export class DocumentComponent implements OnInit {
             console.log(dataUrl);
         }
     );
+
+    // reset mouse related coordinates
+    this.isImageMoving = false;
+    this.mouseDown = { x: 0, y: 0, left: 0, top: 0};
+
+    // TODO reset documentImage position
+    this.documentImage.nativeElement;
   }
 
   private isImageMoving = false;

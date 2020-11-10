@@ -5,17 +5,16 @@
 */
 
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { Document } from '../models/document';
-import { DocumentService } from '../services/document.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Location } from '@angular/common';
-import { DataApiService } from '../services/data-api.service';
 import { Observable } from 'rxjs';
-import Transcription from '../models/transcription';
-import { MessageService } from '../services/message.service';
-import { ODataEntities } from 'angular-odata';
-import { map } from 'rxjs/operators';
+
+import { MarkerArea } from 'markerjs';
+
 import { environment } from 'src/environments/environment';
+import { Document } from '../models/document';
+import Transcription from '../models/transcription';
+import { DocumentService } from '../services/document.service';
+import { MessageService } from '../services/message.service';
 
 @Component({
   selector: 'app-document',
@@ -67,15 +66,30 @@ export class DocumentComponent implements OnInit {
         this.documentImageUrl = `${environment.apiUrl}/DocumentImage/${document.Id}`;
       });
     });
-
   }
 
   @ViewChild('documentImage') documentImage: ElementRef;
 
+  private markerArea: MarkerArea;
+
   onImageLoaded(event: Event): void {
+    /*
     console.log(`image width ${this.documentImage.nativeElement.width}`);
     console.log(`image height ${this.documentImage.nativeElement.height}`);
     console.log(event);
+    */
+    console.log('onImageLoaded');
+    if (this.markerArea != null) {
+      this.markerArea.resetState();
+    }
+
+    // must be re-instantiated because the image size MIGHT change
+    this.markerArea = new MarkerArea(this.documentImage.nativeElement);
+    this.markerArea.show(
+        (dataUrl) => {
+            console.log(dataUrl);
+        }
+    );
   }
 
   private isImageMoving = false;

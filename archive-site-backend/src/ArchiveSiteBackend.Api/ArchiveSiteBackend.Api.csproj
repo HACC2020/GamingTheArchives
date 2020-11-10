@@ -30,35 +30,4 @@
     </Content>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Samples-DocumentImages\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="Samples-DocumentImages\ChineseArrivals_1847-1870_00001.jpg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Samples-DocumentImages\ChineseArrivals_1847-1870_00002.jpg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Samples-DocumentImages\ChineseArrivals_1847-1870_00003.jpg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Samples-DocumentImages\ChineseArrivals_1847-1870_00004.jpg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Samples-DocumentImages\ChineseArrivals_1847-1870_00005.jpg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Samples-DocumentImages\ChineseArrivals_1847-1870_00006.jpg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Samples-DocumentImages\ChineseArrivals_1847-1870_00007.jpg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Samples-DocumentImages\ChineseArrivals_1847-1870_00008.jpg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
 </Project>

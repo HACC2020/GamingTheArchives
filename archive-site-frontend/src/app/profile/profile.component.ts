@@ -5,6 +5,7 @@ import User from 'src/app/models/user';
 import { UserType } from 'src/app/models/user-type';
 import { $enum } from 'ts-enum-util';
 import { NotificationService } from 'src/app/services/notification-service';
+import { UserContextService } from 'src/app/services/user-context-service';
 
 @Component({
   selector: 'app-profile',
@@ -35,6 +36,7 @@ export class ProfileComponent implements OnInit {
     private _router: Router,
     private _route: ActivatedRoute,
     private _userService: UserService,
+    private _userContext: UserContextService,
     private _notifications: NotificationService) { }
 
   async ngOnInit(): Promise<void> {
@@ -84,6 +86,7 @@ export class ProfileComponent implements OnInit {
         this.displayName,
         this.adminMode ? this.userType : UserType.Rookie
       ));
+      this._userContext.invalidateUser();
       this._notifications.success('Welcome to Gaming the Archives');
       await this._router.navigate(['projects']);
     }

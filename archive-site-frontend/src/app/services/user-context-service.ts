@@ -7,31 +7,37 @@ import { UserService } from 'src/app/services/user.service';
   providedIn: 'root'
 })
 export class UserContextService {
-  private _userSubject: Subject<User>;
+  private _userSubject: Subject<User> = new Subject<User>();
+  private _currentUserRequest: Promise<User>;
 
   public get user$(): Observable<User> {
-    if (!this._userSubject) {
+    let observable = this._userSubject.asObservable();
+
+    if (this._currentUserRequest) {
+      this.emitCurrentUser();
+    } else {
       this.invalidateUser();
     }
 
-    return this._userSubject.asObservable();
+    return observable;
   }
 
   constructor(private _userService: UserService) {
   }
 
   public invalidateUser(): void {
-    if (!this._userSubject) {
-      // Lazily initialize this request
-      this._userSubject = new Subject<User>();
-    }
+    this._currentUserRequest = this.getCurrentUser();
+    this.emitCurrentUser();
+  }
 
-    from(this.getCurrentUser())
+  private emitCurrentUser() {
+    from(this._currentUserRequest)
       .subscribe(
         result => {
           this._userSubject.next(result);
         },
         error => {
+          console.warn(error);
           this._userSubject.error(error);
         }
       );

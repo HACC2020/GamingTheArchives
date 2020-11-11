@@ -87,9 +87,8 @@ export class DocumentService {
     const apiUrl = `${environment.apiUrl}/CognitiveService`;
     const cacheKey = `azureTranscription:${documentId}`;
 
-    const cache = localStorage.getItem(cacheKey);
-    if (cache !== null) {
-      const cacheObject = JSON.parse(cache);
+    const cacheObject = (data => data ? JSON.parse(data) : undefined)(localStorage.getItem(cacheKey));
+    if (cacheObject) {
       const azureTranscriptions = new Array<AzureTranscription>();
 
       cacheObject.forEach(element => {

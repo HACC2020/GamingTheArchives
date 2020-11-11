@@ -5,6 +5,7 @@ using System;
 using System.Net.Http;
 using System.Net.Mime;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ArchiveSiteBackend.Api.Controllers
 {
@@ -14,7 +15,7 @@ namespace ArchiveSiteBackend.Api.Controllers
     {
         private ILogger<DocumentImageController> Logger;
         private ArchiveDbContext ArchiveDbContext;
-        
+
         public DocumentImageController(ILogger<DocumentImageController> logger, ArchiveDbContext archiveDbContext)
         {
             Logger = logger;
@@ -28,6 +29,7 @@ namespace ArchiveSiteBackend.Api.Controllers
         /// <param name="documentId"></param>
         /// <returns></returns>
         [HttpGet("{documentId}")]
+        [AllowAnonymous]
         public async Task<IActionResult> Get(Int64 documentId)
         {
             var document = await ArchiveDbContext.Documents.FindAsync(documentId);
@@ -44,6 +46,7 @@ namespace ArchiveSiteBackend.Api.Controllers
                 var url = new Uri(document.DocumentImageUrl);
                 var httpStream = await httpClient.GetStreamAsync(url);
 
+                Response.Headers.Add("Access-Control-Allow-Origin", "Anonymous");
                 return File(httpStream, MediaTypeNames.Image.Jpeg);
             } catch(Exception)
             {

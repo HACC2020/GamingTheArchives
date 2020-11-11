@@ -1,4 +1,3 @@
-
 /* Changing the purpose of this component. It will
 * be to show the document as a single image.
 *
@@ -18,6 +17,7 @@ import { MarkerAreaState } from 'markerjs/typings/MarkerAreaState';
 import { Document } from '../models/document';
 import { Transcription } from '../models/transcription';
 import AzureTranscription from '../models/azure-transcription';
+import { Field } from 'src/app/models/field';
 
 @Component({
   selector: 'app-document',
@@ -52,7 +52,8 @@ export class DocumentComponent implements OnInit {
     private messageService: MessageService,
     private route: ActivatedRoute,
     private router: Router
-  ) { }
+  ) {
+  }
 
   ngOnInit(): void {
     this.getDocument();
@@ -98,8 +99,8 @@ export class DocumentComponent implements OnInit {
     let imageWidth = this.documentImage.nativeElement.width;
     let imageHeight = this.documentImage.nativeElement.height;
 
-    this.widthRatio = (naturalWidth - imageWidth) / naturalWidth;
-    this.heightRatio = (naturalHeight - imageHeight) / naturalHeight;
+    this.widthRatio = imageWidth / naturalWidth;
+    this.heightRatio = imageHeight / naturalHeight;
 
     ///*
     if (this.markerArea != null) {
@@ -108,7 +109,7 @@ export class DocumentComponent implements OnInit {
 
     // must be re-instantiated because the image size MIGHT change
     this.markerArea = new MarkerArea(this.documentImage.nativeElement,
-      {targetRoot: this.documentMarker.nativeElement, showUi: false});
+      { targetRoot: this.documentMarker.nativeElement, showUi: false });
     this.markerArea.show((dataUrl, state) => {
       this.renderedImage = dataUrl;
       this.markerAreaState = state;
@@ -149,7 +150,7 @@ export class DocumentComponent implements OnInit {
   resetImagePosition(): void {
     // reset mouse related coordinates
     this.isImageMoving = false;
-    this.mouseDown = { x: 0, y: 0, left: 0, top: 0};
+    this.mouseDown = { x: 0, y: 0, left: 0, top: 0 };
 
     // reset documentImage position
     this.documentImage.nativeElement.style.left = 0;
@@ -165,7 +166,7 @@ export class DocumentComponent implements OnInit {
 
   @ViewChild('documentRender') documentRender: HTMLImageElement;
 
-  public image$: ReplaySubject<string>  = new ReplaySubject(1);
+  public image$: ReplaySubject<string> = new ReplaySubject(1);
 
   renderImage(): void {
     this.markerArea.render((dataUrl) => {
@@ -176,7 +177,7 @@ export class DocumentComponent implements OnInit {
   }
 
   private isImageMoving = false;
-  private mouseDown = { x: 0, y: 0, left: 0, top: 0};
+  private mouseDown = { x: 0, y: 0, left: 0, top: 0 };
 
   onImageMouseDown(event: MouseEvent): void {
     event.preventDefault();
@@ -224,9 +225,9 @@ export class DocumentComponent implements OnInit {
     let scale = this.getImageTransformScale();
 
     if (event.deltaY > 0) { // then zoom out
-      scale = scale - 0.25;
+      scale = scale - 0.025;
     } else if (event.deltaY < 0) { // then zoom in
-      scale = scale + 0.25;
+      scale = scale + 0.025;
     }
 
     this.documentImage.nativeElement.style.transform = `scale(${scale})`;
@@ -240,10 +241,46 @@ export class DocumentComponent implements OnInit {
     this.showRendered = true;
   }
 
+  startAutoTranscribe(event: DragEvent, field: { id: string }): void {
+    event.dataTransfer.setData('application/json', JSON.stringify({ id: field.id }))
+  }
+
   onImageDrop(event: DragEvent): void {
     console.log(event);
-    let x = event.x;
-    let y = event.y;
+    let x = event.offsetX;
+    let y = event.offsetY;
+
+    let trueX = x / this.widthRatio;
+    let trueY = y / this.heightRatio;
+
+    console.log({ x, y, trueX, trueY });
+
+    if (this.azureTranscriptions) {
+      let match: string;
+      for (const transcription of this.azureTranscriptions) {
+        if (trueX >= transcription.BoundingBox.Left && trueX <= transcription.BoundingBox.Right &&
+          trueY >= transcription.BoundingBox.Top && trueY <= transcription.BoundingBox.Bottom) {
+          match = transcription.Text;
+          break;
+        }
+      }
+
+      if (match) {
+        console.log(`Boom! ${match}`);
+
+        let fieldInfo = JSON.parse(event.dataTransfer.getData('application/json'))
+
+        if (fieldInfo.id) {
+          let transcribeTo =
+            Array.from(document.querySelectorAll('input'))
+              .filter(input => input.id === fieldInfo.id)[0];
+
+          if (transcribeTo) {
+            transcribeTo.value = match;
+          }
+        }
+      }
+    }
 
     this.showRendered = false;
   }
@@ -298,5 +335,4 @@ export class DocumentComponent implements OnInit {
   goToDocument(document: Document): void {
     this.router.navigate(['/transcribe', document.ProjectId, document.Id]);
   }
-
 }

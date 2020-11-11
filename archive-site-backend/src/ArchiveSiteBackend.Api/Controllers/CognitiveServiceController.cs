@@ -5,6 +5,7 @@ using ArchiveSite.Data;
 using ArchiveSiteBackend.Api.Services;
 using Microsoft.Extensions.Logging;
 using System.Net.Http;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ArchiveSiteBackend.Api.Controllers
 {
@@ -16,7 +17,9 @@ namespace ArchiveSiteBackend.Api.Controllers
         private ArchiveDbContext ArchiveDbContext;
         private ICloudOcrService CognitiveService;
 
-        public CognitiveServiceController(ILogger<CognitiveServiceController> logger, ArchiveDbContext archiveDbContext,
+        public CognitiveServiceController(
+            ILogger<CognitiveServiceController> logger,
+            ArchiveDbContext archiveDbContext,
             ICloudOcrService cognitiveService)
         {
             Logger = logger;
@@ -31,6 +34,7 @@ namespace ArchiveSiteBackend.Api.Controllers
         /// <param name="documentId">refers to the document id in the table documents column id</param>
         /// <returns></returns>
         [Obsolete("This method will change...")]
+        [AllowAnonymous]
         public async Task<IActionResult> Post([FromBody] Int64 documentId)
         {
             var document = ArchiveDbContext.Documents.Find(documentId);

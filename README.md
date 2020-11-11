@@ -2,6 +2,10 @@
 
 This is a web application to host archive transcription projects and provide an interactive user interface for volunteers to participate in document transcription. This project was created for the 2020 Hawaii Annual Coding Challenge.
 
+## Instructions for Reviewers
+
+If you are reviewing the app please see our [Instructions for Reviewers](INSTRUCTIONS.md).
+
 ## Prerequisites
 
 * [Dotnet Core SDK 3.1](https://dotnet.microsoft.com/download)

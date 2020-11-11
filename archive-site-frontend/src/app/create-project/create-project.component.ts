@@ -157,6 +157,8 @@ export class CreateProjectModal implements OnInit {
                 this.errorMessage = 'Unable to import field list.';
               }
             }
+          } else if (!this.fields) {
+            this.fields = [];
           }
 
           this.step = CreateProjectModalStep.EditFieldList;

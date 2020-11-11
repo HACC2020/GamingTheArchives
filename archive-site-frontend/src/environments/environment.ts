@@ -9,7 +9,7 @@ export const environment: EnvironmentSettings = {
   production: false,
   apiUrl: 'https://localhost:5001/api',
   apiCredentialMode: 'include',
-  useHash: false
+  useHash: true
 };
 
 /*

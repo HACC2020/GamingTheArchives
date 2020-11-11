@@ -24,6 +24,6 @@ export class LoginComponent implements OnInit {
         `${window.origin}${this._returnUrl}`;
 
     window.location.href =
-      `${environment.apiUrl}/auth/login-with-facebook?returnUrl=${returnUrl}`;
+      `${environment.apiUrl}/auth/login-with-facebook?returnUrl=${encodeURIComponent(returnUrl)}`;
   }
 }

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Location } from '@angular/common';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { User } from './models/user';
@@ -17,6 +18,7 @@ export class AppComponent implements OnInit {
 
   constructor(
     private _userContext: UserContextService,
+    private _location: Location,
     public router: Router) {
   }
 
@@ -38,12 +40,17 @@ export class AppComponent implements OnInit {
   }
 
   logout() {
+    let routeUrl = this._location.prepareExternalUrl(this.router.url);
+    if (!routeUrl.startsWith('/')) {
+      routeUrl = `/${routeUrl}`;
+    }
+
     let returnUrl =
       environment.apiUrl.startsWith(window.origin) ?
-        this.router.url :
-        `${window.origin}${this.router.url}`;
+        routeUrl :
+        `${window.origin}${routeUrl}`;
 
     window.location.href =
-      `${environment.apiUrl}/auth/logout?returnUrl=${returnUrl}`;
+      `${environment.apiUrl}/auth/logout?returnUrl=${encodeURIComponent(returnUrl)}`;
   }
 }

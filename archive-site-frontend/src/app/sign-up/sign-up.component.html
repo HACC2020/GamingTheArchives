@@ -4,7 +4,10 @@
       <span class="card-title">Sign Up With Your Preferred Provider</span>
       <p class="card-text">There's no need to create another user name and password, just select your preferred provider
         and create a linked account here. Already signed up?
-        <a [routerLink]="['login']" [queryParams]="{ returnUrl: '/projects' }">click here to Log In.</a></p>
+        <a [routerLink]="['/login']" [queryParams]="{ returnUrl: this.urlHelper.getRouteUrl(['/projects']) }">
+          click here to Log In.
+        </a>
+      </p>
       <button class="login-btn facebook-btn" (click)="withFacebook()">
         <img src="/assets/images/facebook-white.png" width="24" height="24" aria-hidden="true"/> Continue With Facebook
       </button>

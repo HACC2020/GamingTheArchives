@@ -9,19 +9,19 @@ import { UrlHelper } from 'src/app/services/url-helper';
 })
 export class SignUpComponent implements OnInit {
 
-  constructor(private _urlHelper: UrlHelper) { }
+  constructor(public urlHelper: UrlHelper) { }
 
   ngOnInit(): void {
   }
 
   withFacebook(): void {
-    let profileUrl = this._urlHelper.getRouteUrl(['/profile'])
+    let profileUrl = this.urlHelper.getRouteUrl(['/profile'])
     let returnUrl =
       environment.apiUrl.startsWith(window.origin) ?
         profileUrl :
-        `${window.origin}${profileUrl}`
+        `${window.origin}${profileUrl}`;
     window.location.href =
-      `${environment.apiUrl}/auth/login-with-facebook?returnUrl=${returnUrl}`;
+      `${environment.apiUrl}/auth/login-with-facebook?returnUrl=${encodeURIComponent(returnUrl)}`;
   }
 
 }

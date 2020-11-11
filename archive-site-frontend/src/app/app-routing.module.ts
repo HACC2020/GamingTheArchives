@@ -8,6 +8,7 @@ import { LoginComponent } from 'src/app/login/login.component';
 import { SignUpComponent } from 'src/app/sign-up/sign-up.component';
 import { ProfileComponent } from 'src/app/profile/profile.component';
 import { ProjectSettingsComponent } from 'src/app/project-settings/project-settings.component';
+import { environment } from 'src/environments/environment';
 
 
 const routes: Routes = [
@@ -27,7 +28,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, { useHash: environment.useHash })],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

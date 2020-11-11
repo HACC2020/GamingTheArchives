@@ -1,6 +1,4 @@
-
-$primary: #23582b;
-$success: lighten($primary, 45);
+@import './_variables.scss';
 
 /* Importing Bootstrap SCSS file. */
 @import '~bootstrap/scss/bootstrap';

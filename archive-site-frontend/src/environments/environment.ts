@@ -8,7 +8,8 @@ type EnvironmentSettings =
 export const environment: EnvironmentSettings = {
   production: false,
   apiUrl: 'https://localhost:5001/api',
-  apiCredentialMode: 'include'
+  apiCredentialMode: 'include',
+  useHash: false
 };
 
 /*

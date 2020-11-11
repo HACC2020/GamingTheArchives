@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { Router } from '@angular/router';
+import { UrlHelper } from 'src/app/services/url-helper';
 
 @Component({
   selector: 'app-sign-up',
@@ -9,14 +9,13 @@ import { Router } from '@angular/router';
 })
 export class SignUpComponent implements OnInit {
 
-  constructor(private _router: Router) { }
+  constructor(private _urlHelper: UrlHelper) { }
 
   ngOnInit(): void {
   }
 
   withFacebook(): void {
-    let profileUrl =
-      this._router.createUrlTree(['profile'])
+    let profileUrl = this._urlHelper.getRouteUrl(['/profile'])
     let returnUrl =
       environment.apiUrl.startsWith(window.origin) ?
         profileUrl :

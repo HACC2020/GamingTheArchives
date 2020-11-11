@@ -2,6 +2,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, ReplaySubject } from 'rxjs';
 import { map } from 'rxjs/operators';
+import * as _ from 'lodash';
 
 import { HighlightMarker, MarkerArea } from 'markerjs';
 
@@ -73,7 +74,7 @@ export class DocumentComponent implements OnInit {
         this.dataApi.fieldService.entities()
           .filter({ ProjectId: this.projectId })
           .get()
-          .pipe(map(f => f.entities));
+          .pipe(map(f => _.orderBy(f.entities, ['Index'])));
 
       this.documentService.getCurrentUserTranscription(this.documentId)
         .subscribe(

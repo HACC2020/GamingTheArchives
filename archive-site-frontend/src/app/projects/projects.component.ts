@@ -10,6 +10,7 @@ import { Project } from 'src/app/models/project';
 import { DataApiService } from 'src/app/services/data-api.service';
 import { UserContextService } from 'src/app/services/user-context-service';
 import { User } from 'src/app/models/user';
+import { UrlHelper } from 'src/app/services/url-helper';
 
 
 @Component({
@@ -24,6 +25,7 @@ export class ProjectsComponent implements OnInit {
   user$: Observable<User>;
 
   constructor(
+    private _urlHelper: UrlHelper,
     private _router: Router,
     private _route: ActivatedRoute,
     private _modalService: NgbModal,
@@ -39,7 +41,11 @@ export class ProjectsComponent implements OnInit {
 
   hideIntro(): void {
     this.showIntro = false;
-    history.replaceState(history.state, document.title, '/projects');
+    history.replaceState(
+      history.state,
+      document.title,
+      this._urlHelper.getRouteUrl(['/projects'])
+    );
   }
 
   async createProject(): Promise<void> {

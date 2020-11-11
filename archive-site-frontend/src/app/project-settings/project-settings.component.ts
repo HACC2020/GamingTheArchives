@@ -4,7 +4,6 @@ import { Project } from 'src/app/models/project';
 import { DataApiService } from 'src/app/services/data-api.service';
 import { ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash';
-import { ODataEntity } from 'angular-odata';
 import { map } from 'rxjs/operators';
 
 @Component({
@@ -36,10 +35,10 @@ export class ProjectSettingsComponent implements OnInit {
     ]);
 
     this.originalProject = project;
-    this.originalFields = fields;
+    this.originalFields = _.orderBy(fields, ['Index']);
 
     this.project = Project.fromPayload(project);
-    this.fields = fields.map(Field.fromPayload);
+    this.fields = this.originalFields.map(Field.fromPayload);
 
     this.doneLoading = true;
   }

@@ -36,7 +36,12 @@ export class AppComponent implements OnInit {
   }
 
   async gotoLogin(): Promise<void> {
-    await this.router.navigate(['login'], { queryParams: { returnUrl: this.router.url } });
+    let returnUrl = this._location.prepareExternalUrl(this.router.url);
+    if (!returnUrl.startsWith('/')) {
+      returnUrl = `/${returnUrl}`;
+    }
+
+    await this.router.navigate(['login'], { queryParams: { returnUrl: returnUrl } });
   }
 
   logout() {

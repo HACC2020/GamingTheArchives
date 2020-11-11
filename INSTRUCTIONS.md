@@ -8,7 +8,7 @@ If you need help or encounter issues please let us know via the #GamingTheArchiv
 
 ## Logging In
 
-While the site should be accessible to anonymous visitors, it is read only until have have logged in. So if you want to transcribe documents or create new projects you'll need to sign up and log in. Sign up is done with Facebook. When you click "Continue With Facebook" or "Log In With Facebook" you will be taken to facebook.com where you may need to log in to your Facebook account, and on the first usage you will need to authorize the GamingTheArchives app. After you are logged in to Facebook you should be redirected to the [profile page](https://www.hiscribe.app/#/profile) where you will need to enter a display name and save your profile before you can start using the site.
+While the site should be accessible to anonymous visitors, it is read only until visitors have logged in. So if you want to transcribe documents or create new projects you'll need to sign up and log in. Sign up is done with Facebook. When you click "Continue With Facebook" or "Log In With Facebook" you will be taken to facebook.com where you may need to log in to your Facebook account, and on the first usage you will need to authorize the GamingTheArchives app. After you are logged in to Facebook you should be redirected to the [profile page](https://www.hiscribe.app/#/profile) where you will need to enter a display name and save your profile before you can start using the site.
 
 ## Transcribing
 
@@ -24,7 +24,7 @@ This app is "fully" functional and not just demo ware! You can actually add new 
 
 The last step of creating a project is to submit a list of image URLs for the documents to be transcribed. It is important that these URLs be **publicly** accessible. URLs that start with `file:///` aren't going to work because they are only accessible on your own machine. Also some file hosting services restrict access to the files they host. To be sure your URL is publicly accessible check that it starts with `http://` or `https://` and that you can view it using an "Incognito" or "Private" browser window. If you need some URLs to test with you can find a list of samples [here](samples/ChineseArrivals_1878/images/image-urls.txt).
 
-Once your project is created it will be listed as "Inactive" and only visible to logged in users. To publish your new project, click on its name to go to the project details page, then click the gear icon on the right and side of the page. This will take you to the settings screen where you can change details of the project, make adjustments to the field list, and activate the project by clicking the checkbox in the lower left. Once you save that change your project is ready to start archiving.
+Once your project is created it will be listed as "Inactive" and only visible to logged in users. To publish your new project, click on its name to go to the project details page, then click the gear icon on the upper right side of the page. This will take you to the settings screen where you can change details of the project, make adjustments to the field list, and activate the project by clicking the checkbox in the lower left. Once you save that change your project is ready to start archiving.
 
 ## TODO
 

@@ -1,4 +1,5 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://www.arc-hi-ves.com/api'
+  apiUrl: 'https://www.hiscribe.app/api',
+  apiCredentialMode: 'same-origin'
 };

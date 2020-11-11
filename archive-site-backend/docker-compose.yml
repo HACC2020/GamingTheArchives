@@ -1,10 +1,37 @@
 version: '3.1'
 
 services:
+  archive-api:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    environment:
+      - ArchiveDb__Password=${POSTGRES_PASSWORD:-GamingTheArchives}
+      - ArchiveDb__Host=archive-postgresql
+      - Facebook__ApplicationId=${Facebook__ApplicationId}
+      - Facebook__Secret=${Facebook__Secret}
+      - Azure__ApiUrl=${Azure__ApiUrl}
+      - Azure__ApiKey=${Azure__ApiKey}
+    ports:
+     - "5000:80"
+     - "5001:443"
+    networks:
+      - services
+
   archive-postgresql:
     image: postgres:13
     restart: always
+    volumes:
+      - pgsql_data:/var/lib/postgresql/data
     environment:
-      POSTGRES_PASSWORD: GamingTheArchives
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-GamingTheArchives}
     ports:
       - "5432:5432"
+    networks:
+      - services
+
+networks:
+  services:
+
+volumes:
+  pgsql_data:

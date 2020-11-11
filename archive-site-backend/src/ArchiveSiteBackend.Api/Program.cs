@@ -80,9 +80,8 @@ namespace ArchiveSiteBackend.Api {
         }
 
         public static IConfigurationRoot BuildConfiguration(String[] args, CommonOptions options, out String environment) {
-            // AppContext.BaseDirectory is within the ./bin/config/framework
             var configurationBasePath =
-                GetAbsolute(options?.ConfigPath) ?? GetParent(AppContext.BaseDirectory, 3);
+                GetAbsolute(options?.ConfigPath) ?? AppContext.BaseDirectory;
 
             environment =
                 options?.Environment ??
@@ -96,10 +95,10 @@ namespace ArchiveSiteBackend.Api {
                     .AddEnvironmentVariables()
                     .AddCommandLine(args);
 
-            /**
-             * if this is the development environment then manually include the user secrets for the 
+            /*
+             * if this is the development environment then manually include the user secrets for the
              * runtime and the unit tests
-             **/
+             */
             if(environment == Environments.Development)
             {
                 configuration.AddUserSecrets("d72db2b5-597e-4bc0-a92d-a033bdf5ac7e");
@@ -110,15 +109,6 @@ namespace ArchiveSiteBackend.Api {
 
         private static String GetAbsolute(String path) {
             return !String.IsNullOrWhiteSpace(path) ? Path.GetFullPath(path) : null;
-        }
-
-        private static String GetParent(String path, Int32 ancestor) {
-            /**
-             * fix for windows devs - if this environment is running windows then immediately return an 
-             * unmodified path otherwise return a trimmed path.
-             */
-            return RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? path : 
-                Enumerable.Range(0, ancestor).Aggregate(path.TrimEnd('/'), (p, _) => Directory.GetParent(p).FullName);
         }
 
         private static void WaitForDebugger() {

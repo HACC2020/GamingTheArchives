@@ -18,7 +18,7 @@ Run services (Postgresql) using `docker-compose`
 
 ```bash
 # From the archive-site-backend folder run:
-docker-compose up -d
+docker-compose up -d archive-postgresql
 ```
 
 Initialize your local database:

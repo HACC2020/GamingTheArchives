@@ -59,8 +59,7 @@ export class DocumentService {
         mergeMap(user => {
           if (!user) {
             console.warn('not logged in');
-            return;
-            // throw new Error('User not logged in.');
+            throw new Error('User not logged in.');
           }
 
           console.log('Checking for existing transcriptions.');

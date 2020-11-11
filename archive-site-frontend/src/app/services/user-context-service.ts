@@ -74,10 +74,8 @@ class ReplayLatestSubject<T> extends Observable<T> implements SubscriptionLike {
         subscriber.complete();
         return;
       } else {
-        console.log('hello subscriber!');
         this.observers.push(subscriber);
         if (this.hasLatest) {
-          console.log('here\'s the latest: ' + JSON.stringify(this.latest))
           subscriber.next(this.latest);
         }
         return new ReplayLatestSubjectSubscription(this, subscriber);

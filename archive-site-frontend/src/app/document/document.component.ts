@@ -76,19 +76,25 @@ export class DocumentComponent implements OnInit {
           .pipe(map(f => f.entities));
 
       this.documentService.getCurrentUserTranscription(this.documentId)
-        .subscribe(transcription => {
-          if (transcription) {
-            this.transcription = transcription;
-            let allTranscriptions: any[] = JSON.parse(transcription.Data);
-            console.log('Existing transcription data loaded');
-            console.log(allTranscriptions);
-            if (allTranscriptions && allTranscriptions.length > 0) {
-              this.data = allTranscriptions[0];
+        .subscribe(
+          transcription => {
+            if (transcription) {
+              this.transcription = transcription;
+              let allTranscriptions: any[] = JSON.parse(transcription.Data);
+              console.log('Existing transcription data loaded');
+              console.log(allTranscriptions);
+              if (allTranscriptions && allTranscriptions.length > 0) {
+                this.data = allTranscriptions[0];
+              }
             }
-          }
 
-          this.isLoading = false;
-        });
+            this.isLoading = false;
+          },
+          error => {
+            console.warn('Unable to load existing transcription.');
+            console.log(error);
+            this.isLoading = false;
+          });
     });
   }
 
@@ -143,18 +149,20 @@ export class DocumentComponent implements OnInit {
       console.log(azureTranscripts);
       this.azureTranscriptions = azureTranscripts;
 
-      azureTranscripts.forEach(transcript => {
-        const boundingBox = transcript.BoundingBox;
-        this.markerArea.addMarker(HighlightMarker,
-          {
-            translateX: boundingBox.Left * this.widthRatio,
-            translateY: boundingBox.Top * this.heightRatio,
-            width: (boundingBox.Right - boundingBox.Left) * this.widthRatio,
-            height: (boundingBox.Bottom - boundingBox.Top) * this.heightRatio,
-            markerId: '',
-            markerType: 'HighlightMarker'
-          });
-      });
+      if (azureTranscripts) {
+        azureTranscripts.forEach(transcript => {
+          const boundingBox = transcript.BoundingBox;
+          this.markerArea.addMarker(HighlightMarker,
+            {
+              translateX: boundingBox.Left * this.widthRatio,
+              translateY: boundingBox.Top * this.heightRatio,
+              width: (boundingBox.Right - boundingBox.Left) * this.widthRatio,
+              height: (boundingBox.Bottom - boundingBox.Top) * this.heightRatio,
+              markerId: '',
+              markerType: 'HighlightMarker'
+            });
+        });
+      }
 
       this.renderImage();
     });

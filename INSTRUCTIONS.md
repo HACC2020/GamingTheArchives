@@ -4,6 +4,8 @@ A demo of this application is available at [https://www.hiscribe.app/](https://w
 
 The app should generally be compatible with major browsers, however most testing has been done on Chromium based browser (Google Chrome, Microsoft Edge, Brave, etc). There is at least one known issue in FireFox. So if possible, please use Google Chrome or a Chromium based web browser.
 
+If you need help or encounter issues please let us know via the #GamingTheArchives channel on [Slack](https://hacc2020.slack.com/), or email us at [contact@hiscribe.app](mailto:contact@hiscribe.app).
+
 ## Logging In
 
 While the site should be accessible to anonymous visitors, it is read only until have have logged in. So if you want to transcribe documents or create new projects you'll need to sign up and log in. Sign up is done with Facebook. When you click "Continue With Facebook" or "Log In With Facebook" you will be taken to facebook.com where you may need to log in to your Facebook account, and on the first usage you will need to authorize the GamingTheArchives app. After you are logged in to Facebook you should be redirected to the [profile page](https://www.hiscribe.app/#/profile) where you will need to enter a display name and save your profile before you can start using the site.

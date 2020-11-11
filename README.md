@@ -18,6 +18,7 @@ Run services (Postgresql) using `docker-compose`
 
 ```bash
 # From the archive-site-backend folder run:
+docker volume create --name=pgsql_data
 docker-compose up -d archive-postgresql
 ```
 

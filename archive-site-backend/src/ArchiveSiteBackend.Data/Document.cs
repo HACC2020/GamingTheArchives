@@ -22,5 +22,7 @@ namespace ArchiveSite.Data {
 
         [ForeignKey(nameof(Transcription))]
         public Int64? ApprovedTranscriptionId { get; set; }
+
+        public virtual Project Project { get; set; }
     }
 }

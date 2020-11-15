@@ -26,5 +26,7 @@ namespace ArchiveSite.Data {
         /// Whether or not this transcription has been submitted.
         /// </summary>
         public Boolean IsSubmitted { get; set; }
+
+        public virtual Document Document { get; set; }
     }
 }

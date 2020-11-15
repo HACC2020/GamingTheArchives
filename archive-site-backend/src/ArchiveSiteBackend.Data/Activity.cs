@@ -17,5 +17,7 @@ namespace ArchiveSite.Data {
 
         [Required]
         public DateTimeOffset CreatedTime { get; set; }
+
+        public virtual User User { get; set; }
     }
 }

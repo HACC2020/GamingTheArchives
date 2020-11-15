@@ -26,6 +26,7 @@ namespace ArchiveSite.Data {
             if (!optionsBuilder.IsConfigured) {
                 var configValue = this.config.Value;
                 optionsBuilder
+                    .UseLazyLoadingProxies()
                     .UseNpgsql(
                         $"Host={configValue.Host};Port={configValue.Port};" +
                         $"Database={configValue.Database};Username={configValue.User};" +

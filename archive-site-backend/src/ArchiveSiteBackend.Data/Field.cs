@@ -48,5 +48,7 @@ namespace ArchiveSite.Data {
         public Double? Left { get; set; }
         public Double? Width { get; set; }
         public Double? Height { get; set; }
+
+        public virtual Project Project { get; set; }
     }
 }

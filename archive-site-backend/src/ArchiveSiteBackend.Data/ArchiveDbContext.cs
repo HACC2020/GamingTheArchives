@@ -15,6 +15,7 @@ namespace ArchiveSite.Data {
         public DbSet<DocumentNote> DocumentNotes => this.Set<DocumentNote>();
         public DbSet<Field> Fields => this.Set<Field>();
         public DbSet<Transcription> Transcriptions => this.Set<Transcription>();
+        public DbSet<Activity> Activities => this.Set<Activity>();
 
         public ArchiveDbContext(IOptions<ArchiveDbConfiguration> config) {
             this.config = config ?? throw new ArgumentNullException(nameof(config));

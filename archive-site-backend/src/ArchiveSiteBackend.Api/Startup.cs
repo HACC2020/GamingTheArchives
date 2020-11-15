@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using ArchiveSite.Data;
 using ArchiveSiteBackend.Api.Commands;
 using ArchiveSiteBackend.Api.Configuration;
+using ArchiveSiteBackend.Api.Middleware;
 using ArchiveSiteBackend.Api.Services;
 using Microsoft.AspNet.OData.Builder;
 using Microsoft.AspNet.OData.Extensions;
@@ -41,39 +42,26 @@ namespace ArchiveSiteBackend.Api {
         internal void ConfigureServices(IServiceCollection services, Boolean skipHosting) {
             services.AddLogging(builder =>
                 builder.AddConfiguration(this.Configuration.GetSection("Logging")).AddConsole());
+
+            // Add Application Dependencies Here
             services.Configure<ArchiveDbConfiguration>(this.Configuration.GetSection("ArchiveDb"));
             services.AddDbContext<ArchiveDbContext>();
 
-            // Add Application Dependencies Here
-            services.AddScoped<ILoginLogger, DbLoginLogger>();
-            services.AddScoped<ICloudOcrService, CognitiveService>();
-
             if (!skipHosting) {
+                // Add Hosting specific Dependencies Here
+
+                // Wire up Azure Cognitive config
+                var azureConfiguration = new AzureCognitiveConfiguration();
+                this.Configuration.GetSection("Azure").Bind(azureConfiguration);
+                services.AddSingleton(azureConfiguration);
+
+                services.AddScoped<ICloudOcrService, CognitiveService>();
+
+                services.AddScoped<ILoginLogger, DbLoginLogger>();
+
                 var facebookConfig = new FacebookConfiguration();
                 this.Configuration.GetSection("Facebook").Bind(facebookConfig);
                 services.AddSingleton(Options.Create(facebookConfig));
-
-                // Asp.Net MVC Dependencies
-
-                services
-                    .AddControllers(options => {
-                        var policy = new AuthorizationPolicyBuilder()
-                            .RequireAuthenticatedUser()
-                            .Build();
-
-                        if (!String.IsNullOrEmpty(facebookConfig.ApplicationId)) {
-                            options.Filters.Add(new AuthorizeFilter(policy));
-                        }
-                    })
-                    .AddNewtonsoftJson(options => {
-                        options.SerializerSettings.ContractResolver = new DefaultContractResolver {
-                            // Use TitleCase naming everywhere so that we're consistent with OData endpoints
-                            NamingStrategy = new DefaultNamingStrategy()
-                        };
-                        options.SerializerSettings.Converters.Add(new StringEnumConverter());
-                    });
-                services.AddMvc();
-                services.AddOData();
 
                 var authenticationBuilder =
                     services
@@ -106,6 +94,9 @@ namespace ArchiveSiteBackend.Api {
                     Console.Error.WriteLine("Facebook configuration not found. Facebook login will not be enabled.");
                 }
 
+                // Initialized by UserContextMiddleware for each requests
+                services.AddScoped<UserContext>();
+
                 var originConfiguration = new OriginPolicyConfiguration();
                 this.Configuration.GetSection("OriginPolicy").Bind(originConfiguration);
                 services.AddSingleton(Options.Create(originConfiguration));
@@ -122,12 +113,29 @@ namespace ArchiveSiteBackend.Api {
                             });
                     });
                 }
-            }
 
-            // wire up azure cognitive config
-            var azureConfiguration = new AzureCognitiveConfiguration();
-            this.Configuration.GetSection("Azure").Bind(azureConfiguration);
-            services.AddSingleton(azureConfiguration);
+                // Asp.Net MVC Dependencies
+                services
+                    .AddControllers(options => {
+                        var policy = new AuthorizationPolicyBuilder()
+                            .RequireAuthenticatedUser()
+                            .Build();
+
+                        if (!String.IsNullOrEmpty(facebookConfig.ApplicationId)) {
+                            options.Filters.Add(new AuthorizeFilter(policy));
+                        }
+                    })
+                    .AddNewtonsoftJson(options => {
+                        options.SerializerSettings.ContractResolver = new DefaultContractResolver {
+                            // Use TitleCase naming everywhere so that we're consistent with OData endpoints
+                            NamingStrategy = new DefaultNamingStrategy()
+                        };
+                        options.SerializerSettings.Converters.Add(new StringEnumConverter());
+                    });
+
+                services.AddMvc();
+                services.AddOData();
+            } // End of Hosting Specific Dependencies
 
             // Register Commands
             services.AddScoped<InitializeCommand>();
@@ -157,6 +165,9 @@ namespace ArchiveSiteBackend.Api {
 
             app.UseRouting();
             app.UseAuthorization();
+
+            app.UseMiddleware<UserContextMiddleware>();
+
             app.UseEndpoints(endpoints => {
                 endpoints.MapControllers();
                 endpoints.EnableDependencyInjection();
@@ -174,15 +185,22 @@ namespace ArchiveSiteBackend.Api {
             odataBuilder.EntitySet<Document>("Documents");
             odataBuilder.EntitySet<DocumentAction>("DocumentActions");
             odataBuilder.EntitySet<DocumentNote>("DocumentNotes");
-            var fields = odataBuilder.EntitySet<Field>("Fields");
+            odataBuilder.EntitySet<Field>("Fields");
             odataBuilder.EntitySet<Transcription>("Transcriptions");
+            var activities = odataBuilder.EntitySet<Activity>("Activities");
 
-            var meFunction = users.EntityType.Collection.Function("me");
+            var meFunction = users.EntityType.Collection.Function("Me");
             meFunction.ReturnsFromEntitySet<User>("Users");
 
-            var saveProfileAction = users.EntityType.Collection.Action("saveprofile");
+            var userActivities = users.EntityType.Function("Activities");
+            userActivities.ReturnsFromEntitySet<Activity>("Activities");
+
+            var saveProfileAction = users.EntityType.Collection.Action("SaveProfile");
             saveProfileAction.EntityParameter<User>("profile");
             saveProfileAction.ReturnsFromEntitySet<User>("Users");
+
+            var currentUserActivities = activities.EntityType.Collection.Function("CurrentUser");
+            currentUserActivities.ReturnsFromEntitySet<Activity>("Activities");
 
             return odataBuilder.GetEdmModel();
         }

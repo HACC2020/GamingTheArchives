@@ -87,12 +87,12 @@ namespace ArchiveSiteBackend.Api.Controllers {
         private async Task RecordProjectCreatedActivity(Project project, Boolean saveChanges, CancellationToken cancellationToken) {
             await this.DbContext.Activities.AddAsync(
                 new Activity {
-                    ActivityType = ActivityType.ProjectCreated,
-                    Message = $"{this.userContext.LoggedInUser.DisplayName} has created a new project: {project.Name}!",
+                    Type = ActivityType.ProjectCreated,
+                    Message = $"{{{{DisplayName}}}} has created a new project: {project.Name}!",
                     EntityType = nameof(Project),
                     EntityId = project.Id,
                     UserId = this.userContext.LoggedInUser.Id,
-                    ActivityTime = DateTimeOffset.UtcNow
+                    CreatedTime = DateTimeOffset.UtcNow
                 },
                 cancellationToken
             );

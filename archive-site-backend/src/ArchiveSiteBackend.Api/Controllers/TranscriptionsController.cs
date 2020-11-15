@@ -59,12 +59,12 @@ namespace ArchiveSiteBackend.Api.Controllers {
 
             await this.DbContext.Activities.AddAsync(
                 new Activity {
-                    ActivityType = ActivityType.TranscriptionSubmitted,
-                    Message = $"{this.userContext.LoggedInUser.DisplayName} submitted a transcription for the project {project?.Name ?? "Untitled"}",
+                    Type = ActivityType.TranscriptionSubmitted,
+                    Message = $"{{{{DisplayName}}}} submitted a transcription for the project {project?.Name ?? "Untitled"}",
                     EntityType = nameof(Transcription),
                     EntityId = transcription.Id,
                     UserId = this.userContext.LoggedInUser.Id,
-                    ActivityTime = DateTimeOffset.UtcNow
+                    CreatedTime = DateTimeOffset.UtcNow
                 },
                 cancellationToken
             );

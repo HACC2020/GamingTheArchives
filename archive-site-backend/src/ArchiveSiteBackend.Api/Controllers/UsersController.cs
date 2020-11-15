@@ -123,9 +123,9 @@ namespace ArchiveSiteBackend.Api.Controllers {
             await this.DbContext.Activities.AddAsync(
                 new Activity {
                     UserId = user.Id,
-                    Message = $"Aloha e {user.DisplayName}. Thank you for signing up!",
-                    ActivityType = ActivityType.UserSignup,
-                    ActivityTime = DateTimeOffset.UtcNow
+                    Message = "Aloha e {{DisplayName}}. Thank you for signing up!",
+                    Type = ActivityType.UserSignup,
+                    CreatedTime = DateTimeOffset.UtcNow
                 },
                 cancellationToken
             );

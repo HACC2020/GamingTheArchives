@@ -13,9 +13,9 @@ namespace ArchiveSite.Data {
         public String EntityType { get; set; }
 
         [Required]
-        public ActivityType ActivityType { get; set; }
+        public ActivityType Type { get; set; }
 
         [Required]
-        public DateTimeOffset ActivityTime { get; set; }
+        public DateTimeOffset CreatedTime { get; set; }
     }
 }

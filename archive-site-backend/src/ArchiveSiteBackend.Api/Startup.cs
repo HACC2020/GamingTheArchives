@@ -181,7 +181,7 @@ namespace ArchiveSiteBackend.Api {
             var odataBuilder = new ODataConventionModelBuilder();
 
             var users = odataBuilder.EntitySet<User>("Users");
-            odataBuilder.EntitySet<Project>("Projects");
+            var projects = odataBuilder.EntitySet<Project>("Projects");
             odataBuilder.EntitySet<Document>("Documents");
             odataBuilder.EntitySet<DocumentAction>("DocumentActions");
             odataBuilder.EntitySet<DocumentNote>("DocumentNotes");
@@ -201,6 +201,9 @@ namespace ArchiveSiteBackend.Api {
 
             var currentUserActivities = activities.EntityType.Collection.Function("CurrentUser");
             currentUserActivities.ReturnsFromEntitySet<Activity>("Activities");
+
+            var nextDocumentFunction = projects.EntityType.Function("NextDocument");
+            nextDocumentFunction.ReturnsFromEntitySet<Document>("documents");
 
             return odataBuilder.GetEdmModel();
         }

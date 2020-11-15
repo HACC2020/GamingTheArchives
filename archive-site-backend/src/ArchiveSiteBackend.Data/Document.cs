@@ -17,6 +17,9 @@ namespace ArchiveSite.Data {
         [Required]
         public DocumentStatus Status { get; set; } = DocumentStatus.PendingTranscription;
 
+        [Required]
+        public Int32 TranscriptionCount { get; set; }
+
         [ForeignKey(nameof(Transcription))]
         public Int64? ApprovedTranscriptionId { get; set; }
     }

@@ -1,5 +1,6 @@
 import { Model } from 'src/app/models/model';
 import { $enum } from 'ts-enum-util';
+import { Project } from 'src/app/models/project';
 
 const langEn = 'en';
 const langHaw = 'haw';
@@ -38,7 +39,8 @@ export class Field extends Model {
     public ParsingFormat?: string,
     public TrueValue?: string,
     public FalseValue?: string,
-    public ValidationData?: string) {
+    public ValidationData?: string,
+    public Project?: Project) {
     super(Id);
   }
 

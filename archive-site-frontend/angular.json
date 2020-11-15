@@ -33,6 +33,7 @@
             "scripts": [],
             "allowedCommonJsDependencies": [
               "lodash",
+              "handlebars",
               "zone.js/dist/zone-error"
             ]
           },

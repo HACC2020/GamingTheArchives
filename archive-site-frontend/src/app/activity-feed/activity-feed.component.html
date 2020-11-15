@@ -1,4 +1,12 @@
-<h3>Activity Feed</h3>
-<div *ngFor="let individual of userList">
-    <p>{{ individual.DisplayName }}</p>
-</div>
+<p class="activity-feed-title">Activity Feed</p>
+<ng-container *ngIf="activityList$ | async as activityList; else loading">
+  <ul *ngFor="let activity of activityList">
+    <li>{{renderMessage(activity)}}</li>
+  </ul>
+</ng-container>
+<ng-template #loading>
+  <div class="d-flex align-items-center">
+    <strong>Loading...</strong>
+    <div class="spinner-border ml-auto" role="status" aria-hidden="true"></div>
+  </div>
+</ng-template>

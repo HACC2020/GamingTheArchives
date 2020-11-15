@@ -16,5 +16,8 @@ namespace ArchiveSite.Data {
         public DocumentActionType Type { get; set; }
 
         public DateTimeOffset ActionTime { get; set; }
+
+        public virtual Document Document { get; set; }
+        public virtual User User { get; set; }
     }
 }

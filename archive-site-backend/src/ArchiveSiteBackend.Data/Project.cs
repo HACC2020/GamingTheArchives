@@ -16,5 +16,7 @@ namespace ArchiveSite.Data {
 
         [DefaultValue(true)]
         public Boolean Active { get; set; } = true;
+
+        public virtual Category Category { get; set; }
     }
 }

@@ -22,5 +22,8 @@ namespace ArchiveSite.Data {
         public String Message { get; set; }
 
         public DateTimeOffset CreatedTime { get; set; }
+
+        public virtual Document Document { get; set; }
+        public virtual User Author { get; set; }
     }
 }

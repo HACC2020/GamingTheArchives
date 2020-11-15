@@ -120,10 +120,6 @@ namespace ArchiveSiteBackend.Api.Controllers {
 
         protected override async Task OnCreated(User user, CancellationToken cancellationToken) {
             await base.OnCreated(user, cancellationToken);
-            await this.CreateSignUpActivity(user, cancellationToken);
-        }
-
-        private async Task CreateSignUpActivity(User user, CancellationToken cancellationToken) {
             await this.DbContext.Activities.AddAsync(
                 new Activity {
                     UserId = user.Id,

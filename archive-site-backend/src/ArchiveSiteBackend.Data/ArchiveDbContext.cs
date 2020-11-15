@@ -10,6 +10,7 @@ namespace ArchiveSite.Data {
 
         public DbSet<User> Users => this.Set<User>();
         public DbSet<Project> Projects => this.Set<Project>();
+        public DbSet<Category> Categories => this.Set<Category>();
         public DbSet<Document> Documents => this.Set<Document>();
         public DbSet<DocumentAction> DocumentActions => this.Set<DocumentAction>();
         public DbSet<DocumentNote> DocumentNotes => this.Set<DocumentNote>();

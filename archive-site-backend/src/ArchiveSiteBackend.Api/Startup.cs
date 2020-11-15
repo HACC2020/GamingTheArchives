@@ -182,6 +182,7 @@ namespace ArchiveSiteBackend.Api {
 
             var users = odataBuilder.EntitySet<User>("Users");
             var projects = odataBuilder.EntitySet<Project>("Projects");
+            odataBuilder.EntitySet<Category>("Categories");
             odataBuilder.EntitySet<Document>("Documents");
             odataBuilder.EntitySet<DocumentAction>("DocumentActions");
             odataBuilder.EntitySet<DocumentNote>("DocumentNotes");

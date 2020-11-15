@@ -6,10 +6,10 @@ using Microsoft.AspNet.OData;
 using Microsoft.AspNetCore.Authorization;
 
 namespace ArchiveSiteBackend.Api.Controllers {
-    public class ActivityController : EntityControllerBase<ArchiveDbContext, Activity> {
+    public class ActivitiesController : EntityControllerBase<ArchiveDbContext, Activity> {
         private readonly UserContext userContext;
 
-        public ActivityController(ArchiveDbContext context, UserContext userContext) :
+        public ActivitiesController(ArchiveDbContext context, UserContext userContext) :
             base(context) {
             this.userContext = userContext ?? throw new ArgumentNullException(nameof(userContext));
         }

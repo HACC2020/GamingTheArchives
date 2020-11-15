@@ -26,9 +26,10 @@
     "@types/lodash": "^4.14.165",
     "angular-odata": "^0.18.0",
     "bootstrap": "^4.5.0",
+    "handlebars": "^4.7.6",
     "lodash": "^4.17.20",
-    "material-design-icons": "^3.0.1",
     "markerjs": "file:local_modules/markerjs",
+    "material-design-icons": "^3.0.1",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.2"

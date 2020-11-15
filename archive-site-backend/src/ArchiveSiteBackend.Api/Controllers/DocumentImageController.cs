@@ -13,13 +13,13 @@ namespace ArchiveSiteBackend.Api.Controllers
     [Route("api/[controller]")]
     public class DocumentImageController : ControllerBase
     {
-        private ILogger<DocumentImageController> Logger;
-        private ArchiveDbContext ArchiveDbContext;
+        private readonly ILogger<DocumentImageController> logger;
+        private readonly ArchiveDbContext archiveDbContext;
 
         public DocumentImageController(ILogger<DocumentImageController> logger, ArchiveDbContext archiveDbContext)
         {
-            Logger = logger;
-            ArchiveDbContext = archiveDbContext;
+            this.logger = logger;
+            this.archiveDbContext = archiveDbContext;
         }
 
         /// <summary>
@@ -32,7 +32,7 @@ namespace ArchiveSiteBackend.Api.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Get(Int64 documentId)
         {
-            var document = await ArchiveDbContext.Documents.FindAsync(documentId);
+            var document = await archiveDbContext.Documents.FindAsync(documentId);
 
             if (null == document || string.IsNullOrEmpty(document.DocumentImageUrl))
             {
@@ -44,13 +44,14 @@ namespace ArchiveSiteBackend.Api.Controllers
             try
             {
                 var url = new Uri(document.DocumentImageUrl);
-                var httpStream = await httpClient.GetStreamAsync(url);
+                var httpResponse = await httpClient.GetAsync(url);
+                var httpStream = await httpResponse.Content.ReadAsStreamAsync();
 
-                Response.Headers.Add("Access-Control-Allow-Origin", "Anonymous");
-                return File(httpStream, MediaTypeNames.Image.Jpeg);
+                this.Response.Headers.Add("Access-Control-Allow-Origin", "Anonymous");
+                return File(httpStream, httpResponse.Content.Headers.ContentType.MediaType);
             } catch(Exception)
             {
-                Logger.LogError($"failed to parse the documentId {documentId} url of {document.DocumentImageUrl}");
+                logger.LogError($"failed to parse the documentId {documentId} url of {document.DocumentImageUrl}");
                 return NotFound();
             }
         }

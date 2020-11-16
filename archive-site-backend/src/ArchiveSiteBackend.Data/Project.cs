@@ -9,7 +9,7 @@ namespace ArchiveSite.Data {
 
         public String Description { get; set; }
 
-        public Int64 CategoryId { get; set; }
+        public Int64? CategoryId { get; set; }
 
         [StringLength(1024)]
         public String SampleDocumentUrl { get; set; }

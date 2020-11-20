@@ -4,7 +4,7 @@
   <PropertyGroup>
       <TargetFramework>netcoreapp3.1</TargetFramework>
       <AssemblyName>archive-api</AssemblyName>
-      <Version>0.0.1-alpha</Version>
+      <Version>0.0.2-alpha</Version>
       <RootNamespace>ArchiveSiteBackend.Api</RootNamespace>
       <UserSecretsId>d72db2b5-597e-4bc0-a92d-a033bdf5ac7e</UserSecretsId>
   </PropertyGroup>
